@@ -248,7 +248,7 @@ if ($install_result['rest_only'] === false):?>
                         }
                     )
                 });
-                // BX24.callBind('OnAppUninstall', 'http://app.overplan.ru/applications/crmButtons/3/uninstall.php');
+                BX24.callBind('OnAppUninstall', 'http://app.overplan.ru/applications/crmButtons/3/uninstall.php');
             </script>
         <?
         endif; ?>
