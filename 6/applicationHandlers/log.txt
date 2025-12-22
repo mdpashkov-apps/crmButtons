@@ -1,0 +1,56 @@
+
+------------------------
+2025.03.14 15:00:20
+result_entity
+Array
+(
+    [buttonName_FIELDS] => test
+    [customField_FIELDS] => 
+    [buttonColor_FIELDS] => #000000
+    [textColor_FIELDS] => #ffffff
+    [buttonRadius_FIELDS] => 5
+    [buttonBorder_FIELDS] => false
+    [buttonBorderWidth_FIELDS] => 5
+    [buttonBorderColor_FIELDS] => #000000
+    [textOnTheButton_FIELDS] => test
+    [usingTheIcon_FIELDS] => true
+    [iconOnTheButton_FIELDS] => test
+    [entitySelection_FIELDS] => 31
+    [buttonActionsId_FIELDS] => ["3"]
+    [businessProcessesValue_FIELDS] => []
+    [documentTemplatesValue_FIELDS] => []
+    [listsValue_FIELDS] => 
+    [fieldsTable_FIELDS] => []
+    [link_FIELDS] => https://b24-c5c83s.bitrix24.ru
+    [buttonInCRM_FIELDS] => false
+)
+
+------------------------
+
+------------------------
+2025.03.14 15:00:47
+result_entity
+Array
+(
+    [buttonName_FIELDS] => test
+    [customField_FIELDS] => 
+    [buttonColor_FIELDS] => #000000
+    [textColor_FIELDS] => #ffffff
+    [buttonRadius_FIELDS] => 5
+    [buttonBorder_FIELDS] => false
+    [buttonBorderWidth_FIELDS] => 5
+    [buttonBorderColor_FIELDS] => #000000
+    [textOnTheButton_FIELDS] => test
+    [usingTheIcon_FIELDS] => true
+    [iconOnTheButton_FIELDS] => test
+    [entitySelection_FIELDS] => 31
+    [buttonActionsId_FIELDS] => ["3"]
+    [businessProcessesValue_FIELDS] => []
+    [documentTemplatesValue_FIELDS] => []
+    [listsValue_FIELDS] => 
+    [fieldsTable_FIELDS] => []
+    [link_FIELDS] => https://b24-c5c83s.bitrix24.ru
+    [buttonInCRM_FIELDS] => false
+)
+
+------------------------

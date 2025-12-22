@@ -1,0 +1,70 @@
+Starting installation
+Domain: ooonppfliks.bitrix24.ru
+Dir: /home/bitrix/www/applications/crmButtons/fieldTypeHandlers
+Versions: 5
+Install result: array (
+  'rest_only' => false,
+  'install' => true,
+)
+Starting installation
+Domain: ooonppfliks.bitrix24.ru
+Dir: /home/bitrix/www/applications/crmButtons/fieldTypeHandlers
+Versions: 5
+Install result: array (
+  'rest_only' => false,
+  'install' => true,
+)
+Event bind result: array (
+  'error' => 'ERROR_ARGUMENT',
+  'error_description' => 'Argument \'HANDLER\' is null or empty',
+  'argument' => 'HANDLER',
+)
+Event bind result: array (
+  'error' => 'ERROR_ARGUMENT',
+  'error_description' => 'Argument \'HANDLER\' is null or empty',
+  'argument' => 'HANDLER',
+)
+Starting installation
+Domain: ooonppfliks.bitrix24.ru
+Dir: /home/bitrix/www/applications/crmButtons/fieldTypeHandlers
+Versions: 5
+Install result: array (
+  'rest_only' => false,
+  'install' => true,
+)
+Event bind result: array (
+  'error' => 'ERROR_ARGUMENT',
+  'error_description' => 'Argument \'HANDLER\' is null or empty',
+  'argument' => 'HANDLER',
+)
+Starting installation
+Domain: ooonppfliks.bitrix24.ru
+Dir: /home/bitrix/www/applications/crmButtons/fieldTypeHandlers
+Versions: 5
+Install result: array (
+  'rest_only' => false,
+  'install' => true,
+)
+Event bind result: array (
+  'result' => true,
+  'time' => 
+  array (
+    'start' => 1750407385.563666,
+    'finish' => 1750407385.639239,
+    'duration' => 0.07557296752929688,
+    'processing' => 0.033722877502441406,
+    'date_start' => '2025-06-20T11:16:25+03:00',
+    'date_finish' => '2025-06-20T11:16:25+03:00',
+    'operating_reset_at' => 1750407985,
+    'operating' => 0,
+  ),
+)
+Starting installation
+Domain: ooonppfliks.bitrix24.ru
+Dir: /home/bitrix/www/applications/crmButtons/fieldTypeHandlers
+Versions: 5
+Install result: array (
+  'rest_only' => false,
+  'install' => true,
+)
+Event bind result: NULL

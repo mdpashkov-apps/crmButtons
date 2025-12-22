@@ -1,0 +1,469 @@
+array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)array (
+  0 => 
+  array (
+    'ID' => '1',
+    'XML_ID' => '68003810',
+    'ACTIVE' => true,
+    'NAME' => '',
+    'LAST_NAME' => '',
+    'IS_ONLINE' => 'Y',
+    'TIME_ZONE' => 'Europe/Moscow',
+    'TIMESTAMP_X' => 
+    array (
+    ),
+    'DATE_REGISTER' => '2025-11-05T03:00:00+03:00',
+    'PERSONAL_GENDER' => '',
+    'PERSONAL_BIRTHDAY' => '',
+    'LAST_ACTIVITY_DATE' => 
+    array (
+    ),
+    'UF_EMPLOYMENT_DATE' => '',
+    'UF_DEPARTMENT' => 
+    array (
+      0 => 1,
+    ),
+    'USER_TYPE' => 'employee',
+  ),
+)
