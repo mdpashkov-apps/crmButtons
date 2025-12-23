@@ -23,4 +23,39 @@ export const createButton = async (memberId) => {
   return response.data;
 };
 
+// начало ф-ий для script js
+export const getTemplate = async (memberId) => {
+  const response = await mainApi.post("/getTemplate.php", {
+    memberId: memberId,
+  });
+  return response.data;
+};
+
+
+export const saveBtnSettings = async (memberId, current_button, activeButtonId) => {
+  const response = await mainApi.post("/saveBtnSettings.php", {
+    memberId: memberId,
+    btnSettings: current_button,
+    activeButtonId: activeButtonId
+  });
+  return response.data;
+};
+
+export const deleteButton = async (memberId, activeButtonId) => {
+  const response = await mainApi.post("/deleteButton.php", {
+    memberId: memberId,
+    activeButtonId: activeButtonId
+  });
+  return response.data;
+};
+
+export const getButtonData = async (memberId, button) => {
+  const response = await mainApi.post("/getButtonData.php", {
+    memberId: memberId,
+    button_ID: button.ID
+  });
+  return response.data;
+};
+
+
 

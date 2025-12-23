@@ -6,16 +6,14 @@ $path = pathinfo(__DIR__, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-// получаю данные 1 хранилища
-$result = overCRest::call("entity.item.add", [
-    "ENTITY" => "customButton",
-    'NAME' => 'Hello, world!',
-    'PROPERTY_VALUES' => [
-                    'buttonName_FIELDS'     => 12,
+$row = [
+    'buttonName_FIELDS' => 'Новая кнопка 1',
+];
 
-                ],
 
-]);
 // file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
 
 
+echo json_encode([
+    'result' => $row,
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

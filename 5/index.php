@@ -94,6 +94,11 @@ $member_id = $_REQUEST['member_id']; ?>
             </div>
         </div>
     </div>
+
+
+
+
+    
     <div class="content" v-if="current_button && current_button.button_actions">
         <div class="settings_fields">
             <h3>Панель настроек добавляемой кнопки</h3>

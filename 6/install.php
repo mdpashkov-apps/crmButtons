@@ -49,7 +49,6 @@ if ($install_result['install'] === true) {
         'fieldsTable_FIELDS' => 'Поля таблицы',
         'link_FIELDS' => 'Ссылка',
         'buttonInCRM_FIELDS' => 'Кнопка в карточке',
-                    'bia' => 'fffe'
 
     ];
 

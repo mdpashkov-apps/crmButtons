@@ -49,83 +49,102 @@ $member_id = $_REQUEST['member_id']; ?>
 
 
 
-    <!-- <div class="tabs_btn" >
-        <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
-        <div v-for="button in portalButtons.slice(0,6)" class="tab_btn" :id="button.ID" >  {{ button.PROPERTY_VALUES.buttonName_FIELDS }} </div>
-        <div v-if="portalButtons.length > 6" class="dropdown" @mouseenter="getMorButtons"> Еще </div>
-</div> -->
 
 
 
-<div class="tabs_btn">
-    <img class="addProfiles"
-         src="img/Add.svg"
-         alt="Добавить профиль"
-         @click="createBtn">
 
-    <div v-for="button in portalButtons.slice(0,6)"
-         class="tab_btn"
-         :id="button.ID">
-        {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
-    </div>
 
-    <div v-if="portalButtons.length > 6"
-         class="dropdown"
-         @mouseenter="showMoreButtons"
-         @mouseleave="hideMoreButtons">
-
-        Еще
-        <span class="span_btn">&or;</span>
-
-        <div class="dropdown-content" :class="{ show: showMore }">
-            <div v-for="button in morebuttons"
-                 :key="button.ID"
-                 class="tab_btn">
-                {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
+    <div v-if="portalButtons.length === 0" >
+        <div  class="tabs_btn">
+            <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
+            <div class="tab_btn"> {{ current_button.buttonName }} </div>
+            <div v-if="portalButtons.length > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
+                <div class="dropdown-content" :class="{ show: showMore }">
+                    <div v-for="button in morebuttons" :key="button.ID" class="tab_btn"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }} </div>
+                </div>
             </div>
         </div>
 
-    </div>
-</div>
-
-
-        
-<!-- <div class="tabs_btn" v-if="current_button && current_button.button_actions">
-            <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
-            <div v-for="row in rows.slice(0,6)" class="tab_btn" :id=" [row.id]" :class="{still_btn_active:row.lists_btn_bool}" @click="open_lists_btn(row)">
-                {{row.name}}
+        <div class="settings_fields">
+            <h3>Панель настроек добавляемой кнопки</h3>
+            <div class="div_row">
+                <label for="name">Название кнопки:</label>
+                <input v-model="current_button.buttonName" type="text" id="name">
             </div>
+        </div>
+    </div>
 
-            <div v-if="rows.length > 6" v-on:mouseenter="show" v-on:mouseleave="hide" class="dropdown" :class="{still_block_active:lists_btn_bool}">
-                Еще
-                <span class="span_btn">
-                    &or;
-                </span>
-                <div id="myDropdown" class="dropdown-content" :class="{show:lists_btn_bool}">
-                    <div v-for="row in rows.slice(6)" :class="{still_btn_active:row.lists_btn_bool}" @click="open_lists_btn(row)">
-                        {{row.name}}
-                    </div>
+
+
+
+
+
+    <div v-else >
+        <div class="tabs_btn">
+            <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
+        <div v-for="button in portalButtons.slice(0,6)" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" :id="button.ID" @click="selectButton(button)">
+  {{
+    activeButtonId === button.ID
+      ? current_button.buttonName_FIELDS
+      : button.PROPERTY_VALUES.buttonName_FIELDS
+  }}
+</div>
+<!-- ✅ newButton здесь, если кнопок <= 6 -->
+<div
+  v-if="newButton && portalButtons.length <= 6"
+  class="tab_btn still_btn_active"
+>
+  {{ current_button.buttonName_FIELDS }}
+</div>
+            <div v-if="portalButtons.length > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
+                <div class="dropdown-content" :class="{ show: showMore }">
+                    <!-- <div v-for="button in morebuttons" :key="button.ID" :class="{ still_btn_active: activeButtonId === button.ID }" class="tab_btn"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }} </div> -->
+                <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }">
+  {{
+    activeButtonId === button.ID
+      ? current_button.buttonName_FIELDS
+      : button.PROPERTY_VALUES.buttonName_FIELDS
+  }}
+</div>
+    <div
+      v-if="newButton && portalButtons.length > 6"
+      class="tab_btn still_btn_active"
+    >
+      {{ current_button.buttonName_FIELDS }}
+    </div>
+
                 </div>
             </div>
-        </div> -->
+        </div>
+
+        <div class="settings_fields">
+            <h3>Панель настроек добавляемой кнопки</h3>
+            <div class="div_row">
+                <label for="name">Название кнопки:</label>
+                <input v-model="current_button.buttonName_FIELDS" type="text" id="name">
+            </div>
+        </div>
+    </div>
 
 
-    
 
-   
-    
+
+<button @click="saveSettings">
+                    Сохранить настройки
+                </button>
+<button @click="delButton"> Удалить настройки и поле </button>
     <div v-if="loader" class="modal-mask">
         <div class="modal-wrapper">
             <div class="loader"></div>
         </div>
     </div>
+
+
 </div>
 <script type="module" src="js/script.js"></script>
 </body>
 
 </html>
-
-
 
 <script>
 BX24.callMethod('entity.item.get', {
