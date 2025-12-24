@@ -33,7 +33,7 @@ if ($install_result['install'] === true) {
         'buttonName_FIELDS' => 'Название кнопки',
         'customField_FIELDS' => 'Пользовательский тип поля',
         'buttonColor_FIELDS' => 'Цвет кнопки',
-        'textColor_FIELDS' => 'БП сделок',
+        'textColor_FIELDS' => 'Цвет текста на кнопке',
         'buttonRadius_FIELDS' => 'Радиус кнопки',
         'buttonBorder_FIELDS' => 'Использование границы кнопки',
         'buttonBorderWidth_FIELDS' => 'Высота границы кнопки',

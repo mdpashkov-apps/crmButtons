@@ -7,9 +7,26 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 $btnSettings = $requestData['btnSettings'];
 
+// 🔥 если entitySelection_FIELDS — массив → кодируем в JSON
+function encodeAllArrays(array $data): array
+{
+    foreach ($data as $key => $value) {
+        if (is_array($value)) {
+            $data[$key] = json_encode(
+                $value,
+                JSON_UNESCAPED_UNICODE
+            );
+        }
+    }
+
+    return $data;
+}
+
+$btnSettings = encodeAllArrays($btnSettings);
+
+file_put_contents(__DIR__.'/result91.log', var_export($btnSettings, true), FILE_APPEND);
 
 $searchableButtonID = $requestData['activeButtonId'];
-// $searchableButtonID = 100;
 
 // получаю данные 1 хранилища
 $result = overCRest::call("entity.item.get", [
@@ -18,16 +35,14 @@ $result = overCRest::call("entity.item.get", [
         'ID' => $searchableButtonID,
     ]
 ]);
-// file_put_contents(__DIR__.'/result91.log', var_export($searchableButtonID, true), FILE_APPEND);
 
 
 if ($searchableButtonID) {
      $updateSecond = overCRest::call('entity.item.update', [
         'ENTITY' => 'customButton',
         'ID' => $searchableButtonID,
-        'PROPERTY_VALUES' => [
-            'buttonName_FIELDS' => $btnSettings['buttonName_FIELDS'],
-        ]
+        'PROPERTY_VALUES' => $btnSettings
+
     ]);
 
 
@@ -37,15 +52,12 @@ if ($searchableButtonID) {
     $itemAdd = overCRest::call("entity.item.add", [
     "ENTITY" => "customButton",
     'NAME' => $btnSettings['buttonName_FIELDS'],
-    'PROPERTY_VALUES' => [
-        'buttonName_FIELDS' => $btnSettings['buttonName_FIELDS'],
+   'PROPERTY_VALUES' => $btnSettings
 
-    ],
 
 ]);
  $resultId = $itemAdd['result'];
 
-file_put_contents(__DIR__.'/result91.log', var_export($resultId, true), FILE_APPEND);
 
 echo json_encode([
     'result' => $resultId,

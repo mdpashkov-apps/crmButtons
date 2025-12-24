@@ -57,5 +57,68 @@ export const getButtonData = async (memberId, button) => {
   return response.data;
 };
 
+export const getAllEntitys = async (memberId, ) => {
+  const response = await mainApi.post("/getAllEntitys.php", {
+    memberId: memberId,
+  });
+  return response.data;
+};
 
+
+export const getBPforEntity = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getBPforEntity.php", {
+    memberId: memberId,
+    current_button: current_button.entitySelection_FIELDS
+
+  });
+  return response.data;
+};
+
+export const getDocumentsforEntity = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getDocumentsforEntity.php", {
+    memberId: memberId,
+    current_button: current_button.entitySelection_FIELDS
+
+  });
+  return response.data;
+};
+
+
+export const getListsforEntity = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getListsforEntity.php", {
+    memberId: memberId,
+    current_button: current_button.entitySelection_FIELDS
+
+  });
+  return response.data;
+};
+
+
+export const getListFields = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getListFields.php", {
+    memberId: memberId,
+    entity: current_button.entitySelection_FIELDS,
+    list: current_button.listsValue_FIELDS
+
+  });
+  return response.data;
+};
+
+export const getEntityFields = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getEntityFields.php", {
+    memberId: memberId,
+    current_button: current_button.entitySelection_FIELDS
+
+  });
+  return response.data;
+};
+
+
+export const createButtonInCrm = async (memberId, ) => {
+  const response = await mainApi.post("/createButtonInCrm.php", {
+    memberId: memberId,
+
+  });
+  return response.data;
+};
 

@@ -57,21 +57,11 @@ $member_id = $_REQUEST['member_id']; ?>
     <div v-if="portalButtons.length === 0" >
         <div  class="tabs_btn">
             <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
-            <div class="tab_btn"> {{ current_button.buttonName }} </div>
-            <div v-if="portalButtons.length > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
-                <div class="dropdown-content" :class="{ show: showMore }">
-                    <div v-for="button in morebuttons" :key="button.ID" class="tab_btn"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }} </div>
-                </div>
-            </div>
+   <div class="tab_btn still_btn_active">
+      {{ current_button.buttonName_FIELDS }}
+    </div>           
         </div>
 
-        <div class="settings_fields">
-            <h3>Панель настроек добавляемой кнопки</h3>
-            <div class="div_row">
-                <label for="name">Название кнопки:</label>
-                <input v-model="current_button.buttonName" type="text" id="name">
-            </div>
-        </div>
     </div>
 
 
@@ -91,25 +81,24 @@ $member_id = $_REQUEST['member_id']; ?>
 </div>
 <!-- ✅ newButton здесь, если кнопок <= 6 -->
 <div
-  v-if="newButton && portalButtons.length <= 6"
+  v-if="newButton && totalButtonsCount <= 6"
   class="tab_btn still_btn_active"
 >
   {{ current_button.buttonName_FIELDS }}
 </div>
-            <div v-if="portalButtons.length > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
+            <div v-if="totalButtonsCount > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
                 <div class="dropdown-content" :class="{ show: showMore }">
-                    <!-- <div v-for="button in morebuttons" :key="button.ID" :class="{ still_btn_active: activeButtonId === button.ID }" class="tab_btn"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }} </div> -->
-                <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }">
+                <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }"  @click="selectButton(button)">
   {{
     activeButtonId === button.ID
       ? current_button.buttonName_FIELDS
       : button.PROPERTY_VALUES.buttonName_FIELDS
   }}
 </div>
-    <div
-      v-if="newButton && portalButtons.length > 6"
-      class="tab_btn still_btn_active"
-    >
+  <div
+  v-if="newButton && totalButtonsCount > 6"
+  class="tab_btn still_btn_active"
+>
       {{ current_button.buttonName_FIELDS }}
     </div>
 
@@ -117,27 +106,217 @@ $member_id = $_REQUEST['member_id']; ?>
             </div>
         </div>
 
-        <div class="settings_fields">
-            <h3>Панель настроек добавляемой кнопки</h3>
+        
+    </div>
+
+<div class="settings_fields">
+            <h3>Панель настроек добавляемой кнопки </h3>
             <div class="div_row">
                 <label for="name">Название кнопки:</label>
                 <input v-model="current_button.buttonName_FIELDS" type="text" id="name">
             </div>
-        </div>
-    </div>
+
+        <div class="div_row">
+                <label for="color_btn">Цвет кнопки:</label>
+                <input v-model="buttonColorModel" type="color" id="color_btn">
+            </div>
+            <div class="div_row">
+                <label for="color_text">Цвет текста:</label>
+                <input v-model="textColorModel" type="color" id="color_text">
+            </div>
+            <div class="div_row">
+                <label for="entity_selection">Для какой сущности:</label>
+               <multiselect
+  v-model="current_button.entitySelection_FIELDS"
+  :options="allEntitys"
+  label="name"
+  track-by="value"
+  deselect-label=""
+  select-label="Выбрать" selected-label="" 
+  open-direction="bottom"
+  :multiple="false"
+  :close-on-select="true"
+  :limit="1"
+  placeholder="Выберите сущность"
+:taggable="false"
+  @open="getEntitys"
+ 
+>
+  <span slot="noResult">
+    Такого варианта нет
+  </span>
+</multiselect>
 
 
 
 
-<button @click="saveSettings">
-                    Сохранить настройки
-                </button>
-<button @click="delButton"> Удалить настройки и поле </button>
-    <div v-if="loader" class="modal-mask">
-        <div class="modal-wrapper">
-            <div class="loader"></div>
-        </div>
-    </div>
+
+
+
+            </div>
+<h3>Действие кнопки</h3>
+            <button class="accordion" @click="bpSettings">
+                Запустить БП
+                <!-- <div v-if="disableBizproc" class="loader-button"></div> -->
+          </button>
+            <div class="panel" :class="{panel_show:accordion_0}" v-if='flagsButtonBizproc'>
+                <div class="div_row">
+                    <label for="activate_the_property_0">Активировать свойство:</label>
+                    
+                </div>
+                <div class="div_row">
+                    <label for="selection_BP">
+                        Выбор доступных бизнес-процессов<br>для запуска в рамках выбранных сущностей:
+                    </label>
+                    <multiselect v-model="current_button.businessProcessesValue_FIELDS" name="selection_BP"
+                                 placeholder="Выберите БП"
+                                 label="name" track-by="value" deselect-label="Убрать" select-label="Выбрать"
+                                 selected-label="" open-direction="bottom"
+                                 :options="allBizProc"
+                                 :multiple="true" :taggable="false" :close-on-select="false" :limit="1"  @open="getBP"
+                    >
+                            <span slot="noResult">
+                                Такого варианта нет
+                            </span>
+                    </multiselect>
+                </div>
+            </div>
+
+
+
+
+      <button class="accordion" @click="documentSettings">
+                Cоздание документа
+                <!-- <div v-if="disableDocument" class="loader-button"></div> -->
+            </button>
+            <div class="panel" :class="{panel_show:accordion_1}" v-if='flagsButtonDocument'>
+                <div class="div_row">
+                    <label for="activate_the_property_1">Активировать свойство:</label>
+                    
+            </div>
+                <div class="div_row">
+                    <label for="selection_document">Выберите шаблон документ:</label>
+                    <multiselect v-model="current_button.documentTemplatesValue_FIELDS"
+                                 name="selection_document"
+                                 placeholder="Выберите шаблон" label="name" track-by="value" deselect-label="Убрать"
+                                 select-label="Выбрать" selected-label="" open-direction="bottom"
+                                 :options="allDocuments" :multiple="true"
+                                 :taggable="false"
+                                 :close-on-select="false" :limit="1" @open="getDocs"> 
+                            <span slot="noResult">
+                                Такого варианта нет
+                            </span>
+                    </multiselect>
+                </div>
+            </div>
+
+
+
+<button class="accordion" @click="listSettings" >
+                Создать элемент Списка
+                <!-- <div v-if="disableList" class="loader-button"></div> -->
+            </button>
+            <div class="panel" :class="{panel_show:accordion_2}" v-if='flagsList'>
+                <div class="div_row">
+                    <label for="activate_the_property_2">Активировать свойство:</label>
+                </div>
+                <div class="div_row">
+                    <label for="selection_list">Выберите список:</label>
+                    <multiselect v-model="current_button.listsValue_FIELDS" name="selection_list" placeholder="Выберите список" label="name"
+                                 track-by="value" deselect-label="Убрать" select-label="Выбрать" selected-label=""
+                                 open-direction="bottom" :options="allLists" :multiple="false" :taggable="false"
+                                 :close-on-select="true" :limit="1"  @open="getLists" @input="onListChange">
+                            <span slot="noResult">
+                                Такого варианта нет
+                            </span>
+                    </multiselect>
+                </div>
+
+                <table v-if="current_button.listsValue_FIELDS">
+                    <caption>Таблица соответствий полей в рамках выбранных сущностей</caption>
+                    <tr>
+                        <th>Поля списка</th>
+                        <th>Поля сущности</th>
+                    </tr>
+                                            <tr v-for="field in current_button.fieldsTable_FIELDS">
+
+                        <td>{{field.name}}</td>
+                        <td>
+                            <multiselect v-model="field.entField" placeholder="Выберите поле" label="name"
+                                         track-by="value" deselect-label="Убрать" select-label="Выбрать"
+                                         selected-label="" open-direction="bottom"
+                                         :options="entFields" :multiple="false"
+                                         :taggable="false" :close-on-select="true" :limit="1" @open="getEntFields">
+                                    <span slot="noResult">
+                                        Такого варианта нет
+                                    </span>
+                            </multiselect>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <button class="accordion" @click="followEnteredLink">
+                Перейти по произвольной ссылке
+          </button>
+            <div class="panel" :class="{panel_show:accordion_3}" v-if='flagsButtonEnteredLink'>
+                <div class="div_row">
+                    <label for="activate_the_property_3">Активировать свойство:</label>
+                   
+                </div>
+                <div class="div_row">
+                    <label for="link_pole">Введите ссылки, по которой необходимо перейти после клика на
+                        кнопку:</label>
+                    <input v-model="current_button.link_FIELDS" type="text" id="link_pole">
+                </div>
+            </div>
+
+
+
+<div class="div_btn">
+                <button id="btn_delete" @click="delButton"> Удалить настройки и поле </button>
+            <button  @click="createBtnCrm"> Создать кнопку в карточках CRM </button>
+
+            <button @click="saveSettings">
+                                Сохранить настройки
+                            </button>
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                <div v-if="loader" class="modal-mask">
+                    <div class="modal-wrapper">
+                        <div class="loader"></div>
+                    </div>
+                </div>
 
 
 </div>

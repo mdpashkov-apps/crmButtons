@@ -104,6 +104,7 @@ if ($tip === 1) {
             }
         }
     }
+    
     $resultDocuments = [];
     foreach ($resultBatchDocuments as $element) {
         $resultDocuments[] = ['id' => $element['id'], 'name' => $element['name']];

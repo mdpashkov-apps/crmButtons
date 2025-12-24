@@ -8,6 +8,8 @@ overCRest::setCurrentBitrix24($memberId);
 
 $row = [
     'buttonName_FIELDS' => 'Новая кнопка 1',
+    'buttonColor_FIELDS' => '#000000',
+    'textColor_FIELDS' => '#ffffff',
 ];
 
 

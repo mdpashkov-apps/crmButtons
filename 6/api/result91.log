@@ -1,1 +1,141 @@
-777981838587899193959799101103
+array (
+  'buttonName_FIELDS' => '111111111',
+  'customField_FIELDS' => '',
+  'buttonColor_FIELDS' => '#000000',
+  'textColor_FIELDS' => '#ffffff',
+  'buttonRadius_FIELDS' => '',
+  'buttonBorder_FIELDS' => '',
+  'buttonBorderWidth_FIELDS' => '',
+  'buttonBorderColor_FIELDS' => '',
+  'textOnTheButton_FIELDS' => '',
+  'usingTheIcon_FIELDS' => '',
+  'iconOnTheButton_FIELDS' => '',
+  'entitySelection_FIELDS' => 
+  array (
+    'value' => 'Company',
+    'name' => 'Компания',
+  ),
+  'buttonActionsId_FIELDS' => '',
+  'businessProcessesValue_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => '33',
+      'name' => 'swvv',
+    ),
+  ),
+  'documentTemplatesValue_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => '35',
+      'name' => 'Соглашение ЭДО ЮЛ (Россия)',
+    ),
+  ),
+  'listsValue_FIELDS' => 
+  array (
+    'value' => '75',
+    'name' => 'Новый список222',
+  ),
+  'fieldsTable_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => 'NAME',
+      'name' => 'Название',
+      'entityFieldValue' => 'ID',
+      'entityFieldName' => 'ID',
+    ),
+    1 => 
+    array (
+      'value' => 'SORT',
+      'name' => 'Новое поле2222',
+      'entityFieldValue' => 'TITLE',
+      'entityFieldName' => 'Название компании',
+    ),
+    2 => 
+    array (
+      'value' => 'PROPERTY_883',
+      'name' => 'новая б',
+    ),
+    3 => 
+    array (
+      'value' => 'PROPERTY_885',
+      'name' => 'жы ес',
+    ),
+  ),
+  'link_FIELDS' => 'twitch',
+  'buttonInCRM_FIELDS' => '',
+)array (
+  'buttonName_FIELDS' => '111111111',
+  'customField_FIELDS' => '',
+  'buttonColor_FIELDS' => '#000000',
+  'textColor_FIELDS' => '#ffffff',
+  'buttonRadius_FIELDS' => '',
+  'buttonBorder_FIELDS' => '',
+  'buttonBorderWidth_FIELDS' => '',
+  'buttonBorderColor_FIELDS' => '',
+  'textOnTheButton_FIELDS' => '',
+  'usingTheIcon_FIELDS' => '',
+  'iconOnTheButton_FIELDS' => '',
+  'entitySelection_FIELDS' => 
+  array (
+    'value' => 'Company',
+    'name' => 'Компания',
+  ),
+  'buttonActionsId_FIELDS' => '',
+  'businessProcessesValue_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => '33',
+      'name' => 'swvv',
+    ),
+  ),
+  'documentTemplatesValue_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => '35',
+      'name' => 'Соглашение ЭДО ЮЛ (Россия)',
+    ),
+  ),
+  'listsValue_FIELDS' => 
+  array (
+    'value' => '75',
+    'name' => 'Новый список222',
+  ),
+  'fieldsTable_FIELDS' => 
+  array (
+    0 => 
+    array (
+      'value' => 'NAME',
+      'name' => 'Название',
+      'entityFieldValue' => 'ID',
+      'entityFieldName' => 'ID',
+    ),
+    1 => 
+    array (
+      'value' => 'SORT',
+      'name' => 'Новое поле2222',
+      'entityFieldValue' => 'TITLE',
+      'entityFieldName' => 'Название компании',
+    ),
+    2 => 
+    array (
+      'value' => 'PROPERTY_883',
+      'name' => 'новая б',
+    ),
+    3 => 
+    array (
+      'value' => 'PROPERTY_885',
+      'name' => 'жы ес',
+    ),
+  ),
+  'link_FIELDS' => 'twitch',
+  'buttonInCRM_FIELDS' => '',
+)array (
+  'buttonName_FIELDS' => 'ыфСАВ',
+  'buttonColor_FIELDS' => '#000000',
+  'textColor_FIELDS' => '#ffffff',
+)
