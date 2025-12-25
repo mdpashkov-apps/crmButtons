@@ -28,7 +28,7 @@ overCRest::setCurrentBitrix24($memberId);
         ],
     ];
 
-file_put_contents(__DIR__.'/result91.log', var_export($staticEntities, true), FILE_APPEND);
+// file_put_contents(__DIR__.'/result91.log', var_export($staticEntities, true), FILE_APPEND);
 
 
 //получение списка смарт проц

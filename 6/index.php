@@ -112,7 +112,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                 </div>
                 <div class="div_row">
                     <label for="entity_selection">Для какой сущности:</label>
-                    <multiselect v-model="current_button.entitySelection_FIELDS" :options="allEntitys" label="name" track-by="value" deselect-label="" select-label="Выбрать" selected-label="" open-direction="bottom" :multiple="false" :close-on-select="true" :limit="1" placeholder="Выберите сущность" :taggable="false" @open="getEntitys"> <span slot="noResult"> Такого варианта нет </span> </multiselect>
+                    <multiselect v-model="current_button.entitySelection_FIELDS" :options="allEntitys" label="name" track-by="value" deselect-label="" select-label="Выбрать" selected-label="" open-direction="bottom" :multiple="false" :close-on-select="true" :limit="1" placeholder="Выберите сущность" :taggable="false" @input="onEntityChange" @open="getEntitys"> <span slot="noResult"> Такого варианта нет </span> </multiselect>
                 </div>
 
                 <!-- Левый контейнер с настройками действий  -->
@@ -178,36 +178,17 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         </div>
                     </div>
 
-
-
-
-
-        <button class="accordion" @click="followCrmLink">
-                Перейти по ссылке из поля в CRM
-          </button>
-            <div class="panel" :class="{panel_show:accordion_4}" v-if="flagsButtonCrmLink">
-                <div class="div_row">
-                    <label for="activate_the_property_4">Активировать свойство:</label>
-                </div>
-                <div class="div_row">
-                    <label for="selection_document">Выберите поля с типом ссылка:</label>
-                    <multiselect v-model="current_button.crmLinkFields_FIELDS" name="selection_crmLinkFields"
-                                 placeholder="Выберите поля" label="name" track-by="value" deselect-label="Убрать"
-                                 select-label="Выбрать" selected-label="" open-direction="bottom"
-                                 :options="allCrmFieldsLink" :multiple="false" :taggable="false"
-                                 :close-on-select="false" :limit="1" @open="getCrmLinks">
-                            <span slot="noResult">
-                                Такого варианта нет
-                            </span>
-                    </multiselect>
-                </div>
-          </div>
-
-
-
-
-
-
+                    <button class="accordion" @click="followCrmLink"> Перейти по ссылке из поля в CRM </button>
+                    <div class="panel" :class="{panel_show:accordion_4}" v-if="flagsButtonCrmLink">
+                        <div class="div_row">
+                            <label for="activate_the_property_4">Активировать свойство:</label>
+                        </div>
+                        <div class="div_row">
+                            <label for="selection_document">Выберите поля с типом ссылка:</label>
+                            <multiselect v-model="current_button.crmLinkFields_FIELDS" name="selection_crmLinkFields" placeholder="Выберите поля" label="name" track-by="value" deselect-label="Убрать" select-label="Выбрать" selected-label="" open-direction="bottom" :options="allCrmFieldsLink" :multiple="false" :taggable="false" :close-on-select="false" :limit="1" @open="getCrmLinks"> <span slot="noResult"> Такого варианта нет </span>
+                            </multiselect>
+                        </div>
+                    </div>
 
                 <!-- Кнопки -->
                 <div class="div_btn">
@@ -218,14 +199,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             </div>
             <div class="button_type">
                 <h4>Внешний вид кнопки</h4>
-                <button style="height:auto; padding: 8px 0;" :style="{
-                        color: textColorModel,
-                        backgroundColor: buttonColorModel,
-                        borderRadius: current_button.buttonRadius_FIELDS + 'px',
-                        borderStyle:buttonBorderStyle,
-                        borderWidth: current_button.buttonBorderWidth_FIELDS + 'px',
-                        borderColor: current_button.buttonBorderColor_FIELDS,                   
-                    }">
+                <button style="height:auto;padding: 8px 0;" :style="{color: textColorModel, backgroundColor: buttonColorModel, borderRadius: current_button.buttonRadius_FIELDS + 'px', borderStyle:buttonBorderStyle, borderWidth: current_button.buttonBorderWidth_FIELDS + 'px', borderColor: current_button.buttonBorderColor_FIELDS}">
                     <span v-if="current_button.usingTheIcon_FIELDS">{{current_button.iconOnTheButton_FIELDS}}</span>
                     {{current_button.textOnTheButton_FIELDS}}
                 </button>

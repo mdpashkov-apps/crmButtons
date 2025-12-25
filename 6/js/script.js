@@ -48,22 +48,34 @@ accordion_4: false,
   methods: {
   
   bpSettings() {
+      if (!this.checkEntitySelected()) return;
+
     this.accordion_0 = !this.accordion_0
     this.flagsButtonBizproc = true
   },
+
+  
 documentSettings() {
+        if (!this.checkEntitySelected()) return;
+
     this.accordion_1 = !this.accordion_1
     this.flagsButtonDocument = true
   },
 listSettings() {
+        if (!this.checkEntitySelected()) return;
+
     this.accordion_2 = !this.accordion_2
     this.flagsList = true
   },
 followEnteredLink() {
+        if (!this.checkEntitySelected()) return;
+
     this.accordion_3 = !this.accordion_3
     this.flagsButtonEnteredLink = true
   },
 followCrmLink() {
+        if (!this.checkEntitySelected()) return;
+
     this.accordion_4 = !this.accordion_4
     this.flagsButtonCrmLink = true
   },
@@ -127,7 +139,56 @@ async resetStylesButton() {
 },
 
 
+ checkEntitySelected() {
+    if (!this.current_button?.entitySelection_FIELDS) {
+      alert('Не выбрана сущность');
+      return false;
+    }
+    return true;
+  },
 
+
+
+
+
+
+
+
+
+   onEntityChange() {
+    // БП
+    this.current_button.businessProcessesValue_FIELDS = [];
+    this.allBizProc = [];
+
+    // Документы
+    this.current_button.documentTemplatesValue_FIELDS = [];
+    this.allDocuments = [];
+
+    // Списки
+    this.current_button.listsValue_FIELDS = null;
+    this.current_button.fieldsTable_FIELDS = [];
+    this.allLists = [];
+    this.entFields = [];
+
+    // CRM-ссылка
+    this.current_button.crmLinkFields_FIELDS = null;
+    this.allCrmFieldsLink = [];
+
+    // ❗ НЕ ТРОГАЕМ:
+    // this.current_button.link_FIELDS
+
+    // Закрываем accordion’ы
+    this.accordion_0 = false;
+    this.accordion_1 = false;
+    this.accordion_2 = false;
+    this.accordion_4 = false;
+
+    // Сбрасываем флаги
+    this.flagsButtonBizproc = false;
+    this.flagsButtonDocument = false;
+    this.flagsList = false;
+    this.flagsButtonCrmLink = false;
+  },
  async showMoreButtons() {
         this.showMore = true;
 
