@@ -114,11 +114,20 @@ export const getEntityFields = async (memberId,current_button ) => {
 };
 
 
-export const createButtonInCrm = async (memberId, ) => {
+export const createButtonInCrm = async (memberId,activeButtonId, domen  ) => {
   const response = await mainApi.post("/createButtonInCrm.php", {
     memberId: memberId,
-
+ activeButtonId: activeButtonId,
+      domen: domen,
   });
   return response.data;
 };
 
+export const getCrmFieldsLink = async (memberId,current_button ) => {
+  const response = await mainApi.post("/getCrmFieldsLink.php", {
+    memberId: memberId,
+    current_button: current_button.entitySelection_FIELDS
+
+  });
+  return response.data;
+};

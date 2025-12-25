@@ -47,8 +47,9 @@ if ($install_result['install'] === true) {
         'documentTemplatesValue_FIELDS' => 'Выбранный шаблон документа',
         'listsValue_FIELDS' => 'Выбранный список',
         'fieldsTable_FIELDS' => 'Поля таблицы',
-        'link_FIELDS' => 'Ссылка',
+        'link_FIELDS' => 'Ссылка произвольная',
         'buttonInCRM_FIELDS' => 'Кнопка в карточке',
+        'crmLinkFields_FIELDS' => 'Ссылка из поля crm',
 
     ];
 

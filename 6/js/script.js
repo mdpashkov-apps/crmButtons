@@ -1,4 +1,4 @@
-import { getAllButtons, getMoreButtons, getTemplate, saveBtnSettings, getButtonData, deleteButton, getAllEntitys,createButtonInCrm, getBPforEntity, getDocumentsforEntity,getEntityFields, getListsforEntity,getListFields} from "../js/api.js";
+import { getAllButtons, getMoreButtons, getTemplate, saveBtnSettings, getButtonData, deleteButton, getAllEntitys,createButtonInCrm,getCrmFieldsLink, getBPforEntity, getDocumentsforEntity,getEntityFields, getListsforEntity,getListFields} from "../js/api.js";
 
 
 Vue.component("modal", {
@@ -11,6 +11,8 @@ var app = new Vue({
   },
   data() {
     return {
+          originalButtonStyles: null, // 👈 снимок стилей
+
       newButton: false,
       loader: false,
       portalButtons: [],
@@ -20,6 +22,8 @@ var app = new Vue({
       current_button: {},
       activeButtonId: null, // 👈 текущая активная кнопка
       allEntitys: [],
+                  allCrmFieldsLink: [],
+
       allBizProc: [],
             allDocuments: [],
             allLists: [],
@@ -30,10 +34,14 @@ entFields:[],
         flagsButtonDocument: false,
         flagsList: false,
 flagsButtonEnteredLink: false,
+flagsButtonCrmLink: false,
+
     accordion_0: false,
 accordion_1: false,
 accordion_2: false,
 accordion_3: false,
+accordion_4: false,
+
     };
   },
 
@@ -55,7 +63,10 @@ followEnteredLink() {
     this.accordion_3 = !this.accordion_3
     this.flagsButtonEnteredLink = true
   },
-
+followCrmLink() {
+    this.accordion_4 = !this.accordion_4
+    this.flagsButtonCrmLink = true
+  },
 
 async selectButton(button) {
   
@@ -67,14 +78,53 @@ async selectButton(button) {
 
   // 🔥 кладём данные из PHP
   this.current_button = JSON.parse(JSON.stringify(response.result));
+  await this.getEntFields()   // ⬅ загрузили options
+
+this.normalizeFieldsTable()
+
+  this.originalButtonStyles = {
+      buttonColor_FIELDS: this.current_button.buttonColor_FIELDS,
+      color_text: this.current_button.color_text,
+      buttonRadius_FIELDS: this.current_button.buttonRadius_FIELDS,
+      buttonBorder_FIELDS: this.current_button.buttonBorder_FIELDS,
+      buttonBorderWidth_FIELDS: this.current_button.buttonBorderWidth_FIELDS,
+      buttonBorderColor_FIELDS: this.current_button.buttonBorderColor_FIELDS,
+    }
+
+
  if (this.current_button.listsValue_FIELDS) {
     await this.onListChange(true)
   }
 },
+normalizeFieldsTable() {
+  const ft = this.current_button.fieldsTable_FIELDS
+  if (!Array.isArray(ft) || ft.length !== 2) return
 
+  const [crmFields, listFields] = ft
 
+  this.current_button.fieldsTable_FIELDS = listFields.map((listCode, i) => {
+    let entField = null
 
+    if (crmFields[i] && crmFields[i] !== 'null') {
+      entField = this.entFields.find(
+        f => f.value === crmFields[i]
+      ) || null
+    }
 
+    return {
+      value: listCode,
+      name: listCode,
+      entField
+    }
+  })
+},
+async resetStylesButton() {
+  if (!this.originalButtonStyles) return
+
+  Object.keys(this.originalButtonStyles).forEach(key => {
+    this.$set(this.current_button, key, this.originalButtonStyles[key])
+  })
+},
 
 
 
@@ -97,7 +147,18 @@ async selectButton(button) {
         this.showMore = false;
     },
 
+
+
+ SetStandardStyles() {
+     this.current_button.color_text = "#ffffff";
+        this.current_button.buttonColor_FIELDS = "#3bc8f5";
+  this.current_button.buttonRadius_FIELDS = "0";
+  this.current_button.buttonBorderWidth_FIELDS = 0;
+  this.current_button.buttonBorderColor_FIELDS = 0;
+  this.current_button.buttonBorder_FIELDS = false;
+    },
  
+
 async saveSettings() {
   this.loader = true;
 
@@ -106,6 +167,16 @@ async saveSettings() {
     this.current_button,
     this.activeButtonId
   );
+if (response.result) {
+  this.originalButtonStyles = {
+    buttonColor_FIELDS: this.current_button.buttonColor_FIELDS,
+    color_text: this.current_button.color_text,
+    buttonRadius_FIELDS: this.current_button.buttonRadius_FIELDS,
+    buttonBorderColor_FIELDS: this.current_button.buttonBorderColor_FIELDS,
+    buttonBorderWidth_FIELDS: this.current_button.buttonBorderWidth_FIELDS,
+    buttonBorder_FIELDS: this.current_button.buttonBorder_FIELDS,
+  }
+}
 
   this.loader = false;
 
@@ -175,16 +246,19 @@ async getBP() {
     },
 
 
-async createBtnCrm() {
+
+async createBtnCrm(domen) {
+ 
     this.loader = true;
 
-      let response = await createButtonInCrm(window.memberId,);
-     
-
-      this.loader = false;
+    const response = await createButtonInCrm(window.memberId, this.activeButtonId, domen);
 
 
-    },
+  
+    this.loader = false;
+  
+},
+
 
 
 async getEntFields() {
@@ -212,6 +286,20 @@ async getDocs() {
 
     },
 
+
+async getCrmLinks() {
+    this.loader = true;
+
+      let response = await getCrmFieldsLink(window.memberId, this.current_button);
+     
+
+    this.allCrmFieldsLink = response.result;
+      this.loader = false;
+
+
+    },
+
+
 async getLists() {
     this.loader = true;
 
@@ -225,21 +313,44 @@ async getLists() {
     },
 
 
-async onListChange(silent = false) {
-  if (!silent) {
-    this.loader = true
-  }
-      let response = await getListFields(window.memberId, this.current_button);
+// async onListChange(silent = false) {
+//   if (!silent) {
+//     this.loader = true
+//   }
+//       let response = await getListFields(window.memberId, this.current_button);
      
 
-    this.current_button.fieldsTable_FIELDS = response.result;
-  if (!silent) {
-    this.loader = false
+//     this.current_button.fieldsTable_FIELDS = response.result;
+//   if (!silent) {
+//     this.loader = false
+//   }
+
+//     },
+    
+async onListChange(silent = false) {
+  if (!silent) this.loader = true
+
+  let response = await getListFields(window.memberId, this.current_button)
+  let freshFields = response.result
+
+  // если есть сохранённые соответствия
+  if (Array.isArray(this.current_button.fieldsTable_FIELDS)) {
+
+    freshFields.forEach(f => {
+      let saved = this.current_button.fieldsTable_FIELDS.find(
+        s => s.value === f.value
+      )
+
+      if (saved) {
+        f.entField = saved.entField
+      }
+    })
   }
 
-    },
-    
+  this.current_button.fieldsTable_FIELDS = freshFields
 
+  if (!silent) this.loader = false
+},
 
     
 async getButtons(selectLast = false) {
@@ -269,12 +380,26 @@ async getButtons(selectLast = false) {
 
     },
 
+ 
+
+
 
     async createBtn() {
       this.newButton = true
   let response = await getTemplate(window.memberId);
   this.current_button = response.result;
   this.activeButtonId = null; // 🔥 ВАЖНО
+
+
+ this.originalButtonStyles = {
+    buttonColor_FIELDS: this.current_button.buttonColor_FIELDS,
+    color_text: this.current_button.color_text,
+    buttonRadius_FIELDS: this.current_button.buttonRadius_FIELDS,
+    buttonBorder_FIELDS: this.current_button.buttonBorder_FIELDS,
+    buttonBorderWidth_FIELDS: this.current_button.buttonBorderWidth_FIELDS,
+    buttonBorderColor_FIELDS: this.current_button.buttonBorderColor_FIELDS,
+  }
+
     },
   
   
@@ -303,6 +428,9 @@ buttonColorModel: {
     set(val) {
       this.$set(this.current_button, 'color_text', val)
     }
+  },
+   buttonBorderStyle() {
+    return this.current_button?.buttonBorder_FIELDS ? 'solid' : 'none'
   }
 
 },

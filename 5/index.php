@@ -370,3 +370,12 @@ $member_id = $_REQUEST['member_id']; ?>
 </html>
 
 
+<!-- <script>
+BX24.callMethod('entity.item.get', {
+  'ENTITY': 'customButton',
+  'FILTER': {},
+  'SELECT': ['*']
+}, function(result) {
+  console.log('3ое хранилище ',result);
+});
+</script> -->
