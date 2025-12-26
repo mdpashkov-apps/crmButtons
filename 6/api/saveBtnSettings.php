@@ -131,6 +131,7 @@ function encodeAllArrays(array $data): array
 
 $btnSettings = encodeAllArrays($btnSettings);
 
+// file_put_contents(__DIR__.'/result91.log', var_export($btnSettings, true), FILE_APPEND);
 
 
 $searchableButtonID = $requestData['activeButtonId'];

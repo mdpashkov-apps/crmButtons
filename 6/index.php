@@ -18,7 +18,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
     <!-- <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <!-- <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script> -->
+    <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <? $member_id = $_REQUEST['member_id']; ?>
@@ -121,6 +121,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <div class="panel" :class="{panel_show:accordion_0}" v-if='flagsButtonBizproc'>
                         <div class="div_row">
                             <label for="activate_the_property_0">Активировать свойство:</label>
+                            <div>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_0" :value="0">
+                            </div>
                         </div>
                         <div class="div_row">
                             <label for="selection_BP"> Выбор доступных бизнес-процессов<br>для запуска в рамках выбранных сущностей: </label>
@@ -132,7 +135,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <button class="accordion" @click="documentSettings"> Cоздание документа </button>
                     <div class="panel" :class="{panel_show:accordion_1}" v-if='flagsButtonDocument'>
                         <div class="div_row">
-                            <label for="activate_the_property_1">Активировать свойство:</label>         
+                            <label for="activate_the_property_1">Активировать свойство:</label>    
+                            <div>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_1" :value="1">
+                            </div>     
                         </div>
                         <div class="div_row">
                             <label for="selection_document">Выберите шаблон документ:</label>
@@ -145,6 +151,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <div class="panel" :class="{panel_show:accordion_2}" v-if='flagsList'>
                         <div class="div_row">
                             <label for="activate_the_property_2">Активировать свойство:</label>
+                             <div>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_2" :value="2">
+                            </div>
                         </div>
                         <div class="div_row">
                             <label for="selection_list">Выберите список:</label>
@@ -171,6 +180,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <div class="panel" :class="{panel_show:accordion_3}" v-if='flagsButtonEnteredLink'>
                         <div class="div_row">
                             <label for="activate_the_property_3">Активировать свойство:</label> 
+                             <div>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
+                            </div>
                         </div>
                         <div class="div_row">
                             <label for="link_pole">Введите ссылки, по которой необходимо перейти после клика на кнопку:</label>
@@ -182,6 +194,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <div class="panel" :class="{panel_show:accordion_4}" v-if="flagsButtonCrmLink">
                         <div class="div_row">
                             <label for="activate_the_property_4">Активировать свойство:</label>
+                             <div>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4">
+                            </div>
                         </div>
                         <div class="div_row">
                             <label for="selection_document">Выберите поля с типом ссылка:</label>

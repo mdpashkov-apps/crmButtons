@@ -8,33 +8,56 @@ overCRest::setCurrentBitrix24($memberId);
 $entity = $requestData['current_button']['value'];
 
 
-$getBizProc = overCRest::call(
+$total = overCRest::call(
     'bizproc.workflow.template.list',
     [
-        'select' => [
-            'ID',
-            'NAME',
-            // 'PARAMETERS',
-            // 'VARIABLES',
-            // 'CONSTANTS'
-        ],
         'filter' => [
-            'MODULE_ID'    => 'crm',
-            'DOCUMENT_TYPE'=> $entity
+            'MODULE_ID'     => 'crm',
+            'DOCUMENT_TYPE' => $entity,
         ],
-       
     ]
-);
+)['total'];
+
+$pages = ceil($total / 50);
+
+
+
+$batch = [];
+
+for ($i = 0; $i < $pages; $i++) {
+    $batch["list_{$i}"] = [
+        'method' => 'bizproc.workflow.template.list',
+        'params' => [
+            'select' => ['ID', 'NAME'],
+            'filter' => [
+                'MODULE_ID'     => 'crm',
+                'DOCUMENT_TYPE' => $entity,
+            ],
+            'start' => $i * 50,
+        ],
+    ];
+}
 
 
 $bizProcList = [];
+$batchChunks = array_chunk($batch, 50, true);
 
-    foreach ($getBizProc['result'] as $bp) {
-        $bizProcList[] = [
-            'value' => $bp['ID'],
-            'name'  => $bp['NAME'],
-        ];
+foreach ($batchChunks as $chunk) {
+    sleep(2); // щадящий режим
+
+    $result = overCRest::callBatch($chunk, false)['result']['result'];
+
+    foreach ($result as $bpList) {
+        foreach ($bpList as $bp) {
+            $bizProcList[] = [
+                'value' => $bp['ID'],
+                'name'  => $bp['NAME'],
+            ];
+        }
     }
+}
+
+
 
 
     echo json_encode([

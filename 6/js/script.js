@@ -107,6 +107,9 @@ this.normalizeFieldsTable()
  if (this.current_button.listsValue_FIELDS) {
     await this.onListChange(true)
   }
+  if (!Array.isArray(this.current_button.buttonActionsId_FIELDS)) {
+  this.$set(this.current_button, 'buttonActionsId_FIELDS', [])
+}
 },
 normalizeFieldsTable() {
   const ft = this.current_button.fieldsTable_FIELDS
@@ -221,6 +224,9 @@ async resetStylesButton() {
  
 
 async saveSettings() {
+  if (!this.checkEntitySelected()) {
+    return;
+  }
   this.loader = true;
 
   let response = await saveBtnSettings(
@@ -465,6 +471,12 @@ async getButtons(selectLast = false) {
   
   
   },
+  watch: {
+  'current_button.buttonActionsId_FIELDS'(val) {
+    // console.log('buttonActionsId_FIELDS:', val)
+  }
+},
+
   computed: {
   hasNewButton() {
     return this.newButton ? 1 : 0
