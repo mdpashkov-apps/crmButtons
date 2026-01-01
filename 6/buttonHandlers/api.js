@@ -16,7 +16,7 @@ export const startBp = async (memberId,bpParam, entityData) => {
   const response = await mainApi.post("/startBp.php", {
     memberId: memberId,
     bpParam:bpParam,
-        entityData:entityData
+      entityData:entityData
 
   });
   return response.data;

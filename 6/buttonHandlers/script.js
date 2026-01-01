@@ -132,7 +132,6 @@ async runCurrentBp() {
   if (this.currentBpIndex < this.paramResult.length - 1) {
     this.currentBpIndex++;
   } else {
-    alert('Все бизнес-процессы выполнены');
     this.paramResult = null;
   }
 },

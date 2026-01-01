@@ -9,12 +9,24 @@ overCRest::setCurrentBitrix24($memberId);
 
 $bpParam = $requestData['bpParam'];
 
-$businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
-$bpId = $businessProcessesData[0]['value'];
+$bpId = array_key_first($bpParam);
 
-$entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
-$entValue = $entityData['value'];
-file_put_contents(__DIR__.'/result91.log', var_export($bpParam, true), FILE_APPEND);
+
+$bpParameters = $bpParam[$bpId];
+
+
+
+
+
+$entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
+$entityMap = [
+    '1' => 'Lead',
+    '2' => 'Deal',
+    '3' => 'Contact',
+    '4' => 'Company',
+];
+$entValue = $entityMap[$entityTypeId] ?? $entityTypeId;
+
 
 
 $entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
@@ -48,10 +60,14 @@ if ($entValue === '31') {
     ];
 }
 
-// $startBP = overCRest::call(
-//     'bizproc.workflow.start',
-//     [
-//         'TEMPLATE_ID' => $bpId,
-//         'DOCUMENT_ID' => $document,
-//     ]
-// );
+$startBP = overCRest::call(
+    'bizproc.workflow.start',
+    [
+        'TEMPLATE_ID' => $bpId,
+        'DOCUMENT_ID' => $document,
+        'PARAMETERS' => $bpParameters
+    ]
+);
+
+
+file_put_contents(__DIR__.'/result91.log', var_export($bpParameters, true), FILE_APPEND);

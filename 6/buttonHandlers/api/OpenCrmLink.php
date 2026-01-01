@@ -11,8 +11,8 @@ $entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
 
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
 $entityMap = [
-    '1'    => 'lead',
-    '2'    => 'deal',
+    '1' => 'lead',
+    '2' => 'deal',
     '3' => 'contact',
     '4' => 'company',
 ];
