@@ -3,26 +3,41 @@ const mainApi = axios.create({
 });
 
 // начало ф-ий для script js
-export const OpenCrmLink = async (memberId,linkField) => {
+export const OpenCrmLink = async (memberId,crmActions, entityData) => {
   const response = await mainApi.post("/OpenCrmLink.php", {
     memberId: memberId,
-    linkField:linkField
+    crmActions:crmActions,
+    entityData:entityData
   });
   return response.data;
 };
 
-export const startBp = async (memberId,crmActions) => {
+export const startBp = async (memberId,bpParam, entityData) => {
   const response = await mainApi.post("/startBp.php", {
     memberId: memberId,
-    crmActions:crmActions
+    bpParam:bpParam,
+        entityData:entityData
+
   });
   return response.data;
 };
 
-export const createDocument = async (memberId,crmActions) => {
+export const createDocument = async (memberId,crmActions,entityData) => {
   const response = await mainApi.post("/createDocument.php", {
     memberId: memberId,
-    crmActions:crmActions
+    crmActions:crmActions,
+    entityData:entityData
+  });
+  return response.data;
+};
+
+
+
+export const getBpParams = async (memberId,crmActions,entityData) => {
+  const response = await mainApi.post("/getBpParams.php", {
+    memberId: memberId,
+    crmActions:crmActions,
+    entityData:entityData
   });
   return response.data;
 };

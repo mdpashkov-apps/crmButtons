@@ -26,6 +26,10 @@ overCRest::setCurrentBitrix24($memberId);
             "name" => "Компания"
 
         ],
+        [
+            'value' => '31',
+            'name' => 'Счета'
+        ],
     ];
 
 // file_put_contents(__DIR__.'/result91.log', var_export($staticEntities, true), FILE_APPEND);

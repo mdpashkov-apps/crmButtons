@@ -12,7 +12,8 @@ var app = new Vue({
   data() {
     return {
           originalButtonStyles: null, // 👈 снимок стилей
-
+crmLinkWarning: false,
+    enteredLinkWarning: false,
       newButton: false,
       loader: false,
       portalButtons: [],
@@ -46,7 +47,35 @@ accordion_4: false,
   },
 
   methods: {
-  
+  toggleEnteredLink(e) {
+    this.enteredLinkWarning = false
+
+    if (e.target.checked) {
+      if (this.current_button.buttonActionsId_FIELDS.includes(4)) {
+        this.enteredLinkWarning = true
+        return
+      }
+      this.current_button.buttonActionsId_FIELDS.push(3)
+    } else {
+      this.current_button.buttonActionsId_FIELDS =
+        this.current_button.buttonActionsId_FIELDS.filter(v => v !== 3)
+    }
+  },
+
+  toggleCrmLink(e) {
+    this.crmLinkWarning = false
+
+    if (e.target.checked) {
+      if (this.current_button.buttonActionsId_FIELDS.includes(3)) {
+        this.crmLinkWarning = true
+        return
+      }
+      this.current_button.buttonActionsId_FIELDS.push(4)
+    } else {
+      this.current_button.buttonActionsId_FIELDS =
+        this.current_button.buttonActionsId_FIELDS.filter(v => v !== 4)
+    }
+  },
   bpSettings() {
       if (!this.checkEntitySelected()) return;
 

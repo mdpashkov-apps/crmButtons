@@ -7,13 +7,22 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 $entity = $requestData['current_button']['value'];
 
+// file_put_contents(__DIR__.'/result91.log', var_export($entity, true), FILE_APPEND);
 
+if ($entity === '31') {
+    $documentType = 'SMART_INVOICE';
+} elseif (is_numeric($entity)) {
+    $documentType = 'DYNAMIC_' . $entity;
+} else {
+    // лид, сделка, контакт и т.п.
+    $documentType = $entity;
+}
 $total = overCRest::call(
     'bizproc.workflow.template.list',
     [
         'filter' => [
             'MODULE_ID'     => 'crm',
-            'DOCUMENT_TYPE' => $entity,
+            'DOCUMENT_TYPE' => $documentType,
         ],
     ]
 )['total'];
@@ -31,7 +40,7 @@ for ($i = 0; $i < $pages; $i++) {
             'select' => ['ID', 'NAME'],
             'filter' => [
                 'MODULE_ID'     => 'crm',
-                'DOCUMENT_TYPE' => $entity,
+                'DOCUMENT_TYPE' => $documentType,
             ],
             'start' => $i * 50,
         ],

@@ -7,23 +7,33 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
+$entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
 
-$linkFieldData = json_decode($requestData['linkField'], true);
+$entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
+$entityMap = [
+    '1'    => 'lead',
+    '2'    => 'deal',
+    '3' => 'contact',
+    '4' => 'company',
+];
+$entityType = $entityMap[$entityTypeId];
+
+$linkFieldData = json_decode($requestData['crmActions']['crmLinkFields_FIELDS'], true);
 $fieldCode = $linkFieldData['value'] ;
 
-$leadId = 3;
+if (is_numeric($entityTypeId)) {
+    $getFieldValue = overCRest::call('crm.item.get', [
+        'entityTypeId' => $entityTypeId,
+        'id' => $entityId,    
+    ]);
+    $linkValue = $getFieldValue['result']['item'][$fieldCode];
+} else {
+    $getFieldValue = overCRest::call('crm.' . $entityType . '.get', [
+        'id' => $entityId
+    ]);
+    $linkValue = $getFieldValue['result'][$fieldCode] ;
+}
 
-$leadGet = overCRest::call('crm.lead.get', [
-    'id' => $leadId
-    
-]);
-
-$linkValue = $leadGet['result'][$fieldCode] ;
-
-// file_put_contents(__DIR__.'/result91.log', var_export($linkValue, true), FILE_APPEND);
-
-
-
-    echo json_encode([
+echo json_encode([
     'result' => $linkValue,
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

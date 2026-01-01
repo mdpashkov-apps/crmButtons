@@ -1,4 +1,94 @@
 <?php
+// $entityBody = file_get_contents('php://input');
+// $requestData = json_decode($entityBody, true);
+// $memberId = $requestData['memberId'];
+// $path = pathinfo(__DIR__, PATHINFO_DIRNAME);
+// include_once($path . '/overCRest.php');
+// overCRest::setCurrentBitrix24($memberId);
+
+// $entity = $requestData['current_button']['value'];
+
+
+// $entityMap = [
+//     'Lead'    => 1,
+//     'Deal'    => 2,
+//     'Contact' => 3,
+//     'Company' => 4,
+// ];
+
+
+
+// $entityTypeId = $entityMap[$entity];
+
+
+// $entityTypeIds = [];
+
+// if ($entityTypeId === 2) {
+
+//     $categoriesResponse = overCRest::call(
+//         'crm.category.list',
+//         [
+//             'entityTypeId' => 2
+//         ]
+//     );
+
+//     $categories = $categoriesResponse['result']['categories'] ?? [];
+
+//     foreach ($categories as $category) {
+//         $entityTypeIds[] = '2_category_' . $category['id'];
+//     }
+
+// } else {
+//     // Lead / Contact / Company
+//     $entityTypeIds[] = (string)$entityTypeId;
+// }
+
+
+// $allTemplates = [];
+
+// foreach ($entityTypeIds as $entityTypeId) {
+
+//     $response = overCRest::call(
+//         'crm.documentgenerator.template.list',
+//         [
+//             'select' => ['id', 'name'],
+//             'filter' => [
+//                 'entityTypeId' => $entityTypeId
+//             ]
+//         ]
+//     );
+
+//     if (!empty($response['result']['templates'])) {
+//         $allTemplates = array_merge(
+//             $allTemplates,
+//             $response['result']['templates']
+//         );
+//     }
+// }
+
+
+// $finalResult = [];
+
+// foreach ($allTemplates as $tmp) {
+//     $finalResult[] = [
+//         'value' => $tmp['id'],
+//         'name'  => $tmp['name'],
+//     ];
+// }
+// file_put_contents(__DIR__.'/result91.log', var_export($finalResult, true), FILE_APPEND);
+
+// echo json_encode([
+//     'result' => $finalResult,
+// ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+
+
+
+
+
+
+
+
 $entityBody = file_get_contents('php://input');
 $requestData = json_decode($entityBody, true);
 $memberId = $requestData['memberId'];
@@ -16,10 +106,12 @@ $entityMap = [
     'Company' => 4,
 ];
 
+$entityTypeId = $entityMap[$entity] ?? $entity;
 
 
-$entityTypeId = $entityMap[$entity];
 
+
+file_put_contents(__DIR__.'/result91.log', var_export($entityTypeId, true), FILE_APPEND);
 
 $entityTypeIds = [];
 
@@ -39,43 +131,72 @@ if ($entityTypeId === 2) {
     }
 
 } else {
-    // Lead / Contact / Company
     $entityTypeIds[] = (string)$entityTypeId;
 }
 
 
-$allTemplates = [];
+$documents = [];
 
 foreach ($entityTypeIds as $entityTypeId) {
 
-    $response = overCRest::call(
+    $total = overCRest::call(
         'crm.documentgenerator.template.list',
         [
-            'select' => ['id', 'name'],
             'filter' => [
                 'entityTypeId' => $entityTypeId
-            ]
+            ],
         ]
-    );
+    )['total'];
 
-    if (!empty($response['result']['templates'])) {
-        $allTemplates = array_merge(
-            $allTemplates,
-            $response['result']['templates']
-        );
+    if ($total <= 0) {
+        continue;
+    }
+
+    $pages = ceil($total / 50);
+
+    $batch = [];
+
+    for ($i = 0; $i < $pages; $i++) {
+        $batch["list_{$i}"] = [
+            'method' => 'crm.documentgenerator.template.list',
+            'params' => [
+                'select' => ['id', 'name'],
+                'filter' => [
+                    'entityTypeId' => $entityTypeId
+                ],
+                'start' => $i * 50,
+            ],
+        ];
+    }
+
+
+    $batchChunks = array_chunk($batch, 50, true);
+
+    foreach ($batchChunks as $chunk) {
+        sleep(2); // щадящий режим
+
+        $result = overCRest::callBatch($chunk, false)['result']['result'];
+
+        foreach ($result as $page) {
+            if (empty($page['templates'])) {
+                continue;
+            }
+
+            foreach ($page['templates'] as $tpl) {
+                $documents[] = [
+                    'value' => $tpl['id'],
+                    'name'  => $tpl['name'],
+                ];
+            }
+        }
     }
 }
+$documents = array_values(
+    array_unique($documents, SORT_REGULAR)
+);
 
-
-$finalResult = [];
-
-foreach ($allTemplates as $tmp) {
-    $finalResult[] = [
-        'value' => $tmp['id'],
-        'name'  => $tmp['name'],
-    ];
-}
+file_put_contents(__DIR__.'/result91.log', var_export($documents, true), FILE_APPEND);
 
 echo json_encode([
-    'result' => $finalResult,
+    'result' => $documents,
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

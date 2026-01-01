@@ -5,22 +5,17 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
 ?>
 <head>
-	<!-- <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css"> -->
 	<script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-    <!-- <script src="https://unpkg.com/vue-multiselect@2.1.0"></script> -->
-	<!-- <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script> -->
+	<script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
+
 </head>
 
-
-	<?
+<?
 $result_entity = overCRest::call('entity.item.get', [
 	'ENTITY' => 'customButton',
 	'FILTER' => ['ID' => $buttonId]
 ])['result'][0]['PROPERTY_VALUES'];
-
-
-
 
 $viewButton = [
     'buttonColor_FIELDS'       => $result_entity['buttonColor_FIELDS'],
@@ -43,41 +38,44 @@ $crmActions = [
     'fieldsTable_FIELDS' => $result_entity['fieldsTable_FIELDS'],
     'link_FIELDS' => $result_entity['link_FIELDS'],
     'crmLinkFields_FIELDS' => $result_entity['crmLinkFields_FIELDS'],
-
 ];
-// file_put_contents(__DIR__.'/result91.log', var_export($crmActions, true), FILE_APPEND);
+
+$entityInBtnSettings = json_decode($result_entity['entitySelection_FIELDS'], true)['value'];
+
+$entityTypeIdOpened = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true)['ENTITY_DATA']['entityTypeId'];
+$entityMap = [
+    '1' => 'Lead',
+    '2' => 'Deal',
+    '3' => 'Contact',
+    '4' => 'Company',
+];
+$entityTypeIdMap = $entityMap[$entityTypeIdOpened] ?? $entityTypeIdOpened;
+
+$member_id = $_REQUEST['member_id'];
+
+
+// if ($entityTypeIdMap == $entityInBtnSettings) {
+// 	$buttonActions = json_decode($crmActions['buttonActionsId_FIELDS'], true);
+
+// 	if (is_array($buttonActions) && in_array(0, $buttonActions, true)) {
+
+
+
+// 	}
+// }
+
+
+
+
 
 ?>
 
 <script>
+window.memberId = '<?echo $member_id?>'		
 window.crmActions = <? echo json_encode($crmActions, JSON_UNESCAPED_UNICODE); ?>;
-
-	</script>
-
-
+window.entityData = <?= json_encode( json_decode($_REQUEST['PLACEMENT_OPTIONS'], true),JSON_UNESCAPED_UNICODE) ?>;
+</script>
 <script src="//api.bitrix24.com/api/v1/"></script>
-
-	    <? 
-		$member_id = $_REQUEST['member_id'];
-		$domain = $_REQUEST['DOMAIN'];
-		?>
-    <script>	
-        window.memberId = '<?echo $member_id?>'		
-        window.domain = '<?echo $domain?>'		
-		BX24.callMethod('user.current', {}, function(res){
-			window.userId = res.answer.result.ID
-		});
-    </script>
-
-<?
-
-$idEntity = (array)json_decode($_REQUEST['PLACEMENT_OPTIONS']);
-$idEntity = $idEntity['ENTITY_VALUE_ID'];
-
-
-?>
-
-
 
 <style>
 	.btn {
@@ -100,72 +98,239 @@ $idEntity = $idEntity['ENTITY_VALUE_ID'];
 		margin-right: 5px;
 	}
 
-
-/* Модальное окно Начало */
-.modal-mask {
-	position: fixed;
-	z-index: 9998;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	display: table;
-	transition: opacity 0.3s ease;
-}
-
-.modal-wrapper {
-	display: table-cell;
-	vertical-align: middle;
-}
-
-.loader {
-	margin: 0 auto;
-	border: 5px solid #f3f3f3;
-	/* Light grey */
-	border-top: 5px solid #3498db;
-	/* Blue */
-	border-radius: 50%;
-	width: 30px;
-	height: 30px;
-	animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
+	/* Модальное окно Начало */
+	.modal-mask {
+		position: fixed;
+		z-index: 9998;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		display: table;
+		transition: opacity 0.3s ease;
 	}
 
-	100% {
-		transform: rotate(360deg);
+	.modal-wrapper {
+		display: table-cell;
+		vertical-align: middle;
 	}
+
+	.loader {
+		margin: 0 auto;
+		border: 5px solid #f3f3f3;
+		/* Light grey */
+		border-top: 5px solid #3498db;
+		/* Blue */
+		border-radius: 50%;
+		width: 30px;
+		height: 30px;
+		animation: spin 2s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.modal {
+		margin: 0 auto;
+		position: relative;
+	}
+	body {
+  height: auto !important;
+  overflow: visible !important;
 }
 
-.modal {
-	margin: 0 auto;
-	position: relative;
+#app {
+  height: auto !important;
+  overflow: visible !important;
+
+
+
+/* INPUTS */
+.param-block input {
+  height: 42px;              /* ← фиксированная высота (потом поменяешь) */
+  border-radius: 8px;        /* ← скругление */
+  border: 1px solid #d1d5db;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
-	
+
+/* MULTIPLE INPUT WRAPPER */
+.param-multiple-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.param-multiple-row input {
+  flex: 1;
+}
+
+
+/* DELETE (X) BUTTON */
+.remove-field {
+  width: 24px;        /* фиксированная ширина */
+  text-align: center;
+  cursor: pointer;
+  color: #ef4444;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* скрытый крестик (для первого) */
+.remove-field--placeholder {
+  visibility: hidden; /* место есть, но не видно */
+  cursor: default;
+}
+
+/* ADD BUTTON */
+.add-btn {
+  margin-top: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background-color: #3b82f6; /* голубая */
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+/* RUN BP BUTTON */
+.run-bp-btn {
+  background-color: #22c55e; /* зелёная */
+}
+
+/* DISABLED STATE */
+button:disabled {
+  background-color: #9ca3af !important;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+
+
+
+
+
+
+  
+}
 </style>
+
 <div id="app">
-<button data-id="<? echo $buttonId;?>" data-idEntity="<?echo $idEntity;?>" class="btn btnAplicaton" @click="runActions">
-<? if ($viewButton['usingTheIcon_FIELDS'] == "true") {
-	echo '<span>' . $viewButton['iconOnTheButton_FIELDS'] . '</span>';
-}
-echo $viewButton['textOnTheButton_FIELDS']; ?>
-</button>
+	<?php if ($entityTypeIdMap == $entityInBtnSettings): ?>
 
 
 
-<div v-if="loader" class="modal-mask">
-            <div class="modal-wrapper">
-                <div class="loader"></div>
-            </div>
-        </div>	
 
+<div v-if="paramResult && paramResult.length">
+
+  <div class="bp-block">
+    <h4>
+      Бизнес процесс:
+      {{ paramResult[currentBpIndex].NAME }}
+    </h4>
+
+    <div
+      v-for="param in paramResult[currentBpIndex].PARAMETERS"
+      :key="param.Name"
+      class="param-block"
+    >
+      <label>
+        {{ param.Name }}
+        <span v-if="param.Required" style="color:red">*</span>
+      </label>
+
+      <!-- SINGLE -->
+      <div v-if="!param.Multiple">
+        <input
+          :type="param.Type === 'number' ? 'number' : 'text'"
+          v-model="formValues[paramResult[currentBpIndex].ID][param.Name][0]"
+        />
+      </div>
+
+      <!-- MULTIPLE -->
+      <div v-else>
+  <div
+    v-for="(val, idx) in formValues[paramResult[currentBpIndex].ID][param.Name]"
+    :key="idx"
+    class="param-multiple-row"
+  >
+    <input
+      :type="param.Type === 'number' ? 'number' : 'text'"
+      v-model="formValues[paramResult[currentBpIndex].ID][param.Name][idx]"
+    />
+
+    <!-- крестик ВСЕГДА -->
+    <span
+      :class="[
+        'remove-field',
+        { 'remove-field--placeholder': idx === 0 }
+      ]"
+      @click="idx > 0 && removeField(
+        paramResult[currentBpIndex].ID,
+        param.Name,
+        idx
+      )"
+    >
+      ✕
+    </span>
+  </div>
+
+  <button
+    class="add-btn"
+    @click="addField(
+      paramResult[currentBpIndex].ID,
+      param.Name
+    )"
+  >
+    Добавить ещё
+  </button>
+</div>
+    </div>
+  </div>
+
+  <button
+  class="btn run-bp-btn"
+    :disabled="!isCurrentBpValid"
+    @click="runCurrentBp"
+  >
+    Запустить БП
+  </button>
 </div>
 
-<script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
-<script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-	<script type="module" src="../6/buttonHandlers/script.js"></script>
+
+
+
+		<button data-id="<? echo $buttonId;?>" data-idEntity="<?echo $idEntity;?>" v-else class="btn btnAplicaton" @click="runActions">
+			<? if ($viewButton['usingTheIcon_FIELDS'] == "true") {
+				echo '<span>' . $viewButton['iconOnTheButton_FIELDS'] . '</span>';
+			}
+			echo $viewButton['textOnTheButton_FIELDS']; ?>
+		</button>
+
+	<?php else: ?>
+		<div class="entity-warning">
+			Кнопка настроена для другой сущности
+		</div>
+	<?php endif; ?>
+
+	<div v-if="loader" class="modal-mask">
+		<div class="modal-wrapper">
+			<div class="loader"></div>
+		</div>
+	</div>	
+</div>
+
+
+<script type="module" src="../6/buttonHandlers/script.js"></script>

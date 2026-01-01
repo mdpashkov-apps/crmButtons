@@ -1,4 +1,4 @@
-import { OpenCrmLink,startBp,createDocument} from "../buttonHandlers/api.js";
+import { OpenCrmLink,startBp,createDocument, getBpParams} from "../buttonHandlers/api.js";
 
 Vue.component("modal", {
   template: "#modal-template",
@@ -12,22 +12,63 @@ var app = new Vue({
 
       buttonActionsId_FIELDS: [],
       loader: false,
-    
+        paramResult: null, // ← сюда кладём результат getParam
+    formValues: {}, 
+    currentBpIndex: 0, // 👈 текущий БП
+
 
     };
   },
 
   methods: {
-  async action0() {
-        this.loader = true;
 
-          let response = await startBp(window.memberId,window.crmActions);
+removeField(bpId, paramName, index) {
+  if (index === 0) return; // первый нельзя удалять
+  this.formValues[bpId][paramName].splice(index, 1);
+},
 
-    this.loader = false;
 
 
-  },
 
+
+
+    
+//   async action0() {
+//       this.loader = true;
+//           let response = await getBpParams(window.memberId,window.crmActions, window.entityData);
+//     this.paramResult = response.result;
+    
+// // console.log(this.paramResult)
+//     this.loader = false;
+
+
+//   },
+
+async action0() {
+  this.loader = true;
+
+  const response = await getBpParams(
+    window.memberId,
+    window.crmActions,
+    window.entityData
+  );
+
+  this.paramResult = response.result;
+console.log(this.paramResult)
+  // ИНИЦИАЛИЗАЦИЯ ФОРМЫ
+ this.paramResult.forEach(bp => {
+  this.$set(this.formValues, bp.ID, {});
+
+  bp.PARAMETERS.forEach(p => {
+    const defaultVal = p.Default || '';
+    const values = p.Multiple ? [defaultVal] : [defaultVal];
+    this.$set(this.formValues[bp.ID], p.Name, values);
+  });
+});
+
+
+  this.loader = false;
+},
 
 
   async action1() {
@@ -35,17 +76,72 @@ var app = new Vue({
 
     console.log('Запуск действия 1');
 
-          let response = await createDocument(window.memberId,window.crmActions);
+          let response = await createDocument(window.memberId,window.crmActions, window.entityData);
     this.loader = false;
 
 
   },
 
 
+//  async runCurrentBp() {
+//     const bp = this.paramResult[this.currentBpIndex];
+// const bpParams = {
+//     [bp.ID]: this.formValues[bp.ID]
+//   };
+
+
+//      let response = await startBp(window.memberId, bpParams, window.entityData);
+
+//     // console.log('Запуск БП:', bp);
+//     // console.log('Параметры:', params);
+
+//     // ⏭ Переход к следующему БП
+//     if (this.currentBpIndex < this.paramResult.length - 1) {
+//       this.currentBpIndex++;
+//     } else {
+//       alert('Все бизнес-процессы выполнены');
+//       this.paramResult = null;
+//     }
+//   },
+
+async runCurrentBp() {
+  const bp = this.paramResult[this.currentBpIndex];
+
+  const preparedParams = {};
+
+  bp.PARAMETERS.forEach(param => {
+    const values = this.formValues[bp.ID][param.Name];
+
+    if (param.Multiple) {
+      preparedParams[param.paramKey] = values;
+    } else {
+      preparedParams[param.paramKey] = values[0];
+    }
+  });
+
+  const bpParams = {
+    [bp.ID]: preparedParams
+  };
+
+  let response = await startBp(
+    window.memberId,
+    bpParams,
+    window.entityData
+  );
+
+  if (this.currentBpIndex < this.paramResult.length - 1) {
+    this.currentBpIndex++;
+  } else {
+    alert('Все бизнес-процессы выполнены');
+    this.paramResult = null;
+  }
+},
 
 
 
-
+  addField(bpId, paramName) {
+    this.formValues[bpId][paramName].push('');
+  },
 
 
   async action2() {
@@ -66,7 +162,7 @@ async action3() {
   async action4() {
     console.log('Запуск действия 4');
 
-      let response = await OpenCrmLink(window.memberId,window.crmActions.crmLinkFields_FIELDS);
+      let response = await OpenCrmLink(window.memberId,window.crmActions, window.entityData);
   let crmLink = response.result;
 
  if (!/^https?:\/\//i.test(crmLink)) {
@@ -76,21 +172,14 @@ async action3() {
 
   },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  resizeBx() {
+    if (window.BX24) {
+      BX24.resizeWindow(
+        document.body.scrollWidth,
+        document.body.scrollHeight
+      );
+    }
+  },
 
   async runActions() {
   let raw = window.crmActions.buttonActionsId_FIELDS;
@@ -115,6 +204,31 @@ async action3() {
   }
 }
 
-}
+},
+computed: {
+  isCurrentBpValid() {
+    if (!this.paramResult) return false;
+
+    const bp = this.paramResult[this.currentBpIndex];
+
+    for (const p of bp.PARAMETERS) {
+      if (p.Required) {
+        const values = this.formValues[bp.ID][p.Name];
+        if (!values || values.some(v => !v || v === '')) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+},
+mounted() {
+  this.resizeBx();
+},
+
+updated() {
+  this.resizeBx();
+},
+
 
 });
