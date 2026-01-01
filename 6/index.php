@@ -181,7 +181,11 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_3">Активировать свойство:</label> 
                              <div>
-                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
+                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(3)"
+  @change="toggleEnteredLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
+                                <span v-if="enteredLinkWarning" class="warning-text">
+  Уже выбрано другое действие со ссылкой
+</span>
                             </div>
                         </div>
                         <div class="div_row">
@@ -195,7 +199,11 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_4">Активировать свойство:</label>
                              <div>
-                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4">
+                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(4)"
+  @change="toggleCrmLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4">
+  <span v-if="crmLinkWarning" class="warning-text">
+  Уже выбрано другое действие со ссылкой
+</span>
                             </div>
                         </div>
                         <div class="div_row">
