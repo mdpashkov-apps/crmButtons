@@ -1,11 +1,8 @@
 array (
-  'miniKarolina' => 'клепа1',
+  'miniKarolina' => 'отнете',
   'number' => 
   array (
-    0 => '1',
-    1 => '2',
-    2 => '3',
+    0 => '11111',
   ),
-  'txt' => '',
-  'number2' => '',
+  'user' => 'user_21',
 )

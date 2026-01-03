@@ -5,9 +5,14 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
 ?>
 <head>
-	<script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script src="https://gcore.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
+
+  	<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+  <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
+	<script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	<script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
+	
 
 </head>
 
@@ -234,6 +239,9 @@ button:disabled {
 
 <div v-if="paramResult && paramResult.length">
 
+
+
+
   <div class="bp-block">
     <h4>
       Бизнес процесс:
@@ -250,17 +258,58 @@ button:disabled {
         <span v-if="param.Required" style="color:red">*</span>
       </label>
 
-      <!-- SINGLE -->
-      <div v-if="!param.Multiple">
-        <input
-          :type="param.Type === 'number' ? 'number' : 'text'"
-          v-model="formValues[paramResult[currentBpIndex].ID][param.Name][0]"
-        />
-      </div>
+     
 
-      <!-- MULTIPLE -->
-      <div v-else>
+
+   <!-- SINGLE -->
+<div v-if="param.Multiple == 0">
+
+  <input
+    v-if="param.Type === 'number'"
+    type="number"
+    v-model="formValues[paramResult[currentBpIndex].ID][param.Name][0]"
+  />
+
+  <input
+    v-else-if="param.Type === 'txt'"
+    type="text"
+    v-model="formValues[paramResult[currentBpIndex].ID][param.Name][0]"
+  />
+
+  <multiselect
+    v-else-if="param.Type === 'user'"
+    v-model="formValues[paramResult[currentBpIndex].ID][param.Name]"
+    placeholder="Выберите пользователя"
+    label="name"
+    track-by="value"
+    :options="allUsers"
+    :multiple="false"
+    :close-on-select="true"
+  >
+    <span slot="noResult">Такого варианта нет</span>
+  </multiselect>
+
+</div>
+
+
+
+
+
+
+     <!-- MULTIPLE -->
+<div v-else>
+
+  <!-- MULTIPLE USER -->
+ <multiselect v-if="param.Type === 'user'"     v-model="formValues[paramResult[currentBpIndex].ID][param.Name]" name="selection_user" :placeholder-size="16" placeholder="Выберите пользователя"    label="name"
+               track-by="value"deselect-label="Убрать" select-label="" selected-label="" open-direction="top" :options="allUsers" :multiple="true" :taggable="false" :close-on-select="true" :limit="1" >
+               <span slot="noResult">
+               Такого варианта нет
+               </span>
+            </multiselect>
+
+  <!-- MULTIPLE NUMBER / TEXT -->
   <div
+    v-else
     v-for="(val, idx) in formValues[paramResult[currentBpIndex].ID][param.Name]"
     :key="idx"
     class="param-multiple-row"
@@ -270,7 +319,6 @@ button:disabled {
       v-model="formValues[paramResult[currentBpIndex].ID][param.Name][idx]"
     />
 
-    <!-- крестик ВСЕГДА -->
     <span
       :class="[
         'remove-field',
@@ -286,7 +334,10 @@ button:disabled {
     </span>
   </div>
 
+
+
   <button
+   v-if="param.Type !== 'user'"
     class="add-btn"
     @click="addField(
       paramResult[currentBpIndex].ID,
@@ -296,7 +347,15 @@ button:disabled {
     Добавить ещё
   </button>
 </div>
+
+
+
     </div>
+
+
+
+
+    
   </div>
 
   <button

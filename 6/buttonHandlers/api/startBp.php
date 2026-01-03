@@ -16,6 +16,76 @@ $bpParameters = $bpParam[$bpId];
 
 
 
+// file_put_contents(__DIR__.'/result91.log', var_export($bpParameters, true), FILE_APPEND);
+
+
+$filteredParams = [];
+
+foreach ($bpParameters as $key => $value) {
+
+    /** =========================
+     * USER
+     * ========================= */
+    if ($key === 'user') {
+
+        // если один пользователь
+        if (isset($value['value']) && $value['value']) {
+            $filteredParams[$key] = 'user_' . $value['value'];
+            continue;
+        }
+
+        // если несколько пользователей
+        if (is_array($value)) {
+            $users = [];
+
+            foreach ($value as $item) {
+                if (is_array($item) && !empty($item['value'])) {
+                    $users[] = 'user_' . $item['value'];
+                }
+            }
+
+            if (!empty($users)) {
+                $filteredParams[$key] = $users;
+            }
+        }
+
+        continue;
+    }
+
+    /** =========================
+     * STRING
+     * ========================= */
+    if (is_string($value)) {
+        if ($value !== '') {
+            $filteredParams[$key] = $value;
+        }
+        continue;
+    }
+
+    /** =========================
+     * ARRAY (number, text, multi)
+     * ========================= */
+    if (is_array($value)) {
+
+        $flat = [];
+
+        array_walk_recursive($value, function ($v) use (&$flat) {
+            if ($v !== '' && $v !== null) {
+                $flat[] = $v;
+            }
+        });
+
+        if (!empty($flat)) {
+            $filteredParams[$key] = $flat;
+        }
+    }
+}
+
+
+
+// file_put_contents(__DIR__.'/result91.log', var_export($filteredParams, true), FILE_APPEND);
+
+
 
 
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
@@ -65,9 +135,8 @@ $startBP = overCRest::call(
     [
         'TEMPLATE_ID' => $bpId,
         'DOCUMENT_ID' => $document,
-        'PARAMETERS' => $bpParameters
+        'PARAMETERS' => $filteredParams
     ]
 );
 
 
-file_put_contents(__DIR__.'/result91.log', var_export($bpParameters, true), FILE_APPEND);

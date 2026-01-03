@@ -6,6 +6,8 @@ Vue.component("modal", {
 var app = new Vue({
   el: "#app",
   components: {
+          Multiselect: window.VueMultiselect.default
+
   },
   data() {
     return {
@@ -15,6 +17,8 @@ var app = new Vue({
         paramResult: null, // ← сюда кладём результат getParam
     formValues: {}, 
     currentBpIndex: 0, // 👈 текущий БП
+    allUsers: [], // 👈 ВОТ ОНО
+        selectedUser: {}, // выбранный пользователь в муьтиселекте
 
 
     };
@@ -54,15 +58,29 @@ async action0() {
   );
 
   this.paramResult = response.result;
-console.log(this.paramResult)
+
+ if (response.allUserFio) {
+console.log(111)
+// console.log(response.allUserFio)
+    this.allUsers = response.allUserFio;
+
+  }
+// console.log(this.paramResult)
   // ИНИЦИАЛИЗАЦИЯ ФОРМЫ
  this.paramResult.forEach(bp => {
   this.$set(this.formValues, bp.ID, {});
 
   bp.PARAMETERS.forEach(p => {
-    const defaultVal = p.Default || '';
-    const values = p.Multiple ? [defaultVal] : [defaultVal];
-    this.$set(this.formValues[bp.ID], p.Name, values);
+   let values;
+
+if (p.Type === 'user') {
+  values = p.Multiple ? [] : null;
+} else {
+  const defaultVal = p.Default || '';
+  values = p.Multiple ? [defaultVal] : [defaultVal];
+}
+
+this.$set(this.formValues[bp.ID], p.Name, values);
   });
 });
 

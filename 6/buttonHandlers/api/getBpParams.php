@@ -58,6 +58,7 @@ $getBizProc = overCRest::call(
        
     ]
 );
+		// file_put_contents(__DIR__.'/result91.log', var_export($getBizProc, true), FILE_APPEND);
 
 
 $typeMap = [
@@ -65,10 +66,13 @@ $typeMap = [
     'text'   => 'txt',
     'int'    => 'number',
     'double' => 'number',
+    'email' => 'txt',
+    'phone' => 'txt',
+    'web' => 'txt',
+    'user' => 'user'
 ];
 
 $result = [];
-		// file_put_contents(__DIR__.'/result91.log', var_export($getBizProc, true), FILE_APPEND);
 
 foreach ($getBizProc['result'] as $bp) {
 
@@ -98,26 +102,50 @@ foreach ($bp['PARAMETERS'] as $paramKey => $param) {
 
 
 		// file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
+$allUserFio = null; 
+
+foreach ($result[0]['PARAMETERS'] as $param) {
+    if (($param['Type'] ?? null) === 'user') {
+       
+
+$totalUser = overCRest::call('user.search', [
+    'filter' => ['ACTIVE' => true],
+])['total'];
+
+$cmdBatch = [];
+for ($i = 0; $i < $totalUser; $i = $i + 50) {
+    $cmdBatch[] = [
+        'method' => 'user.search',
+        'params' => [
+            'filter' => [
+                'ACTIVE' => true
+            ],
+            'start' => $i,
+        ],
+    ];
+}
+$responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
+$allUserFio = [];
+foreach ($responseBatch as $response) {
+    $tmpArray = [];
+    foreach ($response as $user) {
+        $tmpArray[] = [
+            'value' => $user['ID'],
+            'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
+        ];
+    }
+    $allUserFio = array_merge($allUserFio, $tmpArray);
+}
+
+        		// file_put_contents(__DIR__.'/result91.log', var_export($allUserFio, true), FILE_APPEND);
+
+
+    }
+}
 
 echo json_encode([
     'result' => $result,
+    'allUserFio' => $allUserFio
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	
