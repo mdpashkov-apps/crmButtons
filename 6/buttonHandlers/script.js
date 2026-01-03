@@ -1,4 +1,4 @@
-import { OpenCrmLink,startBp,createDocument, getBpParams} from "../buttonHandlers/api.js";
+import { OpenCrmLink,startBp,createDocument,createListElement, getBpParams} from "../buttonHandlers/api.js";
 
 Vue.component("modal", {
   template: "#modal-template",
@@ -163,6 +163,8 @@ async runCurrentBp() {
 
   async action2() {
     console.log('Запуск действия 2');
+          let response = await createListElement(window.memberId,window.crmActions, window.entityData);
+
   },
 
 

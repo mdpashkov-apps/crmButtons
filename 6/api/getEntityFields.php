@@ -7,9 +7,33 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 $entity = $requestData['current_button']['value'];
 
+
+
+
+if (is_numeric($entity) || $entity ==='31') {
+
+    $getEntityFields = overCRest::call('crm.item.fields', [
+        'entityTypeId' => (int)$entity
+    ]);
+
+   
+        foreach ($getEntityFields['result']['fields'] as $key => $field) {
+
+            // если нужно только url-поля — оставь условие
+                $finalResult[] = [
+                    'value' => $key,
+                    'name'  => $field['title'] ?? $key,
+                ];
+            
+        }
+
+
+
+}
+
+else {
+
 $getEntityFields = overCRest::call('crm.' . $entity . '.fields', []);
-
-
 $finalResult = [];
 
 foreach ($getEntityFields['result'] as $key => $field) {
@@ -20,6 +44,15 @@ foreach ($getEntityFields['result'] as $key => $field) {
             : $field['title'],
     ];
 }
+
+}
+
+
+
+
+
+
+
 
 
 

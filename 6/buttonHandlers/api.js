@@ -31,6 +31,14 @@ export const createDocument = async (memberId,crmActions,entityData) => {
   return response.data;
 };
 
+export const createListElement = async (memberId,crmActions,entityData) => {
+  const response = await mainApi.post("/createListElement.php", {
+    memberId: memberId,
+    crmActions:crmActions,
+    entityData:entityData
+  });
+  return response.data;
+};
 
 
 export const getBpParams = async (memberId,crmActions,entityData) => {

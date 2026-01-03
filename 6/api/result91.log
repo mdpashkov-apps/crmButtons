@@ -1,0 +1,1079 @@
+array (
+  'result' => 
+  array (
+    'fields' => 
+    array (
+      'id' => 
+      array (
+        'type' => 'integer',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'ID',
+        'upperName' => 'ID',
+      ),
+      'title' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Название',
+        'upperName' => 'TITLE',
+      ),
+      'xmlId' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Внешний код',
+        'upperName' => 'XML_ID',
+      ),
+      'createdTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Когда создан',
+        'upperName' => 'CREATED_TIME',
+      ),
+      'updatedTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Когда обновлён',
+        'upperName' => 'UPDATED_TIME',
+      ),
+      'createdBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кем создан',
+        'upperName' => 'CREATED_BY',
+      ),
+      'updatedBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кем обновлён',
+        'upperName' => 'UPDATED_BY',
+      ),
+      'assignedById' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Ответственный',
+        'upperName' => 'ASSIGNED_BY_ID',
+      ),
+      'opened' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => true,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Доступно для всех',
+        'upperName' => 'OPENED',
+      ),
+      'webformId' => 
+      array (
+        'type' => 'integer',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Создано CRM-формой',
+        'upperName' => 'WEBFORM_ID',
+      ),
+      'lastCommunicationTime' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последней коммуникации',
+        'upperName' => 'LAST_COMMUNICATION_TIME',
+      ),
+      'begindate' => 
+      array (
+        'type' => 'date',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата выставления',
+        'upperName' => 'BEGINDATE',
+      ),
+      'closedate' => 
+      array (
+        'type' => 'date',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Срок оплаты',
+        'settings' => 
+        array (
+          'isSetCurrentDateOnCompletionEnabled' => false,
+        ),
+        'upperName' => 'CLOSEDATE',
+      ),
+      'companyId' => 
+      array (
+        'type' => 'crm_company',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Компания',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 4,
+        ),
+        'upperName' => 'COMPANY_ID',
+      ),
+      'contactId' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'isDeprecated' => true,
+        'title' => 'Контакт',
+        'upperName' => 'CONTACT_ID',
+      ),
+      'contactIds' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'CONTACT_IDS',
+        'upperName' => 'CONTACT_IDS',
+      ),
+      'contacts' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'CONTACTS',
+        'upperName' => 'CONTACTS',
+      ),
+      'observers' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'Наблюдатели',
+        'upperName' => 'OBSERVERS',
+      ),
+      'categoryId' => 
+      array (
+        'type' => 'crm_category',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Воронка',
+        'upperName' => 'CATEGORY_ID',
+      ),
+      'movedTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата изменения стадии',
+        'upperName' => 'MOVED_TIME',
+      ),
+      'movedBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кто изменил стадию',
+        'upperName' => 'MOVED_BY',
+      ),
+      'stageId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SMART_INVOICE_STAGE_3',
+        'title' => 'Стадия',
+        'upperName' => 'STAGE_ID',
+      ),
+      'previousStageId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SMART_INVOICE_STAGE_3',
+        'title' => 'Предыдущая стадия',
+        'upperName' => 'PREVIOUS_STAGE_ID',
+      ),
+      'sourceId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SOURCE',
+        'title' => 'Источник',
+        'upperName' => 'SOURCE_ID',
+      ),
+      'sourceDescription' => 
+      array (
+        'type' => 'text',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дополнительно об источнике',
+        'upperName' => 'SOURCE_DESCRIPTION',
+      ),
+      'currencyId' => 
+      array (
+        'type' => 'crm_currency',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Валюта',
+        'upperName' => 'CURRENCY_ID',
+      ),
+      'isManualOpportunity' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Режим расчёта суммы',
+        'upperName' => 'IS_MANUAL_OPPORTUNITY',
+      ),
+      'opportunity' => 
+      array (
+        'type' => 'double',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сумма',
+        'upperName' => 'OPPORTUNITY',
+      ),
+      'taxValue' => 
+      array (
+        'type' => 'double',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сумма налога',
+        'upperName' => 'TAX_VALUE',
+      ),
+      'mycompanyId' => 
+      array (
+        'type' => 'crm_company',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Реквизиты вашей компании',
+        'settings' => 
+        array (
+          'isMyCompany' => true,
+          'parentEntityTypeId' => 4,
+          'isEmbeddedEditorEnabled' => true,
+        ),
+        'upperName' => 'MYCOMPANY_ID',
+      ),
+      'lastActivityBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Автор последней активности в таймлайне',
+        'upperName' => 'LAST_ACTIVITY_BY',
+      ),
+      'lastActivityTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Последняя активность',
+        'upperName' => 'LAST_ACTIVITY_TIME',
+      ),
+      'isRecurring' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Регулярный счёт',
+        'upperName' => 'IS_RECURRING',
+      ),
+      'comments' => 
+      array (
+        'type' => 'text',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Комментарий',
+        'settings' => 
+        array (
+          'isFlexibleContentType' => true,
+        ),
+        'upperName' => 'COMMENTS',
+      ),
+      'accountNumber' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Номер счёта',
+        'settings' => 
+        array (
+          'numeratorType' => 'CRM_SMART_INVOICE',
+          'numeratorIdSettings' => 'ID',
+          'tableClassName' => '\\crm_items_1Table',
+        ),
+        'upperName' => 'ACCOUNT_NUMBER',
+      ),
+      'locationId' => 
+      array (
+        'type' => 'location',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Местоположение',
+        'upperName' => 'LOCATION_ID',
+      ),
+      'parentId2' => 
+      array (
+        'type' => 'crm_entity',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сделка',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 2,
+        ),
+        'upperName' => 'PARENT_ID_2',
+      ),
+      'parentId7' => 
+      array (
+        'type' => 'crm_entity',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Предложение',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 7,
+        ),
+        'upperName' => 'PARENT_ID_7',
+      ),
+      'lastCommunicationCallTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего звонка',
+        'upperName' => 'LAST_COMMUNICATION_CALL_TIME',
+      ),
+      'lastCommunicationEmailTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего e-mail',
+        'upperName' => 'LAST_COMMUNICATION_EMAIL_TIME',
+      ),
+      'lastCommunicationImolTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего диалога в открытой линии',
+        'upperName' => 'LAST_COMMUNICATION_IMOL_TIME',
+      ),
+      'lastCommunicationWebformTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего заполнения CRM-формы',
+        'upperName' => 'LAST_COMMUNICATION_WEBFORM_TIME',
+      ),
+      'ufCrm_SMART_INVOICE_1766831582244' => 
+      array (
+        'type' => 'url',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => true,
+        'title' => 'gr',
+        'listLabel' => 'gr',
+        'formLabel' => 'gr',
+        'filterLabel' => 'gr',
+        'settings' => 
+        array (
+          'POPUP' => 'Y',
+          'SIZE' => 20,
+          'MIN_LENGTH' => 0,
+          'MAX_LENGTH' => 0,
+          'DEFAULT_VALUE' => '',
+          'ROWS' => 1,
+        ),
+        'upperName' => 'UF_CRM_SMART_INVOICE_1766831582244',
+      ),
+    ),
+  ),
+  'time' => 
+  array (
+    'start' => 1767454247,
+    'finish' => 1767454247.456261,
+    'duration' => 0.45626091957092285,
+    'processing' => 0,
+    'date_start' => '2026-01-03T18:30:47+03:00',
+    'date_finish' => '2026-01-03T18:30:47+03:00',
+    'operating_reset_at' => 1767454847,
+    'operating' => 0,
+  ),
+)array (
+  'result' => 
+  array (
+    'fields' => 
+    array (
+      'id' => 
+      array (
+        'type' => 'integer',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'ID',
+        'upperName' => 'ID',
+      ),
+      'title' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Название',
+        'upperName' => 'TITLE',
+      ),
+      'xmlId' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Внешний код',
+        'upperName' => 'XML_ID',
+      ),
+      'createdTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Когда создан',
+        'upperName' => 'CREATED_TIME',
+      ),
+      'updatedTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Когда обновлён',
+        'upperName' => 'UPDATED_TIME',
+      ),
+      'createdBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кем создан',
+        'upperName' => 'CREATED_BY',
+      ),
+      'updatedBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кем обновлён',
+        'upperName' => 'UPDATED_BY',
+      ),
+      'assignedById' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Ответственный',
+        'upperName' => 'ASSIGNED_BY_ID',
+      ),
+      'opened' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => true,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Доступно для всех',
+        'upperName' => 'OPENED',
+      ),
+      'webformId' => 
+      array (
+        'type' => 'integer',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Создано CRM-формой',
+        'upperName' => 'WEBFORM_ID',
+      ),
+      'lastCommunicationTime' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последней коммуникации',
+        'upperName' => 'LAST_COMMUNICATION_TIME',
+      ),
+      'begindate' => 
+      array (
+        'type' => 'date',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата выставления',
+        'upperName' => 'BEGINDATE',
+      ),
+      'closedate' => 
+      array (
+        'type' => 'date',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Срок оплаты',
+        'settings' => 
+        array (
+          'isSetCurrentDateOnCompletionEnabled' => false,
+        ),
+        'upperName' => 'CLOSEDATE',
+      ),
+      'companyId' => 
+      array (
+        'type' => 'crm_company',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Компания',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 4,
+        ),
+        'upperName' => 'COMPANY_ID',
+      ),
+      'contactId' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'isDeprecated' => true,
+        'title' => 'Контакт',
+        'upperName' => 'CONTACT_ID',
+      ),
+      'contactIds' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'CONTACT_IDS',
+        'upperName' => 'CONTACT_IDS',
+      ),
+      'contacts' => 
+      array (
+        'type' => 'crm_contact',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'CONTACTS',
+        'upperName' => 'CONTACTS',
+      ),
+      'observers' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => true,
+        'isDynamic' => false,
+        'title' => 'Наблюдатели',
+        'upperName' => 'OBSERVERS',
+      ),
+      'categoryId' => 
+      array (
+        'type' => 'crm_category',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Воронка',
+        'upperName' => 'CATEGORY_ID',
+      ),
+      'movedTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата изменения стадии',
+        'upperName' => 'MOVED_TIME',
+      ),
+      'movedBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Кто изменил стадию',
+        'upperName' => 'MOVED_BY',
+      ),
+      'stageId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SMART_INVOICE_STAGE_3',
+        'title' => 'Стадия',
+        'upperName' => 'STAGE_ID',
+      ),
+      'previousStageId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SMART_INVOICE_STAGE_3',
+        'title' => 'Предыдущая стадия',
+        'upperName' => 'PREVIOUS_STAGE_ID',
+      ),
+      'sourceId' => 
+      array (
+        'type' => 'crm_status',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'statusType' => 'SOURCE',
+        'title' => 'Источник',
+        'upperName' => 'SOURCE_ID',
+      ),
+      'sourceDescription' => 
+      array (
+        'type' => 'text',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дополнительно об источнике',
+        'upperName' => 'SOURCE_DESCRIPTION',
+      ),
+      'currencyId' => 
+      array (
+        'type' => 'crm_currency',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Валюта',
+        'upperName' => 'CURRENCY_ID',
+      ),
+      'isManualOpportunity' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Режим расчёта суммы',
+        'upperName' => 'IS_MANUAL_OPPORTUNITY',
+      ),
+      'opportunity' => 
+      array (
+        'type' => 'double',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сумма',
+        'upperName' => 'OPPORTUNITY',
+      ),
+      'taxValue' => 
+      array (
+        'type' => 'double',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сумма налога',
+        'upperName' => 'TAX_VALUE',
+      ),
+      'mycompanyId' => 
+      array (
+        'type' => 'crm_company',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Реквизиты вашей компании',
+        'settings' => 
+        array (
+          'isMyCompany' => true,
+          'parentEntityTypeId' => 4,
+          'isEmbeddedEditorEnabled' => true,
+        ),
+        'upperName' => 'MYCOMPANY_ID',
+      ),
+      'lastActivityBy' => 
+      array (
+        'type' => 'user',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Автор последней активности в таймлайне',
+        'upperName' => 'LAST_ACTIVITY_BY',
+      ),
+      'lastActivityTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Последняя активность',
+        'upperName' => 'LAST_ACTIVITY_TIME',
+      ),
+      'isRecurring' => 
+      array (
+        'type' => 'boolean',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Регулярный счёт',
+        'upperName' => 'IS_RECURRING',
+      ),
+      'comments' => 
+      array (
+        'type' => 'text',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Комментарий',
+        'settings' => 
+        array (
+          'isFlexibleContentType' => true,
+        ),
+        'upperName' => 'COMMENTS',
+      ),
+      'accountNumber' => 
+      array (
+        'type' => 'string',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Номер счёта',
+        'settings' => 
+        array (
+          'numeratorType' => 'CRM_SMART_INVOICE',
+          'numeratorIdSettings' => 'ID',
+          'tableClassName' => '\\crm_items_1Table',
+        ),
+        'upperName' => 'ACCOUNT_NUMBER',
+      ),
+      'locationId' => 
+      array (
+        'type' => 'location',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Местоположение',
+        'upperName' => 'LOCATION_ID',
+      ),
+      'parentId2' => 
+      array (
+        'type' => 'crm_entity',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Сделка',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 2,
+        ),
+        'upperName' => 'PARENT_ID_2',
+      ),
+      'parentId7' => 
+      array (
+        'type' => 'crm_entity',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Предложение',
+        'settings' => 
+        array (
+          'parentEntityTypeId' => 7,
+        ),
+        'upperName' => 'PARENT_ID_7',
+      ),
+      'lastCommunicationCallTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего звонка',
+        'upperName' => 'LAST_COMMUNICATION_CALL_TIME',
+      ),
+      'lastCommunicationEmailTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего e-mail',
+        'upperName' => 'LAST_COMMUNICATION_EMAIL_TIME',
+      ),
+      'lastCommunicationImolTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего диалога в открытой линии',
+        'upperName' => 'LAST_COMMUNICATION_IMOL_TIME',
+      ),
+      'lastCommunicationWebformTime' => 
+      array (
+        'type' => 'datetime',
+        'isRequired' => false,
+        'isReadOnly' => true,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => false,
+        'title' => 'Дата последнего заполнения CRM-формы',
+        'upperName' => 'LAST_COMMUNICATION_WEBFORM_TIME',
+      ),
+      'ufCrm_SMART_INVOICE_1766831582244' => 
+      array (
+        'type' => 'url',
+        'isRequired' => false,
+        'isReadOnly' => false,
+        'isImmutable' => false,
+        'isMultiple' => false,
+        'isDynamic' => true,
+        'title' => 'gr',
+        'listLabel' => 'gr',
+        'formLabel' => 'gr',
+        'filterLabel' => 'gr',
+        'settings' => 
+        array (
+          'POPUP' => 'Y',
+          'SIZE' => 20,
+          'MIN_LENGTH' => 0,
+          'MAX_LENGTH' => 0,
+          'DEFAULT_VALUE' => '',
+          'ROWS' => 1,
+        ),
+        'upperName' => 'UF_CRM_SMART_INVOICE_1766831582244',
+      ),
+    ),
+  ),
+  'time' => 
+  array (
+    'start' => 1767454251,
+    'finish' => 1767454252.016234,
+    'duration' => 1.0162339210510254,
+    'processing' => 0,
+    'date_start' => '2026-01-03T18:30:51+03:00',
+    'date_finish' => '2026-01-03T18:30:52+03:00',
+    'operating_reset_at' => 1767454852,
+    'operating' => 0,
+  ),
+)
