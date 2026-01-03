@@ -1,15 +1,18 @@
-<?php
+<?
+
+
 
 $entityBody = file_get_contents('php://input');
 $requestData = json_decode($entityBody, true);
-$id = $requestData['id'];
+$id = $requestData['activeButtonId'];
 $domen = $requestData['domen'];
 $path =   pathinfo(__DIR__, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 $memberId = $requestData['memberId'];
 overCRest::setCurrentBitrix24($memberId);
 
-file_put_contents(__DIR__.'/result91.log', var_export($requestData, true), FILE_APPEND);
+// file_put_contents(__DIR__.'/result91.log', var_export($requestData, true), FILE_APPEND);
+
 
 $arr = [];
 $result_entity = overCRest::call('entity.item.get', [
@@ -30,8 +33,4 @@ $result = overCRest::call('entity.item.update', [
     'PROPERTY_VALUES' => $arr
 ])['result'];
 
-// Пишем содержимое обратно в файл
 
-echo json_encode([
-    'error' => $resultId,
-], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

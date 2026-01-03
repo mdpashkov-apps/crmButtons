@@ -2,13 +2,13 @@ array (
   'result' => true,
   'time' => 
   array (
-    'start' => 1741858595.643557,
-    'finish' => 1741858595.678408,
-    'duration' => 0.0348508358001709,
-    'processing' => 0.012945175170898438,
-    'date_start' => '2025-03-13T12:36:35+03:00',
-    'date_finish' => '2025-03-13T12:36:35+03:00',
-    'operating_reset_at' => 1741859195,
+    'start' => 1767439579,
+    'finish' => 1767439579.275699,
+    'duration' => 0.2756989002227783,
+    'processing' => 0,
+    'date_start' => '2026-01-03T14:26:19+03:00',
+    'date_finish' => '2026-01-03T14:26:19+03:00',
+    'operating_reset_at' => 1767440179,
     'operating' => 0,
   ),
 )

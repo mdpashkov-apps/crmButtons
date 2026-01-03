@@ -17,15 +17,13 @@ $row = [
     'buttonBorderColor_FIELDS' => '#000000',
     'usingTheIcon_FIELDS' => 'true',
     'iconOnTheButton_FIELDS' => '',
-
-
+    'buttonInCRM_FIELDS' => 'false',
 
 
 
 
         // 'customField_FIELDS' => 'Пользовательский тип поля',
         // 'buttonActionsId_FIELDS' => 'Выбранные действия',
-        // 'buttonInCRM_FIELDS' => 'Кнопка в карточке',
 
 
 

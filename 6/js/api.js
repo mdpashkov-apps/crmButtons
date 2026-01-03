@@ -122,6 +122,15 @@ export const createButtonInCrm = async (memberId,activeButtonId, domen  ) => {
   });
   return response.data;
 };
+export const deleteButtonInCrm = async (memberId,activeButtonId, domen  ) => {
+  const response = await mainApi.post("/deleteButtonInCrm.php", {
+    memberId: memberId,
+ activeButtonId: activeButtonId,
+      domen: domen,
+  });
+  return response.data;
+};
+
 
 export const getCrmFieldsLink = async (memberId,current_button ) => {
   const response = await mainApi.post("/getCrmFieldsLink.php", {

@@ -1,4 +1,4 @@
-import { getAllButtons, getMoreButtons, getTemplate, saveBtnSettings, getButtonData, deleteButton, getAllEntitys,createButtonInCrm,getCrmFieldsLink, getBPforEntity, getDocumentsforEntity,getEntityFields, getListsforEntity,getListFields} from "../js/api.js";
+import { getAllButtons, getMoreButtons, getTemplate,deleteButtonInCrm, saveBtnSettings, getButtonData, deleteButton, getAllEntitys,createButtonInCrm,getCrmFieldsLink, getBPforEntity, getDocumentsforEntity,getEntityFields, getListsforEntity,getListFields} from "../js/api.js";
 
 
 Vue.component("modal", {
@@ -348,6 +348,7 @@ async createBtnCrm(domen) {
     this.loader = true;
 
     const response = await createButtonInCrm(window.memberId, this.activeButtonId, domen);
+      await this.getButtons(true)
 
 
   
@@ -355,7 +356,18 @@ async createBtnCrm(domen) {
   
 },
 
+async deleteBtnCrm(domen) {
+ 
+    this.loader = true;
 
+    const response = await deleteButtonInCrm(window.memberId, this.activeButtonId, domen);
+
+      await this.getButtons(true)
+
+  
+    this.loader = false;
+  
+},
 
 async getEntFields() {
     this.loader = true;
