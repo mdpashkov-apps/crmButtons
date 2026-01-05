@@ -5,15 +5,11 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
 ?>
 <head>
-
     <script src="https://gcore.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-
   	<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
-  <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
-	<script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-	<script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
-	
-
+    <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
+	  <script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	  <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
 </head>
 
 <?
@@ -23,15 +19,15 @@ $result_entity = overCRest::call('entity.item.get', [
 ])['result'][0]['PROPERTY_VALUES'];
 
 $viewButton = [
-    'buttonColor_FIELDS'       => $result_entity['buttonColor_FIELDS'],
-    'textColor_FIELDS'         => $result_entity['textColor_FIELDS'],
-    'buttonRadius_FIELDS'      => $result_entity['buttonRadius_FIELDS'],
-    'buttonBorder_FIELDS'      => $result_entity['buttonBorder_FIELDS'],
+    'buttonColor_FIELDS' => $result_entity['buttonColor_FIELDS'],
+    'textColor_FIELDS' => $result_entity['textColor_FIELDS'],
+    'buttonRadius_FIELDS' => $result_entity['buttonRadius_FIELDS'],
+    'buttonBorder_FIELDS' => $result_entity['buttonBorder_FIELDS'],
     'buttonBorderWidth_FIELDS' => $result_entity['buttonBorderWidth_FIELDS'],
     'buttonBorderColor_FIELDS' => $result_entity['buttonBorderColor_FIELDS'],
-    'textOnTheButton_FIELDS'   => $result_entity['textOnTheButton_FIELDS'],
-    'usingTheIcon_FIELDS'      => $result_entity['usingTheIcon_FIELDS'],
-    'iconOnTheButton_FIELDS'   => $result_entity['iconOnTheButton_FIELDS'],
+    'textOnTheButton_FIELDS' => $result_entity['textOnTheButton_FIELDS'],
+    'usingTheIcon_FIELDS' => $result_entity['usingTheIcon_FIELDS'],
+    'iconOnTheButton_FIELDS' => $result_entity['iconOnTheButton_FIELDS'],
 ];
 
 $crmActions = [

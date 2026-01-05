@@ -14,7 +14,7 @@ $bpIds = array_column($businessProcessesData, 'value');
 $bpIds = array_map('intval', $bpIds);
 
 
-
+$entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
 
 
 $entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
@@ -72,7 +72,7 @@ $typeMap = [
     'user' => 'user'
 ];
 
-$result = [];
+$allBp = [];
 
 foreach ($getBizProc['result'] as $bp) {
 
@@ -93,7 +93,7 @@ foreach ($bp['PARAMETERS'] as $paramKey => $param) {
         }
     }
 
-    $result[] = [
+    $allBp[] = [
         'ID'         => (int)$bp['ID'],
         'NAME'       => $bp['NAME'],
         'PARAMETERS' => $filteredParams, // даже если пусто — ок
@@ -101,10 +101,75 @@ foreach ($bp['PARAMETERS'] as $paramKey => $param) {
 }
 
 
-		// file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
+
+
+
+
+$result = [];
+$withoutParams = [];
+
+foreach ($allBp as $item) {
+    if (!empty($item['PARAMETERS'])) {
+        $result[] = $item;
+    } else {
+        $withoutParams[] = $item;
+    }
+}
+
+
+
+if ($entityTypeIdMap === '31') {
+$document = [
+        'crm',
+        'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
+        'SMART_INVOICE_' . $entityId,
+    ];
+} elseif (is_numeric($entityTypeIdMap)) {
+ $document = [
+        'crm',
+        'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
+        'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId,
+    ];
+} else {
+    // лид, сделка, контакт и т.п.
+ // стандартные сущности
+    $map = [
+        'Lead'    => 'CCrmDocumentLead',
+        'Deal'    => 'CCrmDocumentDeal',
+        'Contact' => 'CCrmDocumentContact',
+        'Company' => 'CCrmDocumentCompany',
+    ];
+    $document = [
+        'crm',
+        $map[$entityTypeIdMap],
+        strtoupper($entityTypeIdMap) . '_' . $entityId,
+    ];
+}
+
+
+
+
+foreach ($withoutParams as $bp) {
+    $bpId = (int)$bp['ID'];
+		file_put_contents(__DIR__.'/result91.log', var_export($bpId, true), FILE_APPEND);
+		file_put_contents(__DIR__.'/result91.log', var_export($document, true), FILE_APPEND);
+
+    $startBP = overCRest::call(
+        'bizproc.workflow.start',
+        [
+            'TEMPLATE_ID' => $bpId,
+            'DOCUMENT_ID' => $document,
+        ]
+    );
+
+   
+}
+		file_put_contents(__DIR__.'/result91.log', var_export($startBP, true), FILE_APPEND);
+
+
 $allUserFio = null; 
 
-foreach ($result[0]['PARAMETERS'] as $param) {
+foreach ($allBp[0]['PARAMETERS'] as $param) {
     if (($param['Type'] ?? null) === 'user') {
        
 

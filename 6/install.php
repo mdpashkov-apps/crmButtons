@@ -77,6 +77,88 @@ if ($install_result['install'] === true) {
             'TYPE'     => 'S'
         ]);
     }
+
+
+
+
+
+// $findChat = overCRest::call("im.search.chat.list", [
+//     "FIND" => "ALLChat Overplan",
+// ]);
+// if ($findChat['total'] == 0) {
+
+
+// $chatAdd = overCRest::call("im.chat.add", [
+//             "TYPE" => "CHAT",
+//             "TITLE" => 'ALLChat Overplan',
+//             "USERS" => [1]
+// ]);
+
+
+// $chatId = $chatAdd['result'];
+
+// } else {
+//     $chatId = $findChat['result']['0']['id'];
+
+// }
+
+// $findBot = overCRest::call("imbot.bot.list", [
+    
+// ]);
+
+
+
+//     foreach ($findBot['result'] as $bot) {
+//         if ($bot["CODE"] == 'OVERPLAN_REPORT_CRMBUTTONS') {
+//             $botId = $bot["ID"];
+//         }
+
+
+// else {
+
+//  $botReg = overCRest::call('imbot.register', [
+//             'CODE' => 'OVERPLAN_REPORT_CRMBUTTONS',
+//             'EVENT_MESSAGE_ADD' => 'https://app.overplan/applications/crmButtons/handler.php',
+//             // 'EVENT_WELCOME_MESSAGE' => 'https://app.overplan/applications/chatbot_demo/handler.php',
+//             // 'EVENT_BOT_DELETE' => 'https://app.overplan/applications/chatbot_demo/handler.php',
+//             'PROPERTIES' => [ // Bot personality (req.)
+//                 'NAME' => 'Overplan Report',
+//                 'COLOR' => 'AQUA',
+//                 // 'EMAIL' => 'no@example.com',
+//                 // 'PERSONAL_BIRTHDAY' => '2020-07-18',
+//                 // 'WORK_POSITION' => 'Report on affairs',
+//                 // 'PERSONAL_WWW' => '',
+//                 'PERSONAL_PHOTO' => 'iVBORw0KGgoAAAANSUhEUgAAAFYAAABWCAYAAABVVmH3AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKsSURBVHhe7ZwxcuowEIbFqygpoYPjcAMo6bgJR6CEW8CRKOmgI9438sziOJbk3T9OnP+b2YkNWsl8FrKRPJm8KgJx51/8S5yhWBAUC4JiQVAsCIoFQbEgKBYExYKgWBAUC4JiQVAsCIoFQbEgKBYExYKgWBAUC4JiQVAsCIoFQbEgKBYExYL4M2Kv12tYrVZhMpl8GfL++XyOGUbkEaOxc7lcXrPZTB6lSsZ0On2dTqeY2Z/RP7slPXW73Yb7/R5fSVPJDY/HI+71Y9RDQZvU/X4v39JPcTgcYokQns9n3DJQVTpa5vP529e8khrfaUeXtTJasTKualEpqYIubwUiVj7Ucrl8O9CukLIeFwxNs7emaJ4IK+5iS67AOuRq7ImuO9Vb5aQ2j9mKu9hmTykNr96r6+zieDy+lZXIGTZSuIotGddyhgqLZF1PydDkIVVwE9s2BHRR3d68lU1FqWSdmzs0VfeuMduOi9g2qX3OfEp2yTjclt8VXj21xkVs6f1iDl9JzqUt11teFy5i0Qev68+lT44n5rkC+dm4Xq/j3v9PEbf8kJmnmtz6++R4Yha7WCzC7XaLexRbY56E0VKrYSBuEXOP/Y6e8Sd7LGmHYkFQLAiKBUGxIH68WPkB8htxFeu2Jq/Y7XZx65ch97EWZMZJqpHwXgUomd9tovOGwNxqcxbKawVAKF230vTN88KlVd1r67AKtvRWQecOgUurqQnqUsmlqxFtWHI9cG01d7mlS7S87rEaofOHANJqruCc6DtxroenIYC3apHcV6pQt2upw8K3n84c0ZvNxnXFdAj4L/hAcK4ABMWCoFgQFAuCYkFQLAiKBUGxICgWBMWCoFgQFAuCYkFQLAiKBUGxICgWBMWCoFgQFAuCYkFQLAiKBUGxICgWBMVCCOEDxdAfAdyPiCsAAAAASUVORK5CYII=',
+//             ]
+//             ]);
+
+// $botId = $botReg["result"];
+
+
+
+
+// }
+
+// $addBotinChat = overCRest::call("im.chat.user.add", [
+//      "CHAT_ID" => $chatId,
+//     "USERS" => $botId
+// ]);
+
+
+//     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 ?>
 

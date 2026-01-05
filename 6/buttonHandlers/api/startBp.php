@@ -83,7 +83,6 @@ foreach ($bpParameters as $key => $value) {
 
 
 
-// file_put_contents(__DIR__.'/result91.log', var_export($filteredParams, true), FILE_APPEND);
 
 
 

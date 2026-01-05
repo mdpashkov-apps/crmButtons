@@ -191,14 +191,17 @@ async action3() {
 
   },
 
-  resizeBx() {
-    if (window.BX24) {
-      BX24.resizeWindow(
-        document.body.scrollWidth,
-        document.body.scrollHeight
-      );
-    }
-  },
+resizeBx() {
+  if (!window.BX24) return;
+
+  const app = document.querySelector('#app');
+  if (!app) return;
+
+  const size = BX24.getScrollSize();
+  const height = app.clientHeight + 30;
+
+  BX24.resizeWindow(size.scrollWidth, height);
+},
 
   async runActions() {
   let raw = window.crmActions.buttonActionsId_FIELDS;
