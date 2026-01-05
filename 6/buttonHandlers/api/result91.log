@@ -1,0 +1,18 @@
+23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695be8ef1945e5.96058477',
+  'time' => 
+  array (
+    'start' => 1767631087,
+    'finish' => 1767631087.217893,
+    'duration' => 0.21789288520812988,
+    'processing' => 0,
+    'date_start' => '2026-01-05T19:38:07+03:00',
+    'date_finish' => '2026-01-05T19:38:07+03:00',
+    'operating_reset_at' => 1767631687,
+    'operating' => 0.12687993049621582,
+  ),
+)

@@ -10,6 +10,8 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
     <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
 	  <script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 	  <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../6/buttonHandlers/css/buttonStyle.css">
+
 </head>
 
 <?
@@ -18,29 +20,35 @@ $result_entity = overCRest::call('entity.item.get', [
 	'FILTER' => ['ID' => $buttonId]
 ])['result'][0]['PROPERTY_VALUES'];
 
+// массив стилей кнопки из хранилища
 $viewButton = [
-    'buttonColor_FIELDS' => $result_entity['buttonColor_FIELDS'],
-    'textColor_FIELDS' => $result_entity['textColor_FIELDS'],
-    'buttonRadius_FIELDS' => $result_entity['buttonRadius_FIELDS'],
-    'buttonBorder_FIELDS' => $result_entity['buttonBorder_FIELDS'],
-    'buttonBorderWidth_FIELDS' => $result_entity['buttonBorderWidth_FIELDS'],
-    'buttonBorderColor_FIELDS' => $result_entity['buttonBorderColor_FIELDS'],
-    'textOnTheButton_FIELDS' => $result_entity['textOnTheButton_FIELDS'],
-    'usingTheIcon_FIELDS' => $result_entity['usingTheIcon_FIELDS'],
-    'iconOnTheButton_FIELDS' => $result_entity['iconOnTheButton_FIELDS'],
+    'buttonColor_FIELDS' => $result_entity['buttonColor_FIELDS'], //цвет кнопки
+    'textColor_FIELDS' => $result_entity['textColor_FIELDS'], // цвет текста на кнопке
+    'buttonRadius_FIELDS' => $result_entity['buttonRadius_FIELDS'], // радиус скругления кнопки
+    'buttonBorder_FIELDS' => $result_entity['buttonBorder_FIELDS'], // параметр использовать ли рамку вокруг кнопки
+    'buttonBorderWidth_FIELDS' => $result_entity['buttonBorderWidth_FIELDS'], //толщина рамки кнопки
+    'buttonBorderColor_FIELDS' => $result_entity['buttonBorderColor_FIELDS'], // цвет рамки
+    'textOnTheButton_FIELDS' => $result_entity['textOnTheButton_FIELDS'], // текст на кнопке
+    'usingTheIcon_FIELDS' => $result_entity['usingTheIcon_FIELDS'], // параметр использовать ли иконку на кнопке
+    'iconOnTheButton_FIELDS' => $result_entity['iconOnTheButton_FIELDS'], // иконка на кнопке
 ];
 
+// массив настроек действий кнопки
 $crmActions = [
-    'entitySelection_FIELDS'       => $result_entity['entitySelection_FIELDS'],
-    'buttonActionsId_FIELDS'         => $result_entity['buttonActionsId_FIELDS'],
-    'businessProcessesValue_FIELDS'      => $result_entity['businessProcessesValue_FIELDS'],
-    'documentTemplatesValue_FIELDS'      => $result_entity['documentTemplatesValue_FIELDS'],
-    'listsValue_FIELDS' => $result_entity['listsValue_FIELDS'],
-    'fieldsTable_FIELDS' => $result_entity['fieldsTable_FIELDS'],
-    'link_FIELDS' => $result_entity['link_FIELDS'],
-    'crmLinkFields_FIELDS' => $result_entity['crmLinkFields_FIELDS'],
+    'entitySelection_FIELDS' => $result_entity['entitySelection_FIELDS'], // для какой сущности
+    'buttonActionsId_FIELDS' => $result_entity['buttonActionsId_FIELDS'], // действия кнопки, которые необходимо выполнить
+    'businessProcessesValue_FIELDS' => $result_entity['businessProcessesValue_FIELDS'], // выбранные бп
+    'documentTemplatesValue_FIELDS' => $result_entity['documentTemplatesValue_FIELDS'], // выбранные документы
+    'listsValue_FIELDS' => $result_entity['listsValue_FIELDS'], // выбранные списки
+    'fieldsTable_FIELDS' => $result_entity['fieldsTable_FIELDS'], // поля списка сопоставленные с полями crm
+    'link_FIELDS' => $result_entity['link_FIELDS'], // введенная произвольная ссылка
+    'crmLinkFields_FIELDS' => $result_entity['crmLinkFields_FIELDS'], // выбранное поле типа ссылка
 ];
 
+
+
+
+// получаем отдельно выбранную сущность в кнопке, если лид,сделка, контакт или компания меняем их на числовой id
 $entityInBtnSettings = json_decode($result_entity['entitySelection_FIELDS'], true)['value'];
 
 $entityTypeIdOpened = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true)['ENTITY_DATA']['entityTypeId'];
@@ -53,17 +61,6 @@ $entityMap = [
 $entityTypeIdMap = $entityMap[$entityTypeIdOpened] ?? $entityTypeIdOpened;
 
 $member_id = $_REQUEST['member_id'];
-
-
-// if ($entityTypeIdMap == $entityInBtnSettings) {
-// 	$buttonActions = json_decode($crmActions['buttonActionsId_FIELDS'], true);
-
-// 	if (is_array($buttonActions) && in_array(0, $buttonActions, true)) {
-
-
-
-// 	}
-// }
 
 
 
@@ -94,137 +91,7 @@ window.entityData = <?= json_encode( json_decode($_REQUEST['PLACEMENT_OPTIONS'],
 		} ?>
 	}
 
-	.btn span {
-		font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands' !important;
-		margin-right: 5px;
-	}
-
-	/* Модальное окно Начало */
-	.modal-mask {
-		position: fixed;
-		z-index: 9998;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
-		display: table;
-		transition: opacity 0.3s ease;
-	}
-
-	.modal-wrapper {
-		display: table-cell;
-		vertical-align: middle;
-	}
-
-	.loader {
-		margin: 0 auto;
-		border: 5px solid #f3f3f3;
-		/* Light grey */
-		border-top: 5px solid #3498db;
-		/* Blue */
-		border-radius: 50%;
-		width: 30px;
-		height: 30px;
-		animation: spin 2s linear infinite;
-	}
-
-	@keyframes spin {
-		0% {
-			transform: rotate(0deg);
-		}
-
-		100% {
-			transform: rotate(360deg);
-		}
-	}
-
-	.modal {
-		margin: 0 auto;
-		position: relative;
-	}
-	body {
-  height: auto !important;
-  overflow: visible !important;
-}
-
-#app {
-  height: auto !important;
-  overflow: visible !important;
-
-
-
-/* INPUTS */
-.param-block input {
-  height: 42px;              /* ← фиксированная высота (потом поменяешь) */
-  border-radius: 8px;        /* ← скругление */
-  border: 1px solid #d1d5db;
-  padding: 0 12px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-/* MULTIPLE INPUT WRAPPER */
-.param-multiple-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-
-.param-multiple-row input {
-  flex: 1;
-}
-
-
-/* DELETE (X) BUTTON */
-.remove-field {
-  width: 24px;        /* фиксированная ширина */
-  text-align: center;
-  cursor: pointer;
-  color: #ef4444;
-  font-size: 18px;
-  line-height: 1;
-}
-
-/* скрытый крестик (для первого) */
-.remove-field--placeholder {
-  visibility: hidden; /* место есть, но не видно */
-  cursor: default;
-}
-
-/* ADD BUTTON */
-.add-btn {
-  margin-top: 6px;
-  height: 36px;
-  padding: 0 14px;
-  border-radius: 8px;
-  background-color: #3b82f6; /* голубая */
-  color: #fff;
-  border: none;
-  cursor: pointer;
-}
-
-/* RUN BP BUTTON */
-.run-bp-btn {
-  background-color: #22c55e; /* зелёная */
-}
-
-/* DISABLED STATE */
-button:disabled {
-  background-color: #9ca3af !important;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
-
-
-
-
-
-
-
-  
-}
+	
 </style>
 
 <div id="app">
