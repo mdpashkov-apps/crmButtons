@@ -15,4 +15,123 @@
     'operating_reset_at' => 1767631687,
     'operating' => 0.12687993049621582,
   ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695bf308f06189.09644669',
+  'time' => 
+  array (
+    'start' => 1767633672,
+    'finish' => 1767633673.081041,
+    'duration' => 1.0810410976409912,
+    'processing' => 1,
+    'date_start' => '2026-01-05T20:21:12+03:00',
+    'date_finish' => '2026-01-05T20:21:13+03:00',
+    'operating_reset_at' => 1767634272,
+    'operating' => 0.10777401924133301,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695bf5757c4822.02799460',
+  'time' => 
+  array (
+    'start' => 1767634293,
+    'finish' => 1767634293.611043,
+    'duration' => 0.6110429763793945,
+    'processing' => 0,
+    'date_start' => '2026-01-05T20:31:33+03:00',
+    'date_finish' => '2026-01-05T20:31:33+03:00',
+    'operating_reset_at' => 1767634893,
+    'operating' => 0.11462903022766113,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695bff6a10f160.90071181',
+  'time' => 
+  array (
+    'start' => 1767636842,
+    'finish' => 1767636842.184431,
+    'duration' => 0.1844310760498047,
+    'processing' => 0,
+    'date_start' => '2026-01-05T21:14:02+03:00',
+    'date_finish' => '2026-01-05T21:14:02+03:00',
+    'operating_reset_at' => 1767637442,
+    'operating' => 0.12814116477966309,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695c02572795e5.49269746',
+  'time' => 
+  array (
+    'start' => 1767637591,
+    'finish' => 1767637591.248867,
+    'duration' => 0.24886703491210938,
+    'processing' => 0,
+    'date_start' => '2026-01-05T21:26:31+03:00',
+    'date_finish' => '2026-01-05T21:26:31+03:00',
+    'operating_reset_at' => 1767638191,
+    'operating' => 0.10066914558410645,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695c034a11b505.45852765',
+  'time' => 
+  array (
+    'start' => 1767637834,
+    'finish' => 1767637834.153437,
+    'duration' => 0.15343689918518066,
+    'processing' => 0,
+    'date_start' => '2026-01-05T21:30:34+03:00',
+    'date_finish' => '2026-01-05T21:30:34+03:00',
+    'operating_reset_at' => 1767638434,
+    'operating' => 0.10066914558410645,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695c03ac2419d1.09311417',
+  'time' => 
+  array (
+    'start' => 1767637932,
+    'finish' => 1767637932.221415,
+    'duration' => 0.22141504287719727,
+    'processing' => 0,
+    'date_start' => '2026-01-05T21:32:12+03:00',
+    'date_finish' => '2026-01-05T21:32:12+03:00',
+    'operating_reset_at' => 1767638532,
+    'operating' => 0.10066914558410645,
+  ),
+)23array (
+  0 => 'crm',
+  1 => 'CCrmDocumentDeal',
+  2 => 'DEAL_3',
+)array (
+  'result' => '695c048694b493.54956768',
+  'time' => 
+  array (
+    'start' => 1767638150,
+    'finish' => 1767638150.687579,
+    'duration' => 0.6875789165496826,
+    'processing' => 0,
+    'date_start' => '2026-01-05T21:35:50+03:00',
+    'date_finish' => '2026-01-05T21:35:50+03:00',
+    'operating_reset_at' => 1767638750,
+    'operating' => 0.24204707145690918,
+  ),
 )
