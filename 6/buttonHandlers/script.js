@@ -34,20 +34,6 @@ removeField(bpId, paramName, index) {
 
 
 
-
-
-    
-//   async action0() {
-//       this.loader = true;
-//           let response = await getBpParams(window.memberId,window.crmActions, window.entityData);
-//     this.paramResult = response.result;
-    
-// // console.log(this.paramResult)
-//     this.loader = false;
-
-
-//   },
-
 async action0() {
   this.loader = true;
 
@@ -60,12 +46,10 @@ async action0() {
   this.paramResult = response.result;
 
  if (response.allUserFio) {
-console.log(111)
-// console.log(response.allUserFio)
+
     this.allUsers = response.allUserFio;
 
   }
-// console.log(this.paramResult)
   // ИНИЦИАЛИЗАЦИЯ ФОРМЫ
  this.paramResult.forEach(bp => {
   this.$set(this.formValues, bp.ID, {});
@@ -92,7 +76,6 @@ this.$set(this.formValues[bp.ID], p.Name, values);
   async action1() {
         this.loader = true;
 
-    console.log('Запуск действия 1');
 
           let response = await createDocument(window.memberId,window.crmActions, window.entityData);
     this.loader = false;
@@ -101,26 +84,7 @@ this.$set(this.formValues[bp.ID], p.Name, values);
   },
 
 
-//  async runCurrentBp() {
-//     const bp = this.paramResult[this.currentBpIndex];
-// const bpParams = {
-//     [bp.ID]: this.formValues[bp.ID]
-//   };
 
-
-//      let response = await startBp(window.memberId, bpParams, window.entityData);
-
-//     // console.log('Запуск БП:', bp);
-//     // console.log('Параметры:', params);
-
-//     // ⏭ Переход к следующему БП
-//     if (this.currentBpIndex < this.paramResult.length - 1) {
-//       this.currentBpIndex++;
-//     } else {
-//       alert('Все бизнес-процессы выполнены');
-//       this.paramResult = null;
-//     }
-//   },
 
 async runCurrentBp() {
   const bp = this.paramResult[this.currentBpIndex];
@@ -162,7 +126,6 @@ async runCurrentBp() {
 
 
   async action2() {
-    console.log('Запуск действия 2');
           let response = await createListElement(window.memberId,window.crmActions, window.entityData);
 
   },
@@ -179,7 +142,6 @@ async action3() {
 },
 
   async action4() {
-    console.log('Запуск действия 4');
 
       let response = await OpenCrmLink(window.memberId,window.crmActions, window.entityData);
   let crmLink = response.result;

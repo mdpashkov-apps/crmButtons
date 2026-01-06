@@ -1,10 +1,9 @@
-const mainApi = axios.create({
+const buttonApi = axios.create({
   baseURL: "https://app.overplan.ru/applications/crmButtons/6/buttonHandlers/api/",
 });
 
-// начало ф-ий для script js
-export const OpenCrmLink = async (memberId,crmActions, entityData) => {
-  const response = await mainApi.post("/OpenCrmLink.php", {
+export const getBpParams = async (memberId,crmActions,entityData) => {
+  const response = await buttonApi.post("/getBpParams.php", {
     memberId: memberId,
     crmActions:crmActions,
     entityData:entityData
@@ -13,7 +12,7 @@ export const OpenCrmLink = async (memberId,crmActions, entityData) => {
 };
 
 export const startBp = async (memberId,bpParam, entityData) => {
-  const response = await mainApi.post("/startBp.php", {
+  const response = await buttonApi.post("/startBp.php", {
     memberId: memberId,
     bpParam:bpParam,
       entityData:entityData
@@ -23,7 +22,7 @@ export const startBp = async (memberId,bpParam, entityData) => {
 };
 
 export const createDocument = async (memberId,crmActions,entityData) => {
-  const response = await mainApi.post("/createDocument.php", {
+  const response = await buttonApi.post("/createDocument.php", {
     memberId: memberId,
     crmActions:crmActions,
     entityData:entityData
@@ -32,7 +31,7 @@ export const createDocument = async (memberId,crmActions,entityData) => {
 };
 
 export const createListElement = async (memberId,crmActions,entityData) => {
-  const response = await mainApi.post("/createListElement.php", {
+  const response = await buttonApi.post("/createListElement.php", {
     memberId: memberId,
     crmActions:crmActions,
     entityData:entityData
@@ -40,9 +39,8 @@ export const createListElement = async (memberId,crmActions,entityData) => {
   return response.data;
 };
 
-
-export const getBpParams = async (memberId,crmActions,entityData) => {
-  const response = await mainApi.post("/getBpParams.php", {
+export const OpenCrmLink = async (memberId,crmActions, entityData) => {
+  const response = await buttonApi.post("/OpenCrmLink.php", {
     memberId: memberId,
     crmActions:crmActions,
     entityData:entityData

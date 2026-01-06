@@ -7,6 +7,7 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
+// получаем id сущности и id типа сущности
 $entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
 
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
@@ -18,9 +19,11 @@ $entityMap = [
 ];
 $entityType = $entityMap[$entityTypeId];
 
+// получаем выбранное поле из настроек кнопки с типом ссылка
 $linkFieldData = json_decode($requestData['crmActions']['crmLinkFields_FIELDS'], true);
 $fieldCode = $linkFieldData['value'] ;
 
+// далее в зависимости от типа сущности получаем инфу по сущности и получаем значение нужного поля
 if (is_numeric($entityTypeId)) {
     $getFieldValue = overCRest::call('crm.item.get', [
         'entityTypeId' => $entityTypeId,

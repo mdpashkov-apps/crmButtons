@@ -7,12 +7,11 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-
+// получаем id списка, элемент которого должна создать кнопка
 $listsValue_FIELDS = json_decode($requestData['crmActions']['listsValue_FIELDS'], true);
-
 $listValue = $listsValue_FIELDS['value'];
 
-
+// получаем id сущности и id типа сущности
 $entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
 
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
@@ -25,83 +24,60 @@ $entityMap = [
 $entityType = $entityMap[$entityTypeId] ?? $entityTypeId;
 
 
-
+// получаем json с сопоставлением полей списка и скщности из таблицы
 $raw = $requestData['crmActions']['fieldsTable_FIELDS'];
+$fieldsTable_FIELDS = json_decode($raw, true);
 
-    $fieldsTable_FIELDS = json_decode($raw, true);
-
-
-
-
+// т.к. в fieldsTable_FIELDS два массива, где второй это ключи полей списка, а первый ключи полей сущности разделим их отдельно
 $values = $fieldsTable_FIELDS[0];
 $keys   = $fieldsTable_FIELDS[1];
 
+// отфильтруем их сопоставив если в значении не null
 $filteredComparison = [];
-
 foreach ($values as $i => $value) {
     if ($value !== null && $value !== 'null' && $value !== '') {
         $filteredComparison[$keys[$i]] = $value;
     }
 }
 
-
-
-
-
-if (is_numeric($entityTypeId)) {
+// в зависимости от типа сущности получаем значения полей нужной сущности
+if (is_numeric($entityType)) {
     $getFieldValue = overCRest::call('crm.item.get', [
-        'entityTypeId' => $entityTypeId,
+        'entityTypeId' => $entityType,
         'id' => $entityId,    
     ]);
     $entityFields = $getFieldValue['result']['item'];
-
 } else {
     $getFieldValue = overCRest::call('crm.' . $entityType . '.get', [
         'id' => $entityId
     ]);
     $entityFields = $getFieldValue['result'];
-
 }
 
-
-
-// $getFieldValue = overCRest::call('crm.' . $entityType . '.get', [
-//         'id' => $entityId
-//     ]);
-
+// далее мапим значения получая реальные значения нужных crm полей
 $resultMapped = [];
-
-
 foreach ($filteredComparison as $propertyCode => $entityFieldCode) {
     if (isset($entityFields[$entityFieldCode])) {
         $resultMapped[$propertyCode] = $entityFields[$entityFieldCode];
     }
 }
 
-// file_put_contents(__DIR__.'/result91.log', var_export($resultMapped, true), FILE_APPEND);
-
+// ф-я генеарции рандомной строки для ELEMENT_CODE
 function generateRandomString($length = 14) {
-            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $charactersLength = strlen($characters);
-            $randomString = '';
-            for ($i = 0; $i < $length; $i++) {
-                $randomString .= $characters[random_int(0, $charactersLength - 1)];
-            }
-            return $randomString;
-        }
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[random_int(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+$randomString = generateRandomString();
 
-
-                $randomString = generateRandomString();
-
-
-
-        $elementAdd = overCRest::call(
-    'lists.element.add',
-    [
-        'IBLOCK_TYPE_ID' => 'lists',
-        'IBLOCK_ID' => $listValue,
-        'ELEMENT_CODE' => $randomString,
-        'FIELDS' => $resultMapped
-    ]
-);		
-
+// создаем элемент списка
+$elementAdd = overCRest::call('lists.element.add', [
+    'IBLOCK_TYPE_ID' => 'lists',
+    'IBLOCK_ID' => $listValue,
+    'ELEMENT_CODE' => $randomString,
+    'FIELDS' => $resultMapped
+]);		

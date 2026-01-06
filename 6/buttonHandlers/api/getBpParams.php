@@ -7,26 +7,17 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-
+// полчаем список бп из настроек кнопки, берем только value и собираем в один массив
 $businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
-// $bpId = $businessProcessesData[0]['value'];
 $bpIds = array_column($businessProcessesData, 'value');
 $bpIds = array_map('intval', $bpIds);
 
-
+// получаем id сущности и id типа сущности
 $entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
-
-
 $entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
 $entityTypeIdMap = $entityData['value'];
 
-
-
-
-
-
-
-
+// в зависимости от типа сущности формируем параметр DOCUMENT_TYPE для фильтрации списка бп
 if ($entityTypeIdMap === '31') {
     $documentType = 'SMART_INVOICE';
 } elseif (is_numeric($entityTypeIdMap)) {
@@ -36,10 +27,7 @@ if ($entityTypeIdMap === '31') {
     $documentType = $entityTypeIdMap;
 }
 
-
-
-
-
+// получаем параметры нужных бп
 $getBizProc = overCRest::call(
     'bizproc.workflow.template.list',
     [
@@ -47,24 +35,20 @@ $getBizProc = overCRest::call(
             'ID',
             'NAME',
             'PARAMETERS',
-           
         ],
         'filter' => [
-            'MODULE_ID'    => 'crm',
+            'MODULE_ID' => 'crm',
             'DOCUMENT_TYPE'=> $documentType,
-            'ID' => $bpIds, // ← фильтр по BP
-
+            'ID' => $bpIds, 
         ],
-       
     ]
 );
-		// file_put_contents(__DIR__.'/result91.log', var_export($getBizProc, true), FILE_APPEND);
 
-
+// мапим нужные типы паарметров и используем только их в дальнейшем
 $typeMap = [
     'string' => 'txt',
-    'text'   => 'txt',
-    'int'    => 'number',
+    'text' => 'txt',
+    'int' => 'number',
     'double' => 'number',
     'email' => 'txt',
     'phone' => 'txt',
@@ -73,41 +57,30 @@ $typeMap = [
 ];
 
 $allBp = [];
-
 foreach ($getBizProc['result'] as $bp) {
-
     $filteredParams = [];
-
     if (!empty($bp['PARAMETERS'])) {
-foreach ($bp['PARAMETERS'] as $paramKey => $param) {
-            if (isset($typeMap[$param['Type']])) {
-                $filteredParams[] = [
-                    'paramKey' => $paramKey,
-                    'Name'     => $param['Name'],
-                    'Type'     => $typeMap[$param['Type']],
-                    'Required' => (int)$param['Required'],
-                    'Multiple' => (int)$param['Multiple'],
-                    'Default'  => $param['Default'],
-                ];
-            }
+        foreach ($bp['PARAMETERS'] as $paramKey => $param) {
+            $filteredParams[] = [
+                'paramKey' => $paramKey,
+                'Name' => $param['Name'],
+                'Type' => $typeMap[$param['Type']],
+                'Required' => (int)$param['Required'],
+                'Multiple' => (int)$param['Multiple'],
+                'Default'  => $param['Default'],
+            ];
         }
     }
-
     $allBp[] = [
-        'ID'         => (int)$bp['ID'],
-        'NAME'       => $bp['NAME'],
-        'PARAMETERS' => $filteredParams, // даже если пусто — ок
+        'ID' => (int)$bp['ID'],
+        'NAME' => $bp['NAME'],
+        'PARAMETERS' => $filteredParams,
     ];
 }
 
-
-
-
-
-
+// полученный массив поделим, там где параметров нет и где есть
 $result = [];
 $withoutParams = [];
-
 foreach ($allBp as $item) {
     if (!empty($item['PARAMETERS'])) {
         $result[] = $item;
@@ -116,23 +89,21 @@ foreach ($allBp as $item) {
     }
 }
 
-
-
+// для массива withoutParams запустим эти бп сразу тут, в зависимости от типа сущности готовим параметр DOCUMENT_ID для запуска
 if ($entityTypeIdMap === '31') {
-$document = [
+    $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
         'SMART_INVOICE_' . $entityId,
     ];
 } elseif (is_numeric($entityTypeIdMap)) {
- $document = [
+    $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
         'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId,
     ];
 } else {
     // лид, сделка, контакт и т.п.
- // стандартные сущности
     $map = [
         'Lead'    => 'CCrmDocumentLead',
         'Deal'    => 'CCrmDocumentDeal',
@@ -146,14 +117,8 @@ $document = [
     ];
 }
 
-
-
-
 foreach ($withoutParams as $bp) {
     $bpId = (int)$bp['ID'];
-		file_put_contents(__DIR__.'/result91.log', var_export($bpId, true), FILE_APPEND);
-		file_put_contents(__DIR__.'/result91.log', var_export($document, true), FILE_APPEND);
-
     $startBP = overCRest::call(
         'bizproc.workflow.start',
         [
@@ -161,50 +126,40 @@ foreach ($withoutParams as $bp) {
             'DOCUMENT_ID' => $document,
         ]
     );
-
-   
 }
-		file_put_contents(__DIR__.'/result91.log', var_export($startBP, true), FILE_APPEND);
 
-
+// если среди параметров есть тип привязка к юзеру, то получим юзеров
 $allUserFio = null; 
-
 foreach ($allBp[0]['PARAMETERS'] as $param) {
     if (($param['Type'] ?? null) === 'user') {
-       
+        $totalUser = overCRest::call('user.search', [
+            'filter' => ['ACTIVE' => true],
+        ])['total'];
 
-$totalUser = overCRest::call('user.search', [
-    'filter' => ['ACTIVE' => true],
-])['total'];
-
-$cmdBatch = [];
-for ($i = 0; $i < $totalUser; $i = $i + 50) {
-    $cmdBatch[] = [
-        'method' => 'user.search',
-        'params' => [
-            'filter' => [
-                'ACTIVE' => true
-            ],
-            'start' => $i,
-        ],
-    ];
-}
-$responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
-$allUserFio = [];
-foreach ($responseBatch as $response) {
-    $tmpArray = [];
-    foreach ($response as $user) {
-        $tmpArray[] = [
-            'value' => $user['ID'],
-            'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
-        ];
-    }
-    $allUserFio = array_merge($allUserFio, $tmpArray);
-}
-
-        		// file_put_contents(__DIR__.'/result91.log', var_export($allUserFio, true), FILE_APPEND);
-
-
+        $cmdBatch = [];
+        for ($i = 0; $i < $totalUser; $i = $i + 50) {
+            $cmdBatch[] = [
+                'method' => 'user.search',
+                'params' => [
+                    'filter' => [
+                        'ACTIVE' => true
+                    ],
+                    'start' => $i,
+                ],
+            ];
+        }
+        $responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
+        $allUserFio = [];
+        foreach ($responseBatch as $response) {
+            $tmpArray = [];
+            foreach ($response as $user) {
+                $tmpArray[] = [
+                    'value' => $user['ID'],
+                    'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
+                ];
+            }
+            $allUserFio = array_merge($allUserFio, $tmpArray);
+        }
     }
 }
 
@@ -212,5 +167,3 @@ echo json_encode([
     'result' => $result,
     'allUserFio' => $allUserFio
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-
-

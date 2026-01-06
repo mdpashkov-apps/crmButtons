@@ -83,10 +83,10 @@ window.entityData = <?= json_encode( json_decode($_REQUEST['PLACEMENT_OPTIONS'],
 		} ?>
 	}
 
-	.btn span {
+	/* .btn span {
 		font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands' !important;
 		margin-right: 5px;
-	}
+	} */
 
 	/* Модальное окно Начало */
 	.modal-mask {
