@@ -3,18 +3,14 @@ $entityBody = file_get_contents('php://input');
 $requestData = json_decode($entityBody, true);
 $memberId = $requestData['memberId'];
 $path = pathinfo(__DIR__, PATHINFO_DIRNAME);
+$path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-// получаю данные 1 хранилища
+// получаю данные хранилища (все кнопки)
 $result = overCRest::call("entity.item.get", [
     "ENTITY" => "customButton",
 ]);
-
-
-
-// file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
-
 
 echo json_encode([
     'result' => $result,
