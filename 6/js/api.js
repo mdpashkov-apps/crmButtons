@@ -114,7 +114,6 @@ export const getAllLists = async (memberId,current_button ) => {
 export const getListFields = async (memberId,current_button ) => {
   const response = await api.post("/button-actions/getListFields.php", {
     memberId: memberId,
-    entity: current_button.entitySelection_FIELDS,
     list: current_button.listsValue_FIELDS
 
   });

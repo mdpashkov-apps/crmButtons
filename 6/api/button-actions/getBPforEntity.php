@@ -8,6 +8,8 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 $entity = $requestData['current_button']['value'];
+
+// Определяем тип документа для бизнес-процессов
 if ($entity === '31') {
     $documentType = 'SMART_INVOICE';
 } elseif (is_numeric($entity)) {
@@ -16,14 +18,18 @@ if ($entity === '31') {
     $documentType = $entity;
 }
 
+// Получаем общее количество шаблонов бизнес-процессов
 $total = overCRest::call('bizproc.workflow.template.list',[
     'filter' => [
         'MODULE_ID'     => 'crm',
         'DOCUMENT_TYPE' => $documentType,
     ],
 ])['total'];
+
+// Считаем количество страниц (по 50 элементов на страницу)
 $pages = ceil($total / 50);
 
+// Готовим batch-запросы
 $batch = [];
 for ($i = 0; $i < $pages; $i++) {
     $batch["list_{$i}"] = [
@@ -39,6 +45,7 @@ for ($i = 0; $i < $pages; $i++) {
     ];
 }
 
+// Итоговый список бизнес-процессов
 $bizProcList = [];
 $batchChunks = array_chunk($batch, 50, true);
 
@@ -55,6 +62,7 @@ foreach ($batchChunks as $chunk) {
     }
 }
 
+// возвращаем на фронт
 echo json_encode([
     'result' => $bizProcList,
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

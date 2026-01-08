@@ -8,17 +8,21 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 $entity = $requestData['current_button']['value'];
+
+// Если сущность смарт-процесс (число) или счёт (31)
 if (is_numeric($entity) || $entity ==='31') {
+    // Получаем список полей смарт-процесса
     $getEntityFields = overCRest::call('crm.item.fields', [
         'entityTypeId' => (int)$entity
     ]);
+    // Преобразуем результат в нужную структуру
     foreach ($getEntityFields['result']['fields'] as $key => $field) {
         $finalResult[] = [
             'value' => $key,
             'name'  => $field['title'],
         ];
     }
-} else {
+} else { //тоже самое для лидов, сдлок, компаний и контактов
     $getEntityFields = overCRest::call('crm.' . $entity . '.fields', []);
     $finalResult = [];
 

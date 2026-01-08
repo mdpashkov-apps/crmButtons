@@ -7,15 +7,16 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-$entity = $requestData['entity']['value'];
-$list = $requestData['list']['value'];
+$list = $requestData['list']['value']; // ID выбранного списка с фронта
 
+// Получаем список полей выбранного списка
 $getListFields = overCRest::call("lists.field.get", [
     "IBLOCK_TYPE_ID" => "lists",
     'IBLOCK_ID' => $list
 ]);
 
 $finalResult = [];
+// Преобразуем результат в нужную структуру
 foreach ($getListFields['result'] as $field) {
     $finalResult[] = [
         'value' => $field['FIELD_ID'],

@@ -8,14 +8,17 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 $entity = $requestData['current_button']['value'];
+// Соответствие названий сущностей Bitrix24 их числовым ID
 $entityMap = [
     'Lead'    => 1,
     'Deal'    => 2,
     'Contact' => 3,
     'Company' => 4,
 ];
+// Получаем entityTypeId: либо из мапы, либо используем значение как есть
 $entityTypeId = $entityMap[$entity] ?? $entity;
 
+// Массив всех entityTypeId, по которым будем искать шаблоны документов
 $entityTypeIds = [];
 if ($entityTypeId === 2) {
     $categoriesResponse = overCRest::call('crm.category.list',[
@@ -28,9 +31,10 @@ if ($entityTypeId === 2) {
 } else {
     $entityTypeIds[] = (string)$entityTypeId;
 }
-
+// Итоговый список шаблонов документов
 $documents = [];
 foreach ($entityTypeIds as $entityTypeId) {
+    // Получаем общее количество шаблонов документов
     $total = overCRest::call('crm.documentgenerator.template.list',[
         'filter' => [
             'entityTypeId' => $entityTypeId
@@ -74,6 +78,8 @@ foreach ($entityTypeIds as $entityTypeId) {
         }
     }
 }
+
+// Удаляем дубликаты и переиндексируем массив
 $documents = array_values(
     array_unique($documents, SORT_REGULAR)
 );

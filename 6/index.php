@@ -12,11 +12,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     <script src="//api.bitrix24.com/api/v1/"></script>
     <script src="https://gcore.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://gcore.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
-    <!-- <script src="https://unpkg.com/vue-multiselect@2.1.0"></script> -->
     <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
-    <!-- <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
 </head>
@@ -51,108 +49,17 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             <div class="tabs_btn">
                 <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
                 <div v-for="button in portalButtons.slice(0,6)" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" :id="button.ID" @click="selectButton(button)"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
-</div>
+                </div>
                 <div v-if="newButton && totalButtonsCount <= 6" class="tab_btn still_btn_active"> {{ current_button.buttonName_FIELDS }} </div>
                 <div v-if="totalButtonsCount > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
                     <div class="dropdown-content" :class="{ show: showMore }">
                         <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" @click="selectButton(button)"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
- </div>
+                        </div>
                         <div v-if="newButton && totalButtonsCount > 6" class="tab_btn still_btn_active"> {{ current_button.buttonName_FIELDS }} </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-<?
-
-// $findChat = overCRest::call("im.search.chat.list", [
-//     "FIND" => "ALLChat Overplan",
-// ]);
-// if ($findChat['total'] == 0) {
-
-
-// $chatAdd = overCRest::call("im.chat.add", [
-//             "TYPE" => "CHAT",
-//             "TITLE" => 'ALLChat Overplan',
-//             "USERS" => [1]
-// ]);
-
-
-// $chatId = $chatAdd['result'];
-
-// } else {
-//     $chatId = $findChat['result']['0']['id'];
-
-// }
-
-// $findBot = overCRest::call("imbot.bot.list", [
-    
-// ]);
-
-
-
-//     foreach ($findBot['result'] as $bot) {
-//         if ($bot["CODE"] == 'OVERPLAN_REPORT_CRMBUTTONS') {
-//             $botId = $bot["ID"];
-//         }
-
-
-// else {
-
-//  $botReg = overCRest::call('imbot.register', [
-//             'CODE' => 'OVERPLAN_REPORT_CRMBUTTONS',
-//             'EVENT_MESSAGE_ADD' => 'https://app.overplan.ru/applications/crmButtons/6/handler.php',
-//             'EVENT_WELCOME_MESSAGE' => 'https://app.overplan.ru/applications/crmButtons/6/handler.php',
-//             'EVENT_BOT_DELETE' => 'https://app.overplan.ru/applications/crmButtons/6/handler.php',
-//             'PROPERTIES' => [ // Bot personality (req.)
-//                 'NAME' => 'Overplan Report',
-//                 'COLOR' => 'AQUA',
-//                 // 'EMAIL' => 'no@example.com',
-//                 // 'PERSONAL_BIRTHDAY' => '2020-07-18',
-//                 // 'WORK_POSITION' => 'Report on affairs',
-//                 // 'PERSONAL_WWW' => '',
-//                 'PERSONAL_PHOTO' => 'iVBORw0KGgoAAAANSUhEUgAAAFYAAABWCAYAAABVVmH3AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAKsSURBVHhe7ZwxcuowEIbFqygpoYPjcAMo6bgJR6CEW8CRKOmgI9438sziOJbk3T9OnP+b2YkNWsl8FrKRPJm8KgJx51/8S5yhWBAUC4JiQVAsCIoFQbEgKBYExYKgWBAUC4JiQVAsCIoFQbEgKBYExYKgWBAUC4JiQVAsCIoFQbEgKBYExYL4M2Kv12tYrVZhMpl8GfL++XyOGUbkEaOxc7lcXrPZTB6lSsZ0On2dTqeY2Z/RP7slPXW73Yb7/R5fSVPJDY/HI+71Y9RDQZvU/X4v39JPcTgcYokQns9n3DJQVTpa5vP529e8khrfaUeXtTJasTKualEpqYIubwUiVj7Ucrl8O9CukLIeFwxNs7emaJ4IK+5iS67AOuRq7ImuO9Vb5aQ2j9mKu9hmTykNr96r6+zieDy+lZXIGTZSuIotGddyhgqLZF1PydDkIVVwE9s2BHRR3d68lU1FqWSdmzs0VfeuMduOi9g2qX3OfEp2yTjclt8VXj21xkVs6f1iDl9JzqUt11teFy5i0Qev68+lT44n5rkC+dm4Xq/j3v9PEbf8kJmnmtz6++R4Yha7WCzC7XaLexRbY56E0VKrYSBuEXOP/Y6e8Sd7LGmHYkFQLAiKBUGxIH68WPkB8htxFeu2Jq/Y7XZx65ch97EWZMZJqpHwXgUomd9tovOGwNxqcxbKawVAKF230vTN88KlVd1r67AKtvRWQecOgUurqQnqUsmlqxFtWHI9cG01d7mlS7S87rEaofOHANJqruCc6DtxroenIYC3apHcV6pQt2upw8K3n84c0ZvNxnXFdAj4L/hAcK4ABMWCoFgQFAuCYkFQLAiKBUGxICgWBMWCoFgQFAuCYkFQLAiKBUGxICgWBMWCoFgQFAuCYkFQLAiKBUGxICgWBMVCCOEDxdAfAdyPiCsAAAAASUVORK5CYII=',
-//             ]
-//             ]);
-
-// $botId = $botReg["result"];
-
-
-
-
-// }
-
-// $addBotinChat = overCRest::call("im.chat.user.add", [
-//      "CHAT_ID" => $chatId,
-//     "USERS" => $botId
-// ]);
-
-// file_put_contents(__DIR__.'/result91.log', var_export($botId, true), FILE_APPEND);
-
-    // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>
-
-
-
-
-
-
-
-
         <div class="content">
             <!-- Левый контейнер с настройками кнопки  -->
             <div class="settings_fields">
@@ -272,11 +179,8 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_3">Активировать свойство:</label> 
                              <div>
-                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(3)"
-  @change="toggleEnteredLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
-                                <span v-if="enteredLinkWarning" class="warning-text">
-  Уже выбрано другое действие со ссылкой
-</span>
+                                <input :checked="current_button.buttonActionsId_FIELDS.includes(3)" @change="toggleEnteredLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
+                                <span v-if="enteredLinkWarning" class="warning-text"> Уже выбрано другое действие со ссылкой</span>
                             </div>
                         </div>
                         <div class="div_row">
@@ -290,11 +194,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_4">Активировать свойство:</label>
                              <div>
-                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(4)"
-  @change="toggleCrmLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4">
-  <span v-if="crmLinkWarning" class="warning-text">
-  Уже выбрано другое действие со ссылкой
-</span>
+                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(4)" @change="toggleCrmLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4"> <span v-if="crmLinkWarning" class="warning-text"> Уже выбрано другое действие со ссылкой </span>
                             </div>
                         </div>
                         <div class="div_row">
@@ -307,31 +207,17 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                 <!-- Кнопки -->
                 <div class="div_btn">
                     <button id="btn_delete" @click="delButton"> Удалить настройки и поле </button>
-                                        <button @click="saveSettings"> Сохранить настройки </button>
-
+                    <button @click="saveSettings"> Сохранить настройки </button>
                     <button @click="deleteBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')" class="deleteBtnCrm" v-if="current_button.buttonInCRM_FIELDS">Удалить кнопку в карточках CRM</button>
-
-<button v-else @click="createBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')">Создать кнопку в карточках CRM</button>
-
+                    <button v-else @click="createBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')">Создать кнопку в карточках CRM</button>
                 </div>
             </div>
             <div class="button_type">
                 <h4>Внешний вид кнопки</h4>
-                <button style="height:auto;padding: 8px 0;"  :style="{
-    color: current_button.textColor_FIELDS,
-    backgroundColor: current_button.buttonColor_FIELDS,
-    borderRadius: current_button.buttonRadius_FIELDS + 'px',
-    border: current_button.buttonBorder_FIELDS
-      ? `${current_button.buttonBorderWidth_FIELDS}px solid ${current_button.buttonBorderColor_FIELDS}`
-      : 'none'
-  }">
+                <button style="height:auto;padding: 8px 0;"  :style="{color: current_button.textColor_FIELDS, backgroundColor: current_button.buttonColor_FIELDS,borderRadius: current_button.buttonRadius_FIELDS + 'px', border: current_button.buttonBorder_FIELDS ? `${current_button.buttonBorderWidth_FIELDS}px solid ${current_button.buttonBorderColor_FIELDS}`: 'none'}">
                     <span v-if="current_button.usingTheIcon_FIELDS">{{current_button.iconOnTheButton_FIELDS}}</span>
                     {{current_button.textOnTheButton_FIELDS}}
                 </button>
-
-            
-
-
                 <button class="standart_styles" @click="SetStandardStyles"> Применить штатный стиль </button>
                 <div class="control_buttons">
                     <button @click="resetStylesButton">Отменить выбранные стили</button>
@@ -348,12 +234,12 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 </body>
 </html>
 
-<script>
+<!-- <script>
 BX24.callMethod('entity.item.get', {
   'ENTITY': 'customButton',
   'FILTER': {},
   'SELECT': ['*']
 }, function(result) {
-  console.log('3ое хранилище ',result);
+  console.log('1ое хранилище ',result);
 });
-</script>
+</script> -->
