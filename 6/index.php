@@ -309,9 +309,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <button id="btn_delete" @click="delButton"> Удалить настройки и поле </button>
                                         <button @click="saveSettings"> Сохранить настройки </button>
 
-                    <button @click="deleteBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')" class="deleteBtnCrm" v-if="current_button.buttonInCRM_FIELDS === 'true'">Удалить кнопку в карточках CRM</button>
+                    <button @click="deleteBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')" class="deleteBtnCrm" v-if="current_button.buttonInCRM_FIELDS">Удалить кнопку в карточках CRM</button>
 
-<button v-else @click="createBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')" >Создать кнопку в карточках CRM Леша</button>
+<button v-else @click="createBtnCrm('<?= (string)$_GET['DOMAIN']; ?>')">Создать кнопку в карточках CRM</button>
 
                 </div>
             </div>

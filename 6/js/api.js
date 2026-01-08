@@ -2,6 +2,7 @@ const api = axios.create({
   baseURL: "https://app.overplan.ru/applications/crmButtons/6/api/",
 });
 
+// получить все кнопки
 export const getAllButtons = async (memberId) => {
   const response = await api.post("/button-crud/getAllButtons.php", {
     memberId: memberId,
@@ -9,18 +10,21 @@ export const getAllButtons = async (memberId) => {
   return response.data;
 };
 
+// получить шаблонные параметры
 export const getTemplate = async () => {
   const response = await api.get("/button-crud/getTemplate.php");
   return response.data;
 };
 
+// получитьт больше кнопок
 export const getMoreButtons = async (memberId) => {
-  const response = await api.post("/getMoreButtons.php", {
+  const response = await api.post("/button-crud/getMoreButtons.php", {
     memberId: memberId,
   });
   return response.data;
 };
 
+// сохранить настройки
 export const saveBtnSettings = async (memberId, current_button, activeButtonId) => {
   const response = await api.post("/button-crud/saveBtnSettings.php", {
     memberId: memberId,
@@ -30,6 +34,7 @@ export const saveBtnSettings = async (memberId, current_button, activeButtonId) 
   return response.data;
 };
 
+// удалить настройки кнопки
 export const deleteButton = async (memberId, activeButtonId) => {
   const response = await api.post("/button-crud/deleteButton.php", {
     memberId: memberId,
@@ -38,8 +43,9 @@ export const deleteButton = async (memberId, activeButtonId) => {
   return response.data;
 };
 
+// создать кнопку в crm
 export const createButtonInCrm = async (memberId,activeButtonId, domen  ) => {
-  const response = await api.post("/createButtonInCrm.php", {
+  const response = await api.post("/button-crud/createButtonInCrm.php", {
     memberId: memberId,
  activeButtonId: activeButtonId,
       domen: domen,
@@ -47,8 +53,9 @@ export const createButtonInCrm = async (memberId,activeButtonId, domen  ) => {
   return response.data;
 };
 
+// удалить кнопку из crm
 export const deleteButtonInCrm = async (memberId,activeButtonId, domen  ) => {
-  const response = await api.post("/deleteButtonInCrm.php", {
+  const response = await api.post("/button-crud/deleteButtonInCrm.php", {
     memberId: memberId,
  activeButtonId: activeButtonId,
       domen: domen,
@@ -56,23 +63,26 @@ export const deleteButtonInCrm = async (memberId,activeButtonId, domen  ) => {
   return response.data;
 };
 
+// получить данные кнопки
 export const getButtonData = async (memberId, button) => {
-  const response = await api.post("/getButtonData.php", {
+  const response = await api.post("/button-crud/getButtonData.php", {
     memberId: memberId,
     button_ID: button.ID
   });
   return response.data;
 };
 
+// получить все сущности портала
 export const getAllEntitys = async (memberId, ) => {
-  const response = await api.post("/getAllEntitys.php", {
+  const response = await api.post("/button-actions/getAllEntitys.php", {
     memberId: memberId,
   });
   return response.data;
 };
 
+// получить все бп выбранной сущности
 export const getBPforEntity = async (memberId,current_button ) => {
-  const response = await api.post("/getBPforEntity.php", {
+  const response = await api.post("/button-actions/getBPforEntity.php", {
     memberId: memberId,
     current_button: current_button.entitySelection_FIELDS
 
@@ -80,8 +90,9 @@ export const getBPforEntity = async (memberId,current_button ) => {
   return response.data;
 };
 
+// получить все документы выбранной сущности
 export const getDocumentsforEntity = async (memberId,current_button ) => {
-  const response = await api.post("/getDocumentsforEntity.php", {
+  const response = await api.post("/button-actions/getDocumentsforEntity.php", {
     memberId: memberId,
     current_button: current_button.entitySelection_FIELDS
 
@@ -89,9 +100,9 @@ export const getDocumentsforEntity = async (memberId,current_button ) => {
   return response.data;
 };
 
-
+// получить все списки
 export const getAllLists = async (memberId,current_button ) => {
-  const response = await api.post("/getAllLists.php", {
+  const response = await api.post("/button-actions/getAllLists.php", {
     memberId: memberId,
     current_button: current_button.entitySelection_FIELDS
 
@@ -99,9 +110,9 @@ export const getAllLists = async (memberId,current_button ) => {
   return response.data;
 };
 
-
+// получить все поля выбранного списка
 export const getListFields = async (memberId,current_button ) => {
-  const response = await api.post("/getListFields.php", {
+  const response = await api.post("/button-actions/getListFields.php", {
     memberId: memberId,
     entity: current_button.entitySelection_FIELDS,
     list: current_button.listsValue_FIELDS
@@ -110,8 +121,9 @@ export const getListFields = async (memberId,current_button ) => {
   return response.data;
 };
 
+// получить все поля выбранной сущности
 export const getEntityFieldsForList = async (memberId,current_button ) => {
-  const response = await api.post("/getEntityFieldsForList.php", {
+  const response = await api.post("/button-actions/getEntityFieldsForList.php", {
     memberId: memberId,
     current_button: current_button.entitySelection_FIELDS
 
@@ -119,20 +131,12 @@ export const getEntityFieldsForList = async (memberId,current_button ) => {
   return response.data;
 };
 
+// получить все поля типа ссылка выбранной сущности
 export const getCrmFieldsLink = async (memberId,current_button ) => {
-  const response = await api.post("/getCrmFieldsLink.php", {
+  const response = await api.post("/button-actions/getCrmFieldsLink.php", {
     memberId: memberId,
     current_button: current_button.entitySelection_FIELDS
 
   });
   return response.data;
 };
-
-
-// export const createButton = async (memberId) => {
-//   const response = await api.post("/createButton.php", {
-//     memberId: memberId,
-//   });
-//   return response.data;
-// };
-

@@ -8,10 +8,10 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 // получаю данные хранилища (все кнопки)
-$result = overCRest::call("entity.item.get", [
+$getButtons = overCRest::call("entity.item.get", [
     "ENTITY" => "customButton",
 ]);
 
 echo json_encode([
-    'result' => $result,
+    'result' => $getButtons,
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

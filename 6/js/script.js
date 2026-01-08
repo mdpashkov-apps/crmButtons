@@ -179,8 +179,16 @@ async createBtnCrm(domen) {
  
     this.loader = true;
 
-    const response = await createButtonInCrm(window.memberId, this.activeButtonId, domen);
-      await this.getButtons(true)
+   await createButtonInCrm(window.memberId, this.activeButtonId, domen);
+      // await this.getButtons(true)
+
+const response = await getButtonData(
+    window.memberId,
+    { ID: this.activeButtonId }
+  );
+
+  this.current_button = JSON.parse(JSON.stringify(response.result));
+  this.normalizeBooleans();
 
 
   
@@ -188,14 +196,25 @@ async createBtnCrm(domen) {
   
 },
 
+
+
+
+
+
 async deleteBtnCrm(domen) {
  
     this.loader = true;
 
-    const response = await deleteButtonInCrm(window.memberId, this.activeButtonId, domen);
+    await deleteButtonInCrm(window.memberId, this.activeButtonId, domen);
 
-      await this.getButtons(true)
+      // await this.getButtons(true)
+const response = await getButtonData(
+    window.memberId,
+    { ID: this.activeButtonId }
+  );
 
+  this.current_button = JSON.parse(JSON.stringify(response.result));
+  this.normalizeBooleans();
   
     this.loader = false;
   
@@ -570,7 +589,6 @@ async resetStylesButton() {
   },
   watch: {
   'current_button.buttonActionsId_FIELDS'(val) {
-    // console.log('buttonActionsId_FIELDS:', val)
   }
 },
 
@@ -582,14 +600,7 @@ async resetStylesButton() {
     return this.portalButtons.length + this.hasNewButton
   },
 
-// buttonColorModel: {
-//     get() {
-//       return this.current_button?.buttonColor_FIELDS || '#354873'
-//     },
-//     set(val) {
-//       this.$set(this.current_button, 'buttonColor_FIELDS', val)
-//     }
-//   },
+
 
  
   
