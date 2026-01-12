@@ -1,7 +1,7 @@
 <?php
 
 // ПУТЬ К КАРТИНКЕ
-$imagePath = '/home/bitrix/www/applications/crmButtons/6/overBot.png';
+$imagePath = '/home/bitrix/www/applications/crmButtons/6/avatarBot.png';
 
 if (!file_exists($imagePath)) {
     die('Файл не найден');
