@@ -176,6 +176,11 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 
                     <button class="accordion" @click="followEnteredLink"> Перейти по произвольной ссылке </button>
                     <div class="panel" :class="{panel_show:accordion_3}" v-if='flagsButtonEnteredLink'>
+                        <div>
+                            <label>
+                                <i>Данное действие не работает совместно с действием "Перейти по ссылке из поля в CRM"</i>
+                            </label>
+                        </div>
                         <div class="div_row">
                             <label for="activate_the_property_3">Активировать свойство:</label> 
                              <div>
@@ -189,8 +194,13 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     </div>
 
                     <button class="accordion" @click="followCrmLink"> Перейти по ссылке из поля в CRM </button>
-                    <div class="panel" :class="{panel_show:accordion_4}" v-if="flagsButtonCrmLink">
-                        <div class="div_row">
+                    <div class="panel" :class="{panel_show:accordion_4}" v-if="flagsButtonCrmLink">  
+                    <div>
+                        <label>
+                            <i>Данное действие не работает совместно с действием "Перейти по произвольной ссылке"</i>
+                        </label>
+                    </div>
+                    <div class="div_row">
                             <label for="activate_the_property_4">Активировать свойство:</label>
                              <div>
                                 <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4"> 

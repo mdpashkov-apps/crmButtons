@@ -110,9 +110,9 @@ var app = new Vue({
 
 
     async saveSettings() {
-      if (!this.checkEntitySelected()) {
-        return;
-      }
+      // if (!this.checkEntitySelected()) {
+      //   return;
+      // }
       this.loader = true;
 
       let response = await saveBtnSettings(
@@ -244,9 +244,10 @@ var app = new Vue({
       // 🔥 кладём данные из PHP
       this.current_button = JSON.parse(JSON.stringify(response.result));
       this.normalizeBooleans()
+if (this.current_button?.entitySelection_FIELDS) {
 
       await this.getEntFields()   // ⬅ загрузили options
-
+      }
     this.normalizeFieldsTable()
 
       this.originalButtonStyles = {
