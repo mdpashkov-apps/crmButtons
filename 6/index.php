@@ -48,12 +48,12 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
         <div v-else >
             <div class="tabs_btn">
                 <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">
-                <div v-for="button in portalButtons.slice(0,6)" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" :id="button.ID" @click="selectButton(button)"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
+                <div v-for="button in portalButtons.slice(0,6)" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" :id="button.ID" @click="selectButton(button)"> {{ activeButtonId === button.ID ? current_button.buttonName_FIELDS : button.PROPERTY_VALUES.buttonName_FIELDS }}
                 </div>
                 <div v-if="newButton && totalButtonsCount <= 6" class="tab_btn still_btn_active"> {{ current_button.buttonName_FIELDS }} </div>
                 <div v-if="totalButtonsCount > 6" class="dropdown" @mouseenter="showMoreButtons" @mouseleave="hideMoreButtons"> Еще <span class="span_btn">&or;</span>
                     <div class="dropdown-content" :class="{ show: showMore }">
-                        <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" @click="selectButton(button)"> {{ button.PROPERTY_VALUES.buttonName_FIELDS }}
+                        <div v-for="button in morebuttons" :key="button.ID" class="tab_btn" :class="{ still_btn_active: activeButtonId === button.ID }" @click="selectButton(button)"> {{ activeButtonId === button.ID ? current_button.buttonName_FIELDS : button.PROPERTY_VALUES.buttonName_FIELDS }}
                         </div>
                         <div v-if="newButton && totalButtonsCount > 6" class="tab_btn still_btn_active"> {{ current_button.buttonName_FIELDS }} </div>
                     </div>
@@ -179,8 +179,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_3">Активировать свойство:</label> 
                              <div>
-                                <input :checked="current_button.buttonActionsId_FIELDS.includes(3)" @change="toggleEnteredLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
-                                <span v-if="enteredLinkWarning" class="warning-text"> Уже выбрано другое действие со ссылкой</span>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_3" :value="3">
                             </div>
                         </div>
                         <div class="div_row">
@@ -194,7 +193,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <div class="div_row">
                             <label for="activate_the_property_4">Активировать свойство:</label>
                              <div>
-                                <input  :checked="current_button.buttonActionsId_FIELDS.includes(4)" @change="toggleCrmLink" v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4"> <span v-if="crmLinkWarning" class="warning-text"> Уже выбрано другое действие со ссылкой </span>
+                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" id="activate_the_property_4" :value="4"> 
                             </div>
                         </div>
                         <div class="div_row">
@@ -234,7 +233,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 </body>
 </html>
 
-<!-- <script>
+<script>
 BX24.callMethod('entity.item.get', {
   'ENTITY': 'customButton',
   'FILTER': {},
@@ -242,4 +241,4 @@ BX24.callMethod('entity.item.get', {
 }, function(result) {
   console.log('1ое хранилище ',result);
 });
-</script> -->
+</script>

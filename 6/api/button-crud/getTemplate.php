@@ -10,7 +10,7 @@ $templateParam = [
     'buttonBorderColor_FIELDS' => '#000000',
     'usingTheIcon_FIELDS' => true,
     'iconOnTheButton_FIELDS' => '',
-    'buttonInCRM_FIELDS' => 'false',
+    'buttonInCRM_FIELDS' => false,
 ];
 
 echo json_encode([

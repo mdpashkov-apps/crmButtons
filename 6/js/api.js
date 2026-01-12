@@ -44,11 +44,12 @@ export const deleteButton = async (memberId, activeButtonId) => {
 };
 
 // создать кнопку в crm
-export const createButtonInCrm = async (memberId,activeButtonId, domen  ) => {
+export const createButtonInCrm = async (memberId,activeButtonId, domen, btnSettings  ) => {
   const response = await api.post("/button-crud/createButtonInCrm.php", {
     memberId: memberId,
  activeButtonId: activeButtonId,
       domen: domen,
+      btnSettings:btnSettings
   });
   return response.data;
 };
