@@ -1,4 +1,8 @@
 <?
+
+if (!is_null($_GET['REQUEST'])) {
+    $_REQUEST = json_decode($_GET['REQUEST'], 1);
+}
 include_once(__DIR__.'/overCRest.php');
 overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 ?>
@@ -34,6 +38,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             <div class="feedback-con">
                 <a href='./index.php?REQUEST=<?= json_encode($_REQUEST) ?>'>Настройка приложения</a>
             </div>
+            <div class="feedback-con">
+            <a href='./indexReports.php?REQUEST=<?= json_encode($_REQUEST) ?>'>Настроить уведомления</a>
+        </div>
             <div class="feedback-con">
                 <a href="https://t.me/appsupportbot" target="_blank">Обратная связь</a>
             </div>

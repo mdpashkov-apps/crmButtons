@@ -140,3 +140,27 @@ export const getCrmFieldsLink = async (memberId,current_button ) => {
   });
   return response.data;
 };
+
+
+export const getAllUsers = async (memberId) => {
+  const response = await api.post("/getAllUsers.php", {
+    memberId: memberId,
+  });
+  return response.data;
+};
+
+export const addUsersInChat = async (memberId,selectedUsers) => {
+  const response = await api.post("/addUsersInChat.php", {
+    memberId: memberId,
+    selectedUsers: selectedUsers
+  });
+  return response.data;
+};
+
+export const deleteChatBot = async (memberId) => {
+  const response = await api.post("/deleteChatBot.php", {
+    memberId: memberId,
+  });
+  return response.data;
+};
+

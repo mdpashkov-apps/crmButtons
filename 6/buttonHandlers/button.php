@@ -5,6 +5,8 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
 ?>
 <head>
+      <script src="//api.bitrix24.com/api/v1/"></script>
+
     <script src="https://gcore.jsdelivr.net/npm/vue/dist/vue.min.js"></script>
   	<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
     <script src="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.js"></script>
@@ -259,4 +261,15 @@ button:disabled {
     </div>
   </div>
 </div>
+
+<script>
+  // Ждём пока Bitrix инициализируется
+  window.__bxReady = new Promise(resolve => {
+    BX24.ready(() => {
+      resolve(window.BX24);
+    });
+  });
+</script>
+
 <script type="module" src="../6/buttonHandlers/script.js"></script>
+

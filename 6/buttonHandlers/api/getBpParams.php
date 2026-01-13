@@ -117,16 +117,6 @@ if ($entityTypeIdMap === '31') {
     ];
 }
 
-foreach ($withoutParams as $bp) {
-    $bpId = (int)$bp['ID'];
-    $startBP = overCRest::call(
-        'bizproc.workflow.start',
-        [
-            'TEMPLATE_ID' => $bpId,
-            'DOCUMENT_ID' => $document,
-        ]
-    );
-}
 
 // если среди параметров есть тип привязка к юзеру, то получим юзеров
 $allUserFio = null; 
@@ -163,7 +153,11 @@ foreach ($allBp[0]['PARAMETERS'] as $param) {
     }
 }
 
+
+
 echo json_encode([
-    'result' => $result,
+    'result' => $result,              // БП с параметрами
+    'withoutParams' => $withoutParams, // БП без параметров
+    'document' => $document,          // DOCUMENT_ID
     'allUserFio' => $allUserFio
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

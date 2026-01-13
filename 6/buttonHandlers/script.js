@@ -1,5 +1,8 @@
 import {getBpParams,startBp, createDocument, createListElement, OpenCrmLink, } from "../buttonHandlers/api.js";
 
+const BX24 = await window.__bxReady;
+// console.log('BX24 ready in module:', BX24);
+
 Vue.component("modal", {
   template: "#modal-template",
 });
@@ -51,6 +54,14 @@ var app = new Vue({
       this.loader = true;
       const response = await getBpParams(window.memberId, window.crmActions,window.entityData);
       this.paramResult = response.result;
+
+
+      if (response.withoutParams?.length) {
+  await this.runBpWithoutParams(
+    response.withoutParams,
+    response.document
+  );
+}
       // если есть бп с параметром привязки к пользователю, из запроса вернется список юзеров портала
       if (response.allUserFio) {
         this.allUsers = response.allUserFio;
@@ -71,6 +82,32 @@ var app = new Vue({
       });
       this.loader = false;
     },
+
+
+
+async runBpWithoutParams(withoutParams, document) {
+  if (!withoutParams || !withoutParams.length) return;
+
+  for (const bp of withoutParams) {
+    await new Promise((resolve, reject) => {
+      BX24.callMethod(
+        'bizproc.workflow.start',
+        {
+          TEMPLATE_ID: bp.ID,
+          DOCUMENT_ID: document
+        },
+        result => {
+          if (result.error()) {
+            reject(result.error());
+          } else {
+            resolve(result.data());
+          }
+        }
+      );
+    });
+  }
+},
+
 
     // данное действие работает на создание документа
     async action1() {
