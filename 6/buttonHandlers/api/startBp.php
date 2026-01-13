@@ -97,19 +97,12 @@ if ($entValue === '31') {
     ];
 }
 
-// $startBP = overCRest::call(
-//     'bizproc.workflow.start',
-//     [
-//         'TEMPLATE_ID' => $bpId,
-//         'DOCUMENT_ID' => $document,
-//         'PARAMETERS' => $filteredParams
-//     ]
-// );
+
 
 
 
 echo json_encode([
-    'bpId' => (int)$bpId,
-    'document' => $document,
-    'parameters' => $filteredParams,
+    'templateId' => (int)$bpId,
+    'document'   => $document,
+    'parameters' => $filteredParams
 ], JSON_UNESCAPED_UNICODE);

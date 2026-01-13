@@ -147,38 +147,44 @@ async runBpWithoutParams(withoutParams, document) {
     },
 
     // ф-я запуска текущего бизнес-процесса с параметрами
-    async runCurrentBp() {
-      // Берём текущий бизнес-процесс по индексу
-      const bp = this.paramResult[this.currentBpIndex];
-      // Объект, куда будем складывать подготовленные параметры БП
-      const preparedParams = {};
-      // Проходимся по всем параметрам бизнес-процесса
-      bp.PARAMETERS.forEach(param => {
-        // Получаем введённые пользователем значения параметра из формы
-        const values = this.formValues[bp.ID][param.Name];
-        // Если параметр множественный — передаём массив значений
-        if (param.Multiple) {
-          preparedParams[param.paramKey] = values;
-        } else {
-          // Если одиночный — берём первое значение из массива
-          preparedParams[param.paramKey] = values[0];
-        }
-      });
-      // Формируем объект параметров в формате:
-      // { ID_БП: { параметры } }
-      const bpParams = {
-        [bp.ID]: preparedParams
-      };
-      // Запускаем бизнес-процесс и ждём ответ от сервера
-      let response = await startBp(window.memberId, bpParams,window.entityData);
-      // Если это не последний БП — переходим к следующему
-      if (this.currentBpIndex < this.paramResult.length - 1) {
-        this.currentBpIndex++;
-      } else {
-        // Если БП закончились — сбрасываем список
-        this.paramResult = null;
+   async runCurrentBp() {
+  const bp = this.paramResult[this.currentBpIndex];
+
+  const preparedParams = {};
+  bp.PARAMETERS.forEach(param => {
+    const values = this.formValues[bp.ID][param.Name];
+    preparedParams[param.paramKey] = param.Multiple ? values : values[0];
+  });
+
+  const response = await startBp(
+    window.memberId,
+    { [bp.ID]: preparedParams },
+    window.entityData
+  );
+
+  const { templateId, document, parameters } = response;
+
+  await new Promise((resolve, reject) => {
+    BX24.callMethod(
+      'bizproc.workflow.start',
+      {
+        TEMPLATE_ID: templateId,
+        DOCUMENT_ID: document,
+        PARAMETERS: parameters
+      },
+      res => {
+        if (res.error()) reject(res.error());
+        else resolve(res.data());
       }
-    },
+    );
+  });
+
+  if (this.currentBpIndex < this.paramResult.length - 1) {
+    this.currentBpIndex++;
+  } else {
+    this.paramResult = null;
+  }
+},
 
     // Добавляет новое пустое поле для параметра и инпут (если множественное)
     addField(bpId, paramName) {
