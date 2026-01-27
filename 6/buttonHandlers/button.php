@@ -227,9 +227,22 @@ button:disabled {
           <multiselect v-else-if="param.Type === 'user'" v-model="formValues[paramResult[currentBpIndex].ID][param.Name]" placeholder="Выберите пользователя" label="name" track-by="value" :options="allUsers" :multiple="false" :close-on-select="true">
             <span slot="noResult">Такого варианта нет</span>
           </multiselect>
+           <!-- MULTISELECT ДЛЯ BOOL -->
+  <multiselect 
+    v-else-if="param.Type === 'bool'" 
+    v-model="formValues[paramResult[currentBpIndex].ID][param.Name]" 
+    placeholder="Выберите значение" 
+    label="name" 
+    track-by="value" 
+    :options="boolOptions" 
+    :multiple="false" 
+    :close-on-select="true"
+  >
+    <span slot="noResult">Такого варианта нет</span>
+  </multiselect>
         </div>
         <!-- MULTIPLE -->
-        <div v-else>
+        <!-- <div v-else>
           <multiselect v-if="param.Type === 'user'" v-model="formValues[paramResult[currentBpIndex].ID][param.Name]" name="selection_user" :placeholder-size="16" placeholder="Выберите пользователя" label="name" track-by="value"deselect-label="Убрать" select-label="" selected-label="" open-direction="top" :options="allUsers" :multiple="true" :taggable="false" :close-on-select="true" :limit="1" >
             <span slot="noResult"> Такого варианта нет </span>
           </multiselect>
@@ -238,7 +251,44 @@ button:disabled {
             <span :class="['remove-field', { 'remove-field--placeholder': idx === 0 }]" @click="idx > 0 && removeField(paramResult[currentBpIndex].ID, param.Name, idx)">✕</span>
           </div>
           <button v-if="param.Type !== 'user'" class="add-btn" @click="addField(paramResult[currentBpIndex].ID, param.Name)">Добавить ещё</button>
-        </div>
+        </div> -->
+        <!-- MULTIPLE -->
+<div v-else>
+  <!-- Множественный BOOL -->
+  <div v-if="param.Type === 'bool'">
+    <div v-for="(val, idx) in formValues[paramResult[currentBpIndex].ID][param.Name]" :key="idx" class="param-multiple-row">
+      <multiselect
+        v-model="formValues[paramResult[currentBpIndex].ID][param.Name][idx]"
+        :options="boolOptions"
+        label="name"
+        track-by="value"
+        :multiple="false"
+        :close-on-select="true"
+        placeholder="Выберите значение"
+      >
+        <span slot="noResult">Такого варианта нет</span>
+      </multiselect>
+      <span 
+        :class="['remove-field', { 'remove-field--placeholder': idx === 0 }]" 
+        @click="idx > 0 && removeField(paramResult[currentBpIndex].ID, param.Name, idx)"
+      >✕</span>
+    </div>
+    <button class="add-btn" @click="addField(paramResult[currentBpIndex].ID, param.Name)">Добавить ещё</button>
+  </div>
+
+  <!-- Остальные типы (текст, число и user) остаются без изменений -->
+  <div v-else-if="param.Type !== 'user'">
+    <div v-for="(val, idx) in formValues[paramResult[currentBpIndex].ID][param.Name]" :key="idx" class="param-multiple-row">
+      <input :type="param.Type === 'number' ? 'number' : 'text'" v-model="formValues[paramResult[currentBpIndex].ID][param.Name][idx]"/>
+      <span 
+        :class="['remove-field', { 'remove-field--placeholder': idx === 0 }]" 
+        @click="idx > 0 && removeField(paramResult[currentBpIndex].ID, param.Name, idx)"
+      >✕</span>
+    </div>
+    <button class="add-btn" @click="addField(paramResult[currentBpIndex].ID, param.Name)">Добавить ещё</button>
+  </div>
+</div>
+
       </div>
     </div>
     <button class="btn run-bp-btn" :disabled="!isCurrentBpValid" @click="runCurrentBp">Запустить БП</button>

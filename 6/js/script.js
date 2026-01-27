@@ -48,26 +48,53 @@ var app = new Vue({
   },
 
   methods: {
-    async getButtons(selectLast = false) {
+    // async getButtons(selectLast = false) {
       
-      let response = await getAllButtons(window.memberId);
+    //   let response = await getAllButtons(window.memberId);
 
-      if (response.result.total === 0) {
-        this.portalButtons = []; // 🔥 КРИТИЧНО
-        await this.getTemp();
-        this.activeButtonId = null;
-        this.newButton = true;
-        return;
-      }
+    //   if (response.result.total === 0) {
+    //     this.portalButtons = []; // 🔥 КРИТИЧНО
+    //     await this.getTemp();
+    //     this.activeButtonId = null;
+    //     this.newButton = true;
+    //     return;
+    //   }
 
-      this.portalButtons = response.result.result;
+    //   this.portalButtons = response.result.result;
 
-      let buttonToSelect = selectLast
-        ? this.portalButtons[this.portalButtons.length - 1]
-        : this.portalButtons[0];
+    //   let buttonToSelect = selectLast
+    //     ? this.portalButtons[this.portalButtons.length - 1]
+    //     : this.portalButtons[0];
 
-      this.selectButton(buttonToSelect);
-    },
+    //   this.selectButton(buttonToSelect);
+    // },
+
+
+async getButtons(selectLast = false) {
+  const response = await getAllButtons(window.memberId);
+
+  const buttons = Array.isArray(response?.result?.result)
+    ? response.result.result
+    : [];
+
+  this.portalButtons = buttons;
+
+  if (this.portalButtons.length === 0) {
+    await this.getTemp();
+    this.activeButtonId = null;
+    this.newButton = true;
+    return;
+  }
+
+  const buttonToSelect = selectLast
+    ? this.portalButtons[this.portalButtons.length - 1]
+    : this.portalButtons[0];
+
+  this.selectButton(buttonToSelect);
+},
+
+
+
 
 
     async getTemp() {

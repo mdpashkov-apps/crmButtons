@@ -53,18 +53,50 @@ $typeMap = [
     'email' => 'txt',
     'phone' => 'txt',
     'web' => 'txt',
-    'user' => 'user'
+    'user' => 'user',
+    'bool' => 'bool'
 ];
+
+// $allBp = [];
+// foreach ($getBizProc['result'] as $bp) {
+//     $filteredParams = [];
+//     if (!empty($bp['PARAMETERS'])) {
+//         foreach ($bp['PARAMETERS'] as $paramKey => $param) {
+//             $filteredParams[] = [
+//                 'paramKey' => $paramKey,
+//                 'Name' => $param['Name'],
+//                 'Type' => $typeMap[$param['Type']],
+//                 'Required' => (int)$param['Required'],
+//                 'Multiple' => (int)$param['Multiple'],
+//                 'Default'  => $param['Default'],
+//             ];
+//         }
+//     }
+//     $allBp[] = [
+//         'ID' => (int)$bp['ID'],
+//         'NAME' => $bp['NAME'],
+//         'PARAMETERS' => $filteredParams,
+//     ];
+// }
+
 
 $allBp = [];
 foreach ($getBizProc['result'] as $bp) {
     $filteredParams = [];
     if (!empty($bp['PARAMETERS'])) {
         foreach ($bp['PARAMETERS'] as $paramKey => $param) {
+            $type = $param['Type'] ?? null;
+
+            // Проверяем, есть ли тип в маппинге
+            if (!isset($typeMap[$type])) {
+                // Пропускаем этот параметр
+                continue;
+            }
+
             $filteredParams[] = [
                 'paramKey' => $paramKey,
                 'Name' => $param['Name'],
-                'Type' => $typeMap[$param['Type']],
+                'Type' => $typeMap[$type],
                 'Required' => (int)$param['Required'],
                 'Multiple' => (int)$param['Multiple'],
                 'Default'  => $param['Default'],
@@ -77,6 +109,7 @@ foreach ($getBizProc['result'] as $bp) {
         'PARAMETERS' => $filteredParams,
     ];
 }
+
 
 // полученный массив поделим, там где параметров нет и где есть
 $result = [];
@@ -120,6 +153,8 @@ if ($entityTypeIdMap === '31') {
 
 // если среди параметров есть тип привязка к юзеру, то получим юзеров
 $allUserFio = null; 
+$BoolOptions = null; 
+
 foreach ($allBp[0]['PARAMETERS'] as $param) {
     if (($param['Type'] ?? null) === 'user') {
         $totalUser = overCRest::call('user.search', [
@@ -151,13 +186,20 @@ foreach ($allBp[0]['PARAMETERS'] as $param) {
             $allUserFio = array_merge($allUserFio, $tmpArray);
         }
     }
+    if (($param['Type'] ?? null) === 'bool') {
+        $BoolOptions = [
+            ['value' => 'not',  'name' => ''],
+            ['value' => 'Y', 'name' => 'Да'],
+            ['value' => 'N', 'name' => 'Нет'],
+        ];
+    }
 }
-
 
 
 echo json_encode([
     'result' => $result,              // БП с параметрами
     'withoutParams' => $withoutParams, // БП без параметров
     'document' => $document,          // DOCUMENT_ID
-    'allUserFio' => $allUserFio
+    'allUserFio' => $allUserFio,
+    // 'BoolOptions' => $BoolOptions 
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

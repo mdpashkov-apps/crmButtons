@@ -72,7 +72,9 @@ $member_id = $_REQUEST['member_id']; ?>
             <a href="https://t.me/appsupportbot" target="_blank">Обратная связь</a>
         </div>
     </div>
-
+    <div  class="offers">
+        <a href="https://t.me/appsupportbot" target="_blank">Запишитесь на бесплатную подборку полезных приложений для вашего портала</a>
+    </div>
     <!-- {{rows}} -->
     <div class="tabs_btn" v-if="current_button && current_button.button_actions">
         <img class="addProfiles" src="img/Add.svg" alt="Добавить профиль" @click="createBtn">

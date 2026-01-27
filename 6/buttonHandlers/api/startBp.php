@@ -13,49 +13,69 @@ $bpParam = $requestData['bpParam'];
 $bpId = array_key_first($bpParam);
 // параметры
 $bpParameters = $bpParam[$bpId];
+// file_put_contents(__DIR__.'/result91.log', var_export($bpParam, true), FILE_APPEND);
 
-// фильруем параметры
+
+
 $filteredParams = [];
 
-foreach ($bpParameters as $key => $value) {
-    if ($key === 'user') {
-        // если один пользователь
-        if (isset($value['value']) && $value['value']) {
-            $filteredParams[$key] = 'user_' . $value['value'];
+foreach ($bpParameters as $paramKey => $paramData) {
+
+    $type     = $paramData['type'] ?? null;
+    $multiple = $paramData['multiple'] ?? false;
+    $value    = $paramData['value'] ?? null;
+
+    // ===== USER =====
+    if ($type === 'user') {
+
+        // одиночный пользователь
+        if (!$multiple && is_array($value) && !empty($value['value'])) {
+            $filteredParams[$paramKey] = 'user_' . $value['value'];
             continue;
         }
-        // если несколько пользователей
-        if (is_array($value)) {
+
+        // множественный пользователь
+        if ($multiple && is_array($value)) {
             $users = [];
             foreach ($value as $item) {
-                if (is_array($item) && !empty($item['value'])) {
+                if (isset($item['value'])) {
                     $users[] = 'user_' . $item['value'];
                 }
             }
             if (!empty($users)) {
-                $filteredParams[$key] = $users;
+                $filteredParams[$paramKey] = $users;
             }
         }
+
         continue;
     }
+
+    // ===== STRING / INT / LIST =====
     if (is_string($value)) {
         if ($value !== '') {
-            $filteredParams[$key] = $value;
+            $filteredParams[$paramKey] = $value;
         }
         continue;
     }
+
     if (is_array($value)) {
         $flat = [];
-        array_walk_recursive($value, function ($v) use (&$flat) {
+        foreach ($value as $v) {
             if ($v !== '' && $v !== null) {
                 $flat[] = $v;
             }
-        });
+        }
         if (!empty($flat)) {
-            $filteredParams[$key] = $flat;
+            $filteredParams[$paramKey] = $multiple ? $flat : $flat[0];
         }
     }
 }
+
+
+
+
+
+
 
 //получаем id типа сущности
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
@@ -98,6 +118,7 @@ if ($entValue === '31') {
 }
 
 
+// file_put_contents(__DIR__.'/result91.log', var_export($filteredParams, true), FILE_APPEND);
 
 
 

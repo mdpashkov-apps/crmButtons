@@ -1,5 +1,4 @@
 <?
-
 if (!is_null($_GET['REQUEST'])) {
     $_REQUEST = json_decode($_GET['REQUEST'], 1);
 }
@@ -45,6 +44,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                 <a href="https://t.me/appsupportbot" target="_blank">Обратная связь</a>
             </div>
         </div>
+        <div class="offers">
+            <a href="https://t.me/appsupportbot" target="_blank">Запишитесь на бесплатную подборку полезных приложений для вашего портала</a>
+        </div>
+        
         <!-- кнопки -->
         <div v-if="portalButtons.length === 0" >
             <div  class="tabs_btn">
@@ -250,7 +253,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 </body>
 </html>
 
-<script>
+<!-- <script>
 BX24.callMethod('entity.item.get', {
   'ENTITY': 'customButton',
   'FILTER': {},
@@ -258,4 +261,4 @@ BX24.callMethod('entity.item.get', {
 }, function(result) {
   console.log('1ое хранилище ',result);
 });
-</script>
+</script> -->

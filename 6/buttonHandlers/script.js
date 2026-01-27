@@ -19,6 +19,12 @@ var app = new Vue({
       formValues: {}, 
       currentBpIndex: 0, // текущий БП для которого вводятся параметры для запуска
       allUsers: [], // список пользователей портала в мультиселекте с параметрами бп 
+       boolOptions: [
+      // { value: '', name: 'Не установлено' },
+      { value: 'Y', name: 'Да' },
+      { value: 'N', name: 'Нет' },
+    ],
+
     };
   },
 
@@ -65,6 +71,9 @@ var app = new Vue({
       // если есть бп с параметром привязки к пользователю, из запроса вернется список юзеров портала
       if (response.allUserFio) {
         this.allUsers = response.allUserFio;
+      }
+      if (response.BoolOptions) {
+        this.boolOptions = response.BoolOptions;
       }
       // ИНИЦИАЛИЗАЦИЯ ФОРМЫ
       this.paramResult.forEach(bp => {
@@ -151,10 +160,65 @@ async runBpWithoutParams(withoutParams, document) {
   const bp = this.paramResult[this.currentBpIndex];
 
   const preparedParams = {};
-  bp.PARAMETERS.forEach(param => {
-    const values = this.formValues[bp.ID][param.Name];
-    preparedParams[param.paramKey] = param.Multiple ? values : values[0];
-  });
+  // bp.PARAMETERS.forEach(param => {
+  //   const values = this.formValues[bp.ID][param.Name];
+  //   preparedParams[param.paramKey] = param.Multiple ? values : values[0];
+
+  // });
+console.log('first:', bp);
+
+// bp.PARAMETERS.forEach(param => {
+//   const values = this.formValues[bp.ID][param.Name];
+
+//   // защита
+//   if (values === undefined || values === null) return;
+
+//   // 🔴 КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
+//   if (param.Type === 'user') {
+//     preparedParams[param.paramKey] = values;
+//     return;
+//   }
+
+//   // остальные типы
+//   preparedParams[param.paramKey] = param.Multiple
+//     ? values
+//     : values[0];
+// });
+
+
+// bp.PARAMETERS.forEach(param => {
+//   const values = this.formValues[bp.ID][param.Name];
+
+//   if (values === undefined || values === null) return;
+
+//   preparedParams[param.paramKey] = {
+//     type: param.Type,
+//     multiple: !!param.Multiple,
+//     value:
+//       param.Type === 'user'
+//         ? values
+//         : (param.Multiple ? values : values[0])
+//   };
+// });
+bp.PARAMETERS.forEach(param => {
+  const values = this.formValues[bp.ID][param.Name];
+
+  if (values === undefined || values === null) return;
+
+  preparedParams[param.paramKey] = {
+    type: param.Type,
+    multiple: !!param.Multiple,
+    value:
+      param.Type === 'user'
+        ? values
+        : (param.Multiple ? values : { value: values })  // 🔴 оборачиваем в объект
+  };
+});
+
+
+// console.log('FINAL preparedParams:', preparedParams);
+
+
 
   const response = await startBp(
     window.memberId,
