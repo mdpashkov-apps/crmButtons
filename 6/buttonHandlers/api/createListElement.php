@@ -23,7 +23,6 @@ $entityMap = [
 ];
 $entityType = $entityMap[$entityTypeId] ?? $entityTypeId;
 
-
 // получаем json с сопоставлением полей списка и скщности из таблицы
 $raw = $requestData['crmActions']['fieldsTable_FIELDS'];
 $fieldsTable_FIELDS = json_decode($raw, true);

@@ -13,28 +13,29 @@ $bpParam = $requestData['bpParam'];
 $bpId = array_key_first($bpParam);
 // параметры
 $bpParameters = $bpParam[$bpId];
-// file_put_contents(__DIR__.'/result91.log', var_export($bpParam, true), FILE_APPEND);
 
-
-
+// итоговый массив параметров, который пойдёт в запуск БП
 $filteredParams = [];
 
 foreach ($bpParameters as $paramKey => $paramData) {
-
-    $type     = $paramData['type'] ?? null;
+    // тип параметра (например: user, string, list и т.п.)
+    $type = $paramData['type'] ?? null;
+    // является ли параметр множественным
     $multiple = $paramData['multiple'] ?? false;
-    $value    = $paramData['value'] ?? null;
+    // значение параметра
+    $value = $paramData['value'] ?? null;
 
-    // ===== USER =====
+    // Обработка параметров типа "Пользователь"
     if ($type === 'user') {
-
         // одиночный пользователь
+        // ожидаем массив вида ['value' => ID]
         if (!$multiple && is_array($value) && !empty($value['value'])) {
             $filteredParams[$paramKey] = 'user_' . $value['value'];
             continue;
         }
 
         // множественный пользователь
+        // ожидаем массив пользователей, каждый с ['value' => ID]
         if ($multiple && is_array($value)) {
             $users = [];
             foreach ($value as $item) {
@@ -42,40 +43,41 @@ foreach ($bpParameters as $paramKey => $paramData) {
                     $users[] = 'user_' . $item['value'];
                 }
             }
+
+            // добавляем параметр только если есть пользователи
             if (!empty($users)) {
                 $filteredParams[$paramKey] = $users;
             }
         }
-
         continue;
     }
 
-    // ===== STRING / INT / LIST =====
+    // Обработка строковых значений (одиночные поля без множественного выбора)
     if (is_string($value)) {
+        // игнорируем пустые строки
         if ($value !== '') {
             $filteredParams[$paramKey] = $value;
         }
         continue;
     }
 
+    // Обработка массивов значений- множественный выбор)
     if (is_array($value)) {
+        // убираем пустые и null значения
         $flat = [];
         foreach ($value as $v) {
             if ($v !== '' && $v !== null) {
                 $flat[] = $v;
             }
         }
+        // если после фильтрации что-то осталось
         if (!empty($flat)) {
+            // если параметр множественный — передаём массив
+            // если одиночный — берём первое значение
             $filteredParams[$paramKey] = $multiple ? $flat : $flat[0];
         }
     }
 }
-
-
-
-
-
-
 
 //получаем id типа сущности
 $entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
@@ -116,11 +118,6 @@ if ($entValue === '31') {
         strtoupper($entValue) . '_' . $entityId,
     ];
 }
-
-
-// file_put_contents(__DIR__.'/result91.log', var_export($filteredParams, true), FILE_APPEND);
-
-
 
 echo json_encode([
     'templateId' => (int)$bpId,

@@ -57,29 +57,6 @@ $typeMap = [
     'bool' => 'bool'
 ];
 
-// $allBp = [];
-// foreach ($getBizProc['result'] as $bp) {
-//     $filteredParams = [];
-//     if (!empty($bp['PARAMETERS'])) {
-//         foreach ($bp['PARAMETERS'] as $paramKey => $param) {
-//             $filteredParams[] = [
-//                 'paramKey' => $paramKey,
-//                 'Name' => $param['Name'],
-//                 'Type' => $typeMap[$param['Type']],
-//                 'Required' => (int)$param['Required'],
-//                 'Multiple' => (int)$param['Multiple'],
-//                 'Default'  => $param['Default'],
-//             ];
-//         }
-//     }
-//     $allBp[] = [
-//         'ID' => (int)$bp['ID'],
-//         'NAME' => $bp['NAME'],
-//         'PARAMETERS' => $filteredParams,
-//     ];
-// }
-
-
 $allBp = [];
 foreach ($getBizProc['result'] as $bp) {
     $filteredParams = [];
@@ -92,7 +69,6 @@ foreach ($getBizProc['result'] as $bp) {
                 // Пропускаем этот параметр
                 continue;
             }
-
             $filteredParams[] = [
                 'paramKey' => $paramKey,
                 'Name' => $param['Name'],
@@ -109,7 +85,6 @@ foreach ($getBizProc['result'] as $bp) {
         'PARAMETERS' => $filteredParams,
     ];
 }
-
 
 // полученный массив поделим, там где параметров нет и где есть
 $result = [];
@@ -138,8 +113,8 @@ if ($entityTypeIdMap === '31') {
 } else {
     // лид, сделка, контакт и т.п.
     $map = [
-        'Lead'    => 'CCrmDocumentLead',
-        'Deal'    => 'CCrmDocumentDeal',
+        'Lead' => 'CCrmDocumentLead',
+        'Deal' => 'CCrmDocumentDeal',
         'Contact' => 'CCrmDocumentContact',
         'Company' => 'CCrmDocumentCompany',
     ];
@@ -194,7 +169,6 @@ foreach ($allBp[0]['PARAMETERS'] as $param) {
         ];
     }
 }
-
 
 echo json_encode([
     'result' => $result,              // БП с параметрами

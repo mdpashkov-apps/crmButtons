@@ -39,8 +39,6 @@ if (is_numeric($entityType)) {
     $linkValue = $getFieldValue['result'][$fieldCode] ;
 }
 
-
-
 echo json_encode([
     'result' => $linkValue,
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
