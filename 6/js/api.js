@@ -145,7 +145,7 @@ export const getCrmFieldsLink = async (memberId,current_button ) => {
 // для второй вкладки с настройками уведомлений
 // получение юзеров
 export const getAllUsers = async (memberId) => {
-  const response = await api.post("/getAllUsers.php", {
+  const response = await api.post("/indexReport/getAllUsers.php", {
     memberId: memberId,
   });
   return response.data;
@@ -153,7 +153,7 @@ export const getAllUsers = async (memberId) => {
 
 // добавление выбранных юзеров в чат
 export const addUsersInChat = async (memberId,selectedUsers) => {
-  const response = await api.post("/addUsersInChat.php", {
+  const response = await api.post("/indexReport/addUsersInChat.php", {
     memberId: memberId,
     selectedUsers: selectedUsers
   });
@@ -162,7 +162,7 @@ export const addUsersInChat = async (memberId,selectedUsers) => {
 
 // удаление чатбота с портала
 export const deleteChatBot = async (memberId) => {
-  const response = await api.post("/deleteChatBot.php", {
+  const response = await api.post("/indexReport/deleteChatBot.php", {
     memberId: memberId,
   });
   return response.data;
