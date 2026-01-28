@@ -2,6 +2,7 @@ const api = axios.create({
   baseURL: "https://app.overplan.ru/applications/crmButtons/6/api/",
 });
 
+// для первой вкладки с настройками кнопок
 // получить все кнопки
 export const getAllButtons = async (memberId) => {
   const response = await api.post("/button-crud/getAllButtons.php", {
@@ -141,7 +142,8 @@ export const getCrmFieldsLink = async (memberId,current_button ) => {
   return response.data;
 };
 
-
+// для второй вкладки с настройками уведомлений
+// получение юзеров
 export const getAllUsers = async (memberId) => {
   const response = await api.post("/getAllUsers.php", {
     memberId: memberId,
@@ -149,6 +151,7 @@ export const getAllUsers = async (memberId) => {
   return response.data;
 };
 
+// добавление выбранных юзеров в чат
 export const addUsersInChat = async (memberId,selectedUsers) => {
   const response = await api.post("/addUsersInChat.php", {
     memberId: memberId,
@@ -157,6 +160,7 @@ export const addUsersInChat = async (memberId,selectedUsers) => {
   return response.data;
 };
 
+// удаление чатбота с портала
 export const deleteChatBot = async (memberId) => {
   const response = await api.post("/deleteChatBot.php", {
     memberId: memberId,
