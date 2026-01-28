@@ -1,4 +1,4 @@
-import {getBpParams,startBp, createDocument, createListElement, OpenCrmLink, } from "../buttonHandlers/api.js";
+import {getBpParams,startBp, createDocument, createListElement, OpenCrmLink, } from "../js/api.js";
 
 const BX24 = await window.__bxReady;
 // console.log('BX24 ready in module:', BX24);
