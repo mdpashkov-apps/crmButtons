@@ -1,7 +1,6 @@
 import {getBpParams,startBp, createDocument, createListElement, OpenCrmLink, } from "../js/api.js";
 
 const BX24 = await window.__bxReady;
-// console.log('BX24 ready in module:', BX24);
 
 Vue.component("modal", {
   template: "#modal-template",
@@ -19,12 +18,10 @@ var app = new Vue({
       formValues: {}, 
       currentBpIndex: 0, // текущий БП для которого вводятся параметры для запуска
       allUsers: [], // список пользователей портала в мультиселекте с параметрами бп 
-       boolOptions: [
-      // { value: '', name: 'Не установлено' },
-      { value: 'Y', name: 'Да' },
-      { value: 'N', name: 'Нет' },
-    ],
-
+      boolOptions: [
+        { value: 'Y', name: 'Да' },
+        { value: 'N', name: 'Нет' },
+      ],
     };
   },
 
@@ -46,7 +43,6 @@ var app = new Vue({
       for (const actionId of actions) {
         // получаем функцию действия по его ID
         const actionFn = actionsMap[actionId];
-
         // если действие существует — выполняем его
         if (actionFn) {
           // await нужен, чтобы действия выполнялись строго по порядку
@@ -60,24 +56,24 @@ var app = new Vue({
       this.loader = true;
       const response = await getBpParams(window.memberId, window.crmActions,window.entityData);
       this.paramResult = response.result;
-
-
       if (response.withoutParams?.length) {
-  await this.runBpWithoutParams(
-    response.withoutParams,
-    response.document
-  );
-}
+        await this.runBpWithoutParams(response.withoutParams, response.document);
+      }
       // если есть бп с параметром привязки к пользователю, из запроса вернется список юзеров портала
       if (response.allUserFio) {
         this.allUsers = response.allUserFio;
       }
+      // тоже самое для bool
       if (response.BoolOptions) {
         this.boolOptions = response.BoolOptions;
       }
-      // ИНИЦИАЛИЗАЦИЯ ФОРМЫ
+      // Инициализация формы параметров БП
       this.paramResult.forEach(bp => {
+        // Создаём объект для хранения значений формы конкретного БП
+        // Ключ — ID бизнес-процесса
+        // this.$set нужен, чтобы Vue сделал объект реактивным
         this.$set(this.formValues, bp.ID, {});
+        // Проходимся по всем параметрам текущего БП
         bp.PARAMETERS.forEach(p => {
           let values;
           if (p.Type === 'user') {
@@ -86,37 +82,38 @@ var app = new Vue({
             const defaultVal = p.Default || '';
             values = p.Multiple ? [defaultVal] : [defaultVal];
           }
+          // Сохраняем начальное значение параметра в модель формы
+          // Ключ — имя параметра бизнес-процесса
           this.$set(this.formValues[bp.ID], p.Name, values);
         });
       });
       this.loader = false;
     },
 
-
-
-async runBpWithoutParams(withoutParams, document) {
-  if (!withoutParams || !withoutParams.length) return;
-
-  for (const bp of withoutParams) {
-    await new Promise((resolve, reject) => {
-      BX24.callMethod(
-        'bizproc.workflow.start',
-        {
-          TEMPLATE_ID: bp.ID,
-          DOCUMENT_ID: document
-        },
-        result => {
-          if (result.error()) {
-            reject(result.error());
-          } else {
-            resolve(result.data());
-          }
-        }
-      );
-    });
-  }
-},
-
+    // запуск бп без параметров
+    async runBpWithoutParams(withoutParams, document) {
+      // Если БП нет — выходим
+      if (!withoutParams || !withoutParams.length) return;
+      // Последовательно запускаем каждый БП через js
+      for (const bp of withoutParams) {
+        await new Promise((resolve, reject) => {
+          BX24.callMethod(
+            'bizproc.workflow.start',
+            {
+              TEMPLATE_ID: bp.ID,
+              DOCUMENT_ID: document
+            },
+            result => {
+              if (result.error()) {
+                reject(result.error());
+              } else {
+                resolve(result.data());
+              }
+            }
+          );
+        });
+      }
+    },
 
     // данное действие работает на создание документа
     async action1() {
@@ -156,99 +153,57 @@ async runBpWithoutParams(withoutParams, document) {
     },
 
     // ф-я запуска текущего бизнес-процесса с параметрами
-   async runCurrentBp() {
-  const bp = this.paramResult[this.currentBpIndex];
+    async runCurrentBp() {
+      // Текущий бизнес-процесс
+      const bp = this.paramResult[this.currentBpIndex];
+      const preparedParams = {};
+      // Формируем параметры БП из данных формы
+      bp.PARAMETERS.forEach(param => {
+        const values = this.formValues[bp.ID][param.Name];
+        // Если параметр не заполнен — пропускаем
+        if (values === undefined || values === null) return;
+        preparedParams[param.paramKey] = {
+          type: param.Type,
+          multiple: !!param.Multiple,
+          // user передаём как есть,
+          // остальные — оборачиваем одиночное значение в объект
+          value:
+            param.Type === 'user'
+              ? values
+              : (param.Multiple ? values : { value: values })  // 🔴 оборачиваем в объект
+        };
+      });
+      // Получаем данные для запуска БП
+      const response = await startBp(
+        window.memberId,
+        { [bp.ID]: preparedParams },
+        window.entityData
+      );
 
-  const preparedParams = {};
-  // bp.PARAMETERS.forEach(param => {
-  //   const values = this.formValues[bp.ID][param.Name];
-  //   preparedParams[param.paramKey] = param.Multiple ? values : values[0];
+      const { templateId, document, parameters } = response;
+      // Запуск БП через BX24
+      await new Promise((resolve, reject) => {
+        BX24.callMethod(
+          'bizproc.workflow.start',
+          {
+            TEMPLATE_ID: templateId,
+            DOCUMENT_ID: document,
+            PARAMETERS: parameters
+          },
+          res => {
+            if (res.error()) reject(res.error());
+            else resolve(res.data());
+          }
+        );
+      });
 
-  // });
-console.log('first:', bp);
-
-// bp.PARAMETERS.forEach(param => {
-//   const values = this.formValues[bp.ID][param.Name];
-
-//   // защита
-//   if (values === undefined || values === null) return;
-
-//   // 🔴 КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ
-//   if (param.Type === 'user') {
-//     preparedParams[param.paramKey] = values;
-//     return;
-//   }
-
-//   // остальные типы
-//   preparedParams[param.paramKey] = param.Multiple
-//     ? values
-//     : values[0];
-// });
-
-
-// bp.PARAMETERS.forEach(param => {
-//   const values = this.formValues[bp.ID][param.Name];
-
-//   if (values === undefined || values === null) return;
-
-//   preparedParams[param.paramKey] = {
-//     type: param.Type,
-//     multiple: !!param.Multiple,
-//     value:
-//       param.Type === 'user'
-//         ? values
-//         : (param.Multiple ? values : values[0])
-//   };
-// });
-bp.PARAMETERS.forEach(param => {
-  const values = this.formValues[bp.ID][param.Name];
-
-  if (values === undefined || values === null) return;
-
-  preparedParams[param.paramKey] = {
-    type: param.Type,
-    multiple: !!param.Multiple,
-    value:
-      param.Type === 'user'
-        ? values
-        : (param.Multiple ? values : { value: values })  // 🔴 оборачиваем в объект
-  };
-});
-
-
-// console.log('FINAL preparedParams:', preparedParams);
-
-
-
-  const response = await startBp(
-    window.memberId,
-    { [bp.ID]: preparedParams },
-    window.entityData
-  );
-
-  const { templateId, document, parameters } = response;
-
-  await new Promise((resolve, reject) => {
-    BX24.callMethod(
-      'bizproc.workflow.start',
-      {
-        TEMPLATE_ID: templateId,
-        DOCUMENT_ID: document,
-        PARAMETERS: parameters
-      },
-      res => {
-        if (res.error()) reject(res.error());
-        else resolve(res.data());
+      // Переходим к следующему БП или закрываем форму
+      if (this.currentBpIndex < this.paramResult.length - 1) {
+        this.currentBpIndex++;
+      } else {
+        this.paramResult = null;
       }
-    );
-  });
-
-  if (this.currentBpIndex < this.paramResult.length - 1) {
-    this.currentBpIndex++;
-  } else {
-    this.paramResult = null;
-  }
-},
+    },
 
     // Добавляет новое пустое поле для параметра и инпут (если множественное)
     addField(bpId, paramName) {
@@ -280,22 +235,6 @@ bp.PARAMETERS.forEach(param => {
     },
   },
   computed: {
-    isCurrentBpValid() {
-      if (!this.paramResult) return false;
-
-      const bp = this.paramResult[this.currentBpIndex];
-
-      for (const p of bp.PARAMETERS) {
-        if (p.Required) {
-          const values = this.formValues[bp.ID][p.Name];
-          if (!values || values.some(v => !v || v === '')) {
-            return false;
-          }
-        }
-      }
-      return true;
-    },
-
     // Проверка: заполнены ли все обязательные поля текущего БП
     isCurrentBpValid() {
       // Если бизнес-процессов нет — невалидно
