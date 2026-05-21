@@ -12,6 +12,8 @@ $entity = $requestData['current_button']['value'];
 // Определяем тип документа для бизнес-процессов
 if ($entity === '31') {
     $documentType = 'SMART_INVOICE';
+} elseif ($entity === '7') {
+    $documentType = 'Quote';
 } elseif (is_numeric($entity)) {
     $documentType = 'DYNAMIC_' . $entity;
 } else {

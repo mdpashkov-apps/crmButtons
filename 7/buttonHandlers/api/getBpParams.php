@@ -36,6 +36,8 @@ if (json_last_error() === JSON_ERROR_NONE && is_array($entityData) && isset($ent
 // в зависимости от типа сущности формируем параметр DOCUMENT_TYPE для фильтрации списка бп
 if ($entityTypeIdMap === '31') {
     $documentType = 'SMART_INVOICE';
+} elseif ($entityTypeIdMap === '7') {
+    $documentType = 'Quote';
 } elseif (is_numeric($entityTypeIdMap)) {
     $documentType = 'DYNAMIC_' . $entityTypeIdMap;
 } else {
@@ -127,6 +129,12 @@ if ($entityTypeIdMap === '31') {
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
         'SMART_INVOICE_' . $entityId,
     ];
+} elseif ($entityTypeIdMap === '7') {
+    $document = [
+        'crm',
+        'CCrmDocumentQuote',
+        'QUOTE_' . $entityId,
+    ];
 } elseif (is_numeric($entityTypeIdMap)) {
     $document = [
         'crm',
@@ -136,8 +144,8 @@ if ($entityTypeIdMap === '31') {
 } else {
     // лид, сделка, контакт и т.п.
     $map = [
-        'Lead' => 'CCrmDocumentLead',
-        'Deal' => 'CCrmDocumentDeal',
+        'Lead'    => 'CCrmDocumentLead',
+        'Deal'    => 'CCrmDocumentDeal',
         'Contact' => 'CCrmDocumentContact',
         'Company' => 'CCrmDocumentCompany',
     ];

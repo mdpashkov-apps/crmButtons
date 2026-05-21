@@ -144,12 +144,13 @@ if ($type === 'select') {
 }
 
 //получаем id типа сущности
-$entityTypeId = $requestData['entityData']['ENTITY_DATA']['entityTypeId'];
+$entityTypeId = (string)$requestData['entityData']['ENTITY_DATA']['entityTypeId'];
 $entityMap = [
-    '1' => 'Lead',
-    '2' => 'Deal',
-    '3' => 'Contact',
-    '4' => 'Company',
+    '1'  => 'Lead',
+    '2'  => 'Deal',
+    '3'  => 'Contact',
+    '4'  => 'Company',
+    '7'  => 'Quote',
 ];
 $entValue = $entityMap[$entityTypeId] ?? $entityTypeId;
 
@@ -157,17 +158,23 @@ $entValue = $entityMap[$entityTypeId] ?? $entityTypeId;
 $entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
 
 // формируем параметр DOCUMENT_ID для запуска бп и запускаем
-if ($entValue === 31) {
+if ($entityTypeId === '31') {
     $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
         'SMART_INVOICE_' . $entityId,
     ];
-} elseif (is_numeric($entValue)) {
+} elseif ($entityTypeId === '7') {
+    $document = [
+        'crm',
+        'CCrmDocumentQuote',
+        'QUOTE_' . $entityId,
+    ];
+} elseif (is_numeric($entityTypeId)) {
     $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
-        'DYNAMIC_' . $entValue . '_' . $entityId,
+        'DYNAMIC_' . $entityTypeId . '_' . $entityId,
     ];
 } else {
     $map = [
