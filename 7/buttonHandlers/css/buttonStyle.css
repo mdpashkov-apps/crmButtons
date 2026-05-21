@@ -1,0 +1,507 @@
+/* =========================================================
+   БАЗОВЫЕ СТИЛИ ДЛЯ КНОПКИ CRM
+   ========================================================= */
+
+/* Базовые сбросы */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: auto;
+    height: auto;
+}
+
+body {
+    font-family: var(--ui-font-family-primary, 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif);
+    line-height: 1.4;
+    background: transparent;
+}
+
+#app {
+    display: block;
+    width: 100%;
+    padding: 0;
+    background: transparent;
+}
+
+/* Контейнер кнопки */
+.bx-crm-button-container {
+    width: 100%;
+    display: block;
+}
+
+/* Кнопка в стиле Bitrix24 UI */
+.ui-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 1.4;
+    padding: 10px 16px;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+}
+
+.ui-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 480px) {
+    .ui-btn {
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Панель параметров БП */
+.bx-bp-panel {
+    background: #fff;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    border: 1px solid #e6e9ec;
+}
+
+.bx-bp-progress {
+    font-size: 12px;
+    color: #828b95;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e6e9ec;
+}
+
+.bx-param-group {
+    margin-bottom: 20px;
+}
+
+.bx-param-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: #525c68;
+    margin-bottom: 8px;
+}
+
+.bx-param-label .bx-required {
+    color: #f1361b;
+    margin-left: 4px;
+}
+
+/* Поля ввода */
+.ui-input {
+    width: 100%;
+    height: 38px;
+    padding: 0 12px;
+    border: 1px solid #c6cdd3;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.ui-input:focus {
+    border-color: #2fc6f6;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(47, 198, 246, 0.2);
+}
+
+/* Мультиселект - скрываем лишние надписи */
+.multiselect {
+    width: 100% !important;
+}
+
+.multiselect__tags {
+    border: 1px solid #c6cdd3 !important;
+    border-radius: 6px !important;
+    min-height: 38px !important;
+    padding: 4px 30px 0 8px !important;
+}
+
+.multiselect__tag {
+    background: #2fc6f6 !important;
+    border-radius: 4px !important;
+}
+
+/* Скрываем надпись "Press enter to select" */
+.multiselect__select::before {
+    display: none !important;
+}
+
+/* Скрываем подсказки */
+.multiselect__option--disabled,
+.multiselect__option--disabled span {
+    display: none !important;
+}
+
+/* Делаем все элементы списка одного цвета */
+.multiselect__option {
+    padding: 8px 12px !important;
+    min-height: 36px !important;
+    line-height: 1.4 !important;
+    color: #333 !important;
+    background: #fff !important;
+}
+
+.multiselect__option--highlight {
+    background: #2fc6f6 !important;
+    color: #fff !important;
+}
+
+.multiselect__option--selected {
+    background: #e6e9ec !important;
+    color: #333 !important;
+    font-weight: normal !important;
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+    background: #2fc6f6 !important;
+    color: #fff !important;
+}
+
+/* Скрываем пустые элементы */
+.multiselect__option--disabled {
+    display: none !important;
+}
+
+/* Выпадающий список */
+.multiselect__content-wrapper {
+    position: fixed !important;
+    z-index: 999999 !important;
+    background: #fff !important;
+    border: 1px solid #e6e9ec !important;
+    border-radius: 6px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    max-height: 200px !important;
+    overflow-y: auto !important;
+}
+
+/* Множественные поля */
+.bx-multiple-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.bx-multiple-row .multiselect,
+.bx-multiple-row .ui-input {
+    flex: 1;
+}
+
+.bx-remove-field {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #f1361b;
+    font-size: 16px;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.bx-remove-field:hover {
+    background: rgba(241, 54, 27, 0.1);
+}
+
+.bx-remove-field--placeholder {
+    visibility: hidden;
+}
+
+.bx-add-btn {
+    margin-top: 8px;
+    padding: 6px 12px;
+    background: #f8f9fa;
+    border: 1px dashed #c1c9d1;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #2fc6f6;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+}
+
+.bx-add-btn:hover {
+    background: #eef2f4;
+}
+
+/* Кнопка запуска БП */
+.bx-run-bp-btn {
+    width: 100%;
+    margin-top: 16px;
+    background: #9dcf00 !important;
+    border-color: #9dcf00 !important;
+}
+
+.bx-run-bp-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Лоадер */
+.bx-modal-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.bx-loader-spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Скролл */
+.multiselect__content-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Стили для иконок на кнопке */
+.bx-crm-main-btn i,
+.bx-crm-main-btn svg {
+    margin-right: 8px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* Для пустых иконок */
+.bx-crm-main-btn i:empty {
+    display: none;
+}
+
+/* Font Awesome 6 и 5 совместимость */
+.fa,
+.fas,
+.far,
+.fal,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-brands {
+    font-family: 'Font Awesome 6 Free', 'Font Awesome 5 Free', 'FontAwesome' !important;
+}
+
+.fab,
+.fa-brands {
+    font-family: 'Font Awesome 6 Brands', 'Font Awesome 5 Brands' !important;
+}
+
+/* =========================================================
+   СТИЛИ ДЛЯ ПРЕДПРОСМОТРА КНОПКИ В ЧАТЕ
+   ========================================================= */
+
+.bx-chat-button-preview {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.bx-im-keyboard-button__container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    background-color: #2fc6f6;
+    color: #ffffff;
+}
+
+.bx-im-keyboard-button__container:hover {
+    opacity: 0.9;
+}
+
+.bx-im-keyboard-button__container.--line {
+    display: flex;
+    width: 100%;
+}
+
+.bx-chat-icon {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.bx-hint {
+    font-size: 11px;
+    color: #828b95;
+    margin-top: 4px;
+}
+
+/* =========================================================
+   ДОПОЛНИТЕЛЬНЫЕ СТИЛИ ДЛЯ УЛУЧШЕННОГО UI
+   ========================================================= */
+
+.bx-preview {
+    margin-bottom: 16px;
+}
+
+.bx-preview__title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #525c68;
+    margin-bottom: 12px;
+}
+
+.bx-preview__button {
+    width: 100%;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.bx-preview-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.bx-preview-actions .ui-btn {
+    flex: 1;
+}
+
+.bx-info-text {
+    background: #eef2f4;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #525c68;
+    border-left: 3px solid #2fc6f6;
+}
+
+.bx-mt-12 {
+    margin-top: 12px;
+}
+
+.bx-mt-16 {
+    margin-top: 16px;
+}
+
+.bx-mb-12 {
+    margin-bottom: 12px;
+}
+
+.bx-table-wrap {
+    overflow-x: auto;
+}
+
+.bx-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.bx-table caption {
+    text-align: left;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #525c68;
+}
+
+.bx-table th,
+.bx-table td {
+    padding: 10px 8px;
+    border-bottom: 1px solid #e6e9ec;
+    text-align: left;
+    vertical-align: top;
+}
+
+.bx-table th {
+    font-weight: 600;
+    color: #333;
+    background: #f8f9fa;
+}
+
+.bx-color-input {
+    width: 60px;
+    height: 38px;
+    border: 1px solid #c6cdd3;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.bx-range-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bx-range {
+    flex: 1;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #e6e9ec;
+    border-radius: 2px;
+}
+
+.bx-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #2fc6f6;
+    cursor: pointer;
+}
+
+.bx-range-value {
+    min-width: 40px;
+    font-size: 13px;
+    color: #525c68;
+}

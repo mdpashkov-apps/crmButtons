@@ -1,0 +1,52 @@
+<?php
+// api/indexReport/addUsersInChat.php
+
+$entityBody = file_get_contents('php://input');
+$requestData = json_decode($entityBody, true);
+$memberId = $requestData['memberId'];
+
+$path = pathinfo(__DIR__, PATHINFO_DIRNAME);
+$path = pathinfo($path, PATHINFO_DIRNAME);
+include_once($path . '/overCRest.php');
+overCRest::setCurrentBitrix24($memberId);
+
+$selectedUsers = $requestData['selectedUsers'];
+
+$userIds = [];
+foreach ($selectedUsers as $user) {
+    if (!empty($user['value'])) {
+        $userIds[] = (int)$user['value'];
+    }
+}
+
+// Логируем для отладки
+file_put_contents(__DIR__ . '/add-users-debug.log', 
+    date('Y-m-d H:i:s') . " - Добавление пользователей: " . print_r($userIds, true) . "\n", 
+    FILE_APPEND);
+
+// Находим чат
+$findChat = overCRest::call("im.search.chat.list", [
+    "FIND" => "ALLChat Overplan",
+]);
+
+if (empty($findChat['result'])) {
+    echo json_encode(['error' => 'Чат не найден'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+$chatId = $findChat['result'][0]['id'];
+
+// Добавляем пользователей в чат
+$addUsersinChat = overCRest::call("im.chat.user.add", [
+    "CHAT_ID" => $chatId,
+    "USERS" => $userIds
+]);
+
+// Возвращаем результат
+echo json_encode([
+    'result' => $addUsersinChat,
+    'success' => empty($addUsersinChat['error']),
+    'chatId' => $chatId,
+    'usersAdded' => count($userIds)
+], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+?>
