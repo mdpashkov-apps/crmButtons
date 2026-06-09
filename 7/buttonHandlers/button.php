@@ -14,8 +14,8 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
     <!-- Bitrix24 JS API -->
     <script src="//api.bitrix24.com/api/v1/"></script>
     
-    <!-- Font Awesome 6 Free -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- Font Awesome 6 Free - локально (без внешнего CDN) -->
+    <link rel="stylesheet" href="../7/libs/fontawesome/css/all.min.css">
     
     <!-- Vue и зависимости - локально -->
     <script src="../7/libs/vue.min.js"></script>
