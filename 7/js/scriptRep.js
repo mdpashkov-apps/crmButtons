@@ -1,6 +1,9 @@
 // js/scriptRep.js
 
-import {getAllUsers, addUsersInChat, deleteChatBot, addChatBot} from "../js/api.js";
+const __apiVer = (typeof window !== 'undefined' && window.__apiVersion) || Date.now();
+const {
+    getAllUsers, addUsersInChat, deleteChatBot, addChatBot
+} = await import(`../js/api.js?v=${__apiVer}`);
 
 Vue.component("modal", {
     template: "#modal-template",

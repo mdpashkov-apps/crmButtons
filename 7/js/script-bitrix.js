@@ -1,10 +1,12 @@
-import { 
-    getAllButtons, getTemplate, getMoreButtons, saveBtnSettings, 
+const __apiVer = (typeof window !== 'undefined' && window.__apiVersion) || Date.now();
+const {
+    getAllButtons, getTemplate, getMoreButtons, saveBtnSettings,
     deleteButton, createButtonInCrm, deleteButtonInCrm, getButtonData,
     getAllEntitys, getBPforEntity, getDocumentsforEntity, getAllLists,
     getListFields, getEntityFieldsForList, getCrmFieldsLink,
-    createButtonInChat, deleteButtonInChat, getFeedWorkflowsList
-} from "../js/api.js";
+    createButtonInChat, deleteButtonInChat, getFeedWorkflowsList,
+    getChainBpDefinitions, getSubscriptionStatus
+} = await import(`../js/api.js?v=${__apiVer}`);
 
 Vue.directive('click-outside', {
     bind(el, binding, vnode) {
@@ -61,7 +63,10 @@ var app = new Vue({
                 buttonActionType_FIELDS: 'url',
                 workflowTemplateId_FIELDS: null,
                 workflowDocumentId_FIELDS: null,
-                workflowFromFeed_FIELDS: false
+                workflowFromFeed_FIELDS: false,
+                // Новые поля PRO
+                bpChainValue_FIELDS: [],
+                linkWithParams_FIELDS: ''
             },
             activeButtonId: null,
             allEntitys: [],
@@ -75,6 +80,16 @@ var app = new Vue({
             allFeedWorkflows: [],
             selectedWorkflowTemplate: null,
             selectedWorkflowDocument: '',
+            // Подписка / лимиты
+            subscription: { plan: 'free', valid_until: null, limits: { buttons: { used: 0, limit: null } } },
+            // Цепочка БП
+            expandedBpInChain: {},
+            chainBpDefs: {},
+            chainBpDefsLoading: {},
+            boolOptions: [
+                { value: 'Y', name: 'Да' },
+                { value: 'N', name: 'Нет' },
+            ],
             // Аккордеоны
             accordion_0: false,
             accordion_1: false,
@@ -83,6 +98,7 @@ var app = new Vue({
             accordion_4: false,
             accordion_5: false,
             accordion_6: false,
+            accordion_7: false,
             // Флаги
             flagsButtonBizproc: false,
             flagsButtonDocument: false,
@@ -94,6 +110,18 @@ var app = new Vue({
     computed: {
         totalButtonsCount() {
             return this.portalButtons.length + (this.newButton ? 1 : 0);
+        },
+        buttonLimit() {
+            return this.subscription?.limits?.buttons?.limit ?? null;
+        },
+        buttonsUsed() {
+            return this.subscription?.limits?.buttons?.used ?? this.portalButtons.length;
+        },
+        buttonsAtLimit() {
+            return this.buttonLimit !== null && this.buttonsUsed >= this.buttonLimit;
+        },
+        isPro() {
+            return this.subscription?.plan === 'pro';
         },
         previewButtonStyle() {
             const border = this.current_button.buttonBorder_FIELDS 
@@ -264,7 +292,15 @@ var app = new Vue({
                 if (!Array.isArray(this.current_button.buttonActionsId_FIELDS)) {
                     this.$set(this.current_button, 'buttonActionsId_FIELDS', []);
                 }
-                
+
+                if (!Array.isArray(this.current_button.bpChainValue_FIELDS)) {
+                    this.$set(this.current_button, 'bpChainValue_FIELDS', []);
+                }
+
+                if (typeof this.current_button.linkWithParams_FIELDS !== 'string') {
+                    this.$set(this.current_button, 'linkWithParams_FIELDS', '');
+                }
+
                 // Загружаем настройки БП из ленты
                 this.buttonActionType = this.current_button.buttonActionType_FIELDS || 'url';
                 if (this.buttonActionType === 'workflow' && this.current_button.workflowTemplateId_FIELDS) {
@@ -322,7 +358,12 @@ var app = new Vue({
                 this.current_button.workflowFromFeed_FIELDS = this.buttonActionType === 'workflow';
                 
                 let response = await saveBtnSettings(window.memberId, this.current_button, this.activeButtonId);
-                
+
+                if (response && response.error === 'button_limit_reached') {
+                    this.showNotification(response.message || 'Достигнут лимит бесплатного тарифа.', 'error');
+                    return;
+                }
+
                 if (response.result) {
                     this.originalButtonStyles = {
                         buttonColor_FIELDS: this.current_button.buttonColor_FIELDS,
@@ -334,10 +375,11 @@ var app = new Vue({
                     this.showNotification('Настройки успешно сохранены', 'success');
                     this.resizeForMobile();
                 }
-                
+
                 if (this.newButton && response.result) {
                     this.newButton = false;
                     await this.getButtons(true);
+                    await this.loadSubscription();
                 }
             } catch (error) {
                 console.error('Ошибка сохранения:', error);
@@ -371,6 +413,7 @@ var app = new Vue({
                 }
                 
                 this.showNotification('Кнопка успешно удалена', 'success');
+                await this.loadSubscription();
                 this.resizeForMobile();
             } catch (error) {
                 console.error('Ошибка удаления:', error);
@@ -380,7 +423,7 @@ var app = new Vue({
                 if (window.hideLoader) window.hideLoader();
             }
         },
-        
+
         async createBtnCrm() {
             if (window.showLoader) window.showLoader('Создание кнопки в CRM...');
             this.loader = true;
@@ -462,6 +505,14 @@ var app = new Vue({
         },
         
         async createBtn() {
+            if (this.buttonsAtLimit) {
+                const limit = this.subscription.limits.buttons.limit;
+                this.showNotification(
+                    `Достигнут лимит бесплатного тарифа: ${limit} ${this.pluralizeButtons(limit)}. Обновитесь до PRO, чтобы создавать больше.`,
+                    'error'
+                );
+                return;
+            }
             this.newButton = true;
             let response = await getTemplate(window.memberId);
             this.current_button = { ...this.current_button, ...response.result };
@@ -478,6 +529,26 @@ var app = new Vue({
             };
             this.resizeForMobile();
             this.showNotification('Создана новая кнопка', 'success');
+        },
+
+        async loadSubscription() {
+            try {
+                const response = await getSubscriptionStatus(window.memberId);
+                if (response && response.plan) {
+                    this.subscription = response;
+                }
+            } catch (e) {
+                console.error('Не удалось загрузить статус подписки:', e);
+            }
+        },
+
+        pluralizeButtons(n) {
+            const abs = Math.abs(n) % 100;
+            const n1 = abs % 10;
+            if (abs > 10 && abs < 20) return 'кнопок';
+            if (n1 > 1 && n1 < 5) return 'кнопки';
+            if (n1 === 1) return 'кнопка';
+            return 'кнопок';
         },
         
         SetStandardStyles() {
@@ -572,6 +643,116 @@ var app = new Vue({
                 this.loader = false;
             }
         },
+
+        moveBpUp(idx) {
+            const list = this.current_button.bpChainValue_FIELDS;
+            if (!Array.isArray(list) || idx <= 0) return;
+            const [item] = list.splice(idx, 1);
+            list.splice(idx - 1, 0, item);
+        },
+
+        moveBpDown(idx) {
+            const list = this.current_button.bpChainValue_FIELDS;
+            if (!Array.isArray(list) || idx >= list.length - 1) return;
+            const [item] = list.splice(idx, 1);
+            list.splice(idx + 1, 0, item);
+        },
+
+        removeBpFromChain(idx) {
+            const list = this.current_button.bpChainValue_FIELDS;
+            if (!Array.isArray(list)) return;
+            list.splice(idx, 1);
+        },
+
+        toggleBpExpand(bp) {
+            const bpId = bp.value;
+            if (this.expandedBpInChain[bpId]) {
+                this.$set(this.expandedBpInChain, bpId, false);
+            } else {
+                this.$set(this.expandedBpInChain, bpId, true);
+                if (!this.chainBpDefs[bpId]) {
+                    this.loadChainBpDefs(bpId);
+                }
+            }
+        },
+
+        async loadChainBpDefs(bpId) {
+            const entity = this.current_button && this.current_button.entitySelection_FIELDS
+                ? this.current_button.entitySelection_FIELDS.value
+                : null;
+            if (entity === null || entity === undefined) return;
+            this.$set(this.chainBpDefsLoading, bpId, true);
+            try {
+                const response = await getChainBpDefinitions(window.memberId, entity, [bpId]);
+                const params = (response && response.result && response.result[bpId]) ? response.result[bpId] : [];
+                this.$set(this.chainBpDefs, bpId, params);
+            } finally {
+                this.$set(this.chainBpDefsLoading, bpId, false);
+            }
+        },
+
+        canPresetParam(param) {
+            if (Number(param.Multiple) === 1) return false;
+            return ['txt', 'number', 'datetime', 'bool', 'select'].includes(param.Type);
+        },
+
+        hasPreset(bp, paramKey) {
+            return !!(bp && bp.presets && Object.prototype.hasOwnProperty.call(bp.presets, paramKey));
+        },
+
+        togglePreset(bp, param) {
+            if (!bp.presets) this.$set(bp, 'presets', {});
+            if (this.hasPreset(bp, param.paramKey)) {
+                this.$delete(bp.presets, param.paramKey);
+            } else {
+                const init = {
+                    type: param.Type,
+                    multiple: !!Number(param.Multiple),
+                    value: this.defaultPresetValue(param)
+                };
+                this.$set(bp.presets, param.paramKey, init);
+            }
+        },
+
+        defaultPresetValue(param) {
+            if (param.Type === 'bool' || param.Type === 'select') return null;
+            return '';
+        },
+
+        getSelectOptionsForParam(param) {
+            if (!param || !param.Options) return [];
+            return Object.entries(param.Options).map(([key, value]) => ({
+                value: key,
+                name: value
+            }));
+        },
+
+        async ensureEntFieldsLoaded() {
+            const entity = this.current_button?.entitySelection_FIELDS;
+            if (!entity || entity.value === 'chat_bot') return;
+            if (Array.isArray(this.entFields) && this.entFields.length > 0) return;
+            await this.getEntFields();
+        },
+
+        insertLinkPlaceholder(field) {
+            if (!field || !field.value) return;
+            const placeholder = '{' + field.value + '}';
+            const current = this.current_button.linkWithParams_FIELDS || '';
+            const input = this.$refs.linkParamsInput;
+
+            if (input && typeof input.selectionStart === 'number') {
+                const start = input.selectionStart;
+                const end = input.selectionEnd;
+                this.current_button.linkWithParams_FIELDS = current.slice(0, start) + placeholder + current.slice(end);
+                this.$nextTick(() => {
+                    input.focus();
+                    const pos = start + placeholder.length;
+                    input.setSelectionRange(pos, pos);
+                });
+            } else {
+                this.current_button.linkWithParams_FIELDS = current + placeholder;
+            }
+        },
         
         async getFeedWorkflows() {
             this.loader = true;
@@ -607,10 +788,14 @@ var app = new Vue({
             this.entFields = [];
             this.current_button.crmLinkFields_FIELDS = null;
             this.allCrmFieldsLink = [];
+            this.current_button.bpChainValue_FIELDS = [];
+            this.chainBpDefs = {};
+            this.expandedBpInChain = {};
             this.accordion_0 = false;
             this.accordion_1 = false;
             this.accordion_2 = false;
             this.accordion_4 = false;
+            this.accordion_7 = false;
             this.resizeForMobile();
         }
     },
@@ -624,6 +809,7 @@ var app = new Vue({
         
         this.resizeForMobile();
         await this.getButtons();
+        await this.loadSubscription();
         this.resizeForMobile();
         
         if (window.isMobile) {

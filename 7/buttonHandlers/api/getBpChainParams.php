@@ -8,16 +8,13 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 // читаем настройки цепочки: [{value, name, presets?}, ...]
-// presets — опционально, ключ paramKey → {type, multiple, value}
-$businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
-if (!is_array($businessProcessesData)) {
-    $businessProcessesData = [];
+$chainSettings = json_decode($requestData['crmActions']['bpChainValue_FIELDS'], true);
+if (!is_array($chainSettings)) {
+    $chainSettings = [];
 }
 
-// собираем список id для запроса определений
-$bpIds = array_map('intval', array_column($businessProcessesData, 'value'));
+$bpIds = array_map('intval', array_column($chainSettings, 'value'));
 
-// получаем id сущности и id типа сущности
 $entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
 $rawEntity = $requestData['crmActions']['entitySelection_FIELDS'];
 
@@ -28,7 +25,6 @@ if (json_last_error() === JSON_ERROR_NONE && is_array($entityData) && isset($ent
     $entityTypeIdMap = $rawEntity;
 }
 
-// формируем DOCUMENT_TYPE для фильтрации БП
 if ($entityTypeIdMap === '31') {
     $documentType = 'SMART_INVOICE';
 } elseif ($entityTypeIdMap === '7') {
@@ -39,7 +35,6 @@ if ($entityTypeIdMap === '31') {
     $documentType = $entityTypeIdMap;
 }
 
-// получаем определения нужных БП
 $getBizProc = overCRest::call(
     'bizproc.workflow.template.list',
     [
@@ -52,13 +47,11 @@ $getBizProc = overCRest::call(
     ]
 );
 
-// индексируем определения по ID для быстрого доступа в исходном порядке цепочки
 $bpById = [];
 foreach (($getBizProc['result'] ?? []) as $bp) {
     $bpById[(int)$bp['ID']] = $bp;
 }
 
-// маппинг типов параметров (как было)
 $typeMap = [
     'string'   => 'txt',
     'text'     => 'txt',
@@ -73,13 +66,11 @@ $typeMap = [
     'select'   => 'select',
 ];
 
-// строим цепочку в исходном порядке настроек
 $chain = [];
 $hasUserParam = false;
-foreach ($businessProcessesData as $chainItem) {
+foreach ($chainSettings as $chainItem) {
     $bpId = (int)($chainItem['value'] ?? 0);
     if ($bpId <= 0 || !isset($bpById[$bpId])) {
-        // удалённый БП или невалидная запись — пропускаем
         continue;
     }
 
@@ -107,7 +98,9 @@ foreach ($businessProcessesData as $chainItem) {
         }
     }
 
-    $presets = isset($chainItem['presets']) && is_array($chainItem['presets']) ? $chainItem['presets'] : new stdClass();
+    $presets = (isset($chainItem['presets']) && is_array($chainItem['presets']))
+        ? $chainItem['presets']
+        : new stdClass();
 
     $chain[] = [
         'ID'         => $bpId,
@@ -117,25 +110,12 @@ foreach ($businessProcessesData as $chainItem) {
     ];
 }
 
-// DOCUMENT_ID для запуска (одинаковый для всех БП цепочки)
 if ($entityTypeIdMap === '31') {
-    $document = [
-        'crm',
-        'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
-        'SMART_INVOICE_' . $entityId,
-    ];
+    $document = ['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice', 'SMART_INVOICE_' . $entityId];
 } elseif ($entityTypeIdMap === '7') {
-    $document = [
-        'crm',
-        'CCrmDocumentQuote',
-        'QUOTE_' . $entityId,
-    ];
+    $document = ['crm', 'CCrmDocumentQuote', 'QUOTE_' . $entityId];
 } elseif (is_numeric($entityTypeIdMap)) {
-    $document = [
-        'crm',
-        'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
-        'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId,
-    ];
+    $document = ['crm', 'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic', 'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId];
 } else {
     $map = [
         'Lead'    => 'CCrmDocumentLead',
@@ -143,14 +123,9 @@ if ($entityTypeIdMap === '31') {
         'Contact' => 'CCrmDocumentContact',
         'Company' => 'CCrmDocumentCompany',
     ];
-    $document = [
-        'crm',
-        $map[$entityTypeIdMap],
-        strtoupper($entityTypeIdMap) . '_' . $entityId,
-    ];
+    $document = ['crm', $map[$entityTypeIdMap], strtoupper($entityTypeIdMap) . '_' . $entityId];
 }
 
-// если в цепочке есть user-параметры — подгружаем список пользователей
 $allUserFio = null;
 if ($hasUserParam) {
     $totalUser = overCRest::call('user.search', [

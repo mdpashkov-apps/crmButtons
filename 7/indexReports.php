@@ -23,7 +23,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     <script src="libs/vue.min.js"></script>
     <script src="libs/axios.min.js"></script>
     <script src="//api.bitrix24.com/api/v1/"></script>
-    
+
+    <!-- Font Awesome 6 Free -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
     <!-- Основные стили -->
     <link rel="stylesheet" href="css/bitrix-design.css?v=<?= time() ?>">
     <link rel="stylesheet" href="css/mobile-adaptation.css?v=<?= time() ?>">
@@ -34,6 +37,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     $request_json = htmlspecialchars(json_encode($_REQUEST), ENT_QUOTES, 'UTF-8');
     ?>
     <script>
+        window.__apiVersion = '<?= @filemtime(__DIR__ . '/js/api.js') ?: time() ?>';
         window.memberId = '<?echo $member_id?>';
         window.BX24 = BX24;
         window.isMobile = false;
@@ -185,18 +189,21 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     
                     <div class="bx-actions bx-actions--compact">
                         <button class="ui-btn ui-btn-primary" @click="addInChat" :disabled="loading || selectedUsers.length === 0">
-                            {{ loading ? 'Добавление...' : '➕ Добавить пользователей' }}
+                            <i v-if="!loading" class="fa-solid fa-plus"></i>
+                            {{ loading ? 'Добавление...' : 'Добавить пользователей' }}
                         </button>
                         <button class="ui-btn ui-btn-danger" @click="delChatBot" :disabled="loading">
-                            {{ loading ? 'Удаление...' : '🗑️ Удалить чат-бота' }}
+                            <i v-if="!loading" class="fa-solid fa-trash-can"></i>
+                            {{ loading ? 'Удаление...' : 'Удалить чат-бота' }}
                         </button>
                         <button class="ui-btn ui-btn-success" @click="addChatBot" :disabled="loading">
-                            {{ loading ? 'Добавление...' : '🤖 Добавить чат-бота' }}
+                            <i v-if="!loading" class="fa-solid fa-robot"></i>
+                            {{ loading ? 'Добавление...' : 'Добавить чат-бота' }}
                         </button>
                     </div>
                     
                     <div class="bx-info-text bx-info-text--panel">
-                        <strong>ℹ️ Информация:</strong><br>
+                        <strong><i class="fa-solid fa-circle-info"></i> Информация:</strong><br>
                         • Чат-бот необходим для отправки уведомлений в чат "ALLChat Overplan"<br>
                         • Если бот не найден - нажмите "Добавить чат-бота"<br>
                         • После добавления бота, перейдите в настройки кнопок и создайте кнопку в чате

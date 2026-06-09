@@ -26,7 +26,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     <script src="//api.bitrix24.com/api/v1/"></script>
     <script src="libs/axios.min.js"></script>
     <script src="libs/vue.min.js"></script>
-    
+
+    <!-- Font Awesome 6 Free -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
     <!-- Основные стили -->
     <link rel="stylesheet" href="css/bitrix-design.css?v=<?= time() ?>">
     <link rel="stylesheet" href="css/mobile-adaptation.css?v=<?= time() ?>">
@@ -37,6 +40,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     $request_json = htmlspecialchars(json_encode($_REQUEST), ENT_QUOTES, 'UTF-8');
     ?>
     <script>
+        window.__apiVersion = '<?= @filemtime(__DIR__ . '/js/api.js') ?: time() ?>';
         window.memberId = '<?echo $member_id?>';
         window.BX24 = BX24;
         window.isMobile = false;
@@ -151,7 +155,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
         <div class="bx-app-content">
             <!-- Баннер -->
             <div class="bx-banner">
-                <div class="bx-banner__icon">🎯</div>
+                <i class="bx-banner__icon fa-solid fa-bullseye"></i>
                 <div class="bx-banner__text">
                     Запишитесь на бесплатную подборку полезных приложений для вашего портала
                 </div>
@@ -163,10 +167,19 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             <!-- Вкладки профилей -->
             <div class="bx-tabs">
                 <div class="bx-tabs__container">
-                    <button class="bx-tabs__add bx-tabs__add--highlight" @click="createBtn" title="Создать кнопку">
+                    <button class="bx-tabs__add bx-tabs__add--highlight"
+                            :disabled="buttonsAtLimit"
+                            :class="{ 'bx-tabs__add--disabled': buttonsAtLimit }"
+                            @click="createBtn"
+                            :title="buttonsAtLimit ? 'Лимит free-тарифа исчерпан' : 'Создать кнопку'">
                         <span class="bx-tabs__add-icon">+</span>
                         <span class="bx-tabs__add-text">Создать</span>
                     </button>
+                    <div v-if="buttonLimit !== null" class="bx-buttons-counter" :class="{ 'bx-buttons-counter--limit': buttonsAtLimit }">
+                        <i class="fa-solid fa-layer-group"></i>
+                        {{ buttonsUsed }} / {{ buttonLimit }}
+                        <span v-if="buttonsAtLimit" class="bx-buttons-counter__hint">— лимит free</span>
+                    </div>
                     <div class="bx-tabs__list" ref="tabsList">
                         <div v-for="button in portalButtons.slice(0,6)" 
                              class="bx-tabs__item" 
@@ -294,7 +307,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                             <div class="bx-accordion">
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(0)">
-                                        <span class="bx-accordion__icon">⚙️</span>
+                                        <i class="bx-accordion__icon fa-solid fa-gear"></i>
                                         <span>Запустить бизнес-процесс</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_0 }">▼</span>
                                     </button>
@@ -305,9 +318,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                 <span class="bx-checkbox__label">Активировать свойство</span>
                                             </label>
                                             <div class="bx-mt-12">
-                                                <multiselect v-model="current_button.businessProcessesValue_FIELDS" 
-                                                             :options="allBizProc" 
-                                                             label="name" 
+                                                <multiselect v-model="current_button.businessProcessesValue_FIELDS"
+                                                             :options="allBizProc"
+                                                             label="name"
                                                              track-by="value"
                                                              placeholder="Выберите БП"
                                                              :multiple="true"
@@ -319,10 +332,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(1)">
-                                        <span class="bx-accordion__icon">📄</span>
+                                        <i class="bx-accordion__icon fa-solid fa-file-lines"></i>
                                         <span>Создание документа</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_1 }">▼</span>
                                     </button>
@@ -350,7 +363,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                 
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(2)">
-                                        <span class="bx-accordion__icon">📋</span>
+                                        <i class="bx-accordion__icon fa-solid fa-clipboard-list"></i>
                                         <span>Создать элемент списка</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_2 }">▼</span>
                                     </button>
@@ -405,14 +418,14 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                 
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(3)">
-                                        <span class="bx-accordion__icon">🔗</span>
+                                        <i class="bx-accordion__icon fa-solid fa-link"></i>
                                         <span>Перейти по произвольной ссылке</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_3 }">▼</span>
                                     </button>
                                     <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_3 }">
                                         <div class="bx-accordion__content">
                                             <div class="bx-info-text bx-mb-12">
-                                                ⚠️ Данное действие не работает совместно с действием "Перейти по ссылке из поля в CRM"
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по ссылке из поля в CRM"
                                             </div>
                                             <label class="bx-checkbox">
                                                 <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="3" class="bx-checkbox__input">
@@ -424,31 +437,123 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                         </div>
                                     </div>
                                 </div>
-                                
+
+                                <div class="bx-accordion__item">
+                                    <button class="bx-accordion__header" @click="toggleAccordion(7)">
+                                        <i class="bx-accordion__icon fa-solid fa-diagram-project"></i>
+                                        <span>Запустить цепочку бизнес-процессов</span>
+                                        <span class="bx-pro-badge">Только в PRO</span>
+                                        <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_7 }">▼</span>
+                                    </button>
+                                    <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_7 }">
+                                        <div class="bx-accordion__content">
+                                            <div class="bx-info-text bx-mb-12">
+                                                <i class="fa-solid fa-circle-info"></i> Цепочка запускается строго в порядке списка. Для каждого шага можно заранее задать значения параметров — тогда они не будут спрашиваться у пользователя.
+                                            </div>
+                                            <label class="bx-checkbox">
+                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="5" class="bx-checkbox__input">
+                                                <span class="bx-checkbox__label">Активировать свойство</span>
+                                            </label>
+                                            <div class="bx-mt-12">
+                                                <multiselect v-model="current_button.bpChainValue_FIELDS"
+                                                             :options="allBizProc"
+                                                             label="name"
+                                                             track-by="value"
+                                                             placeholder="Выберите БП — добавятся в цепочку"
+                                                             :multiple="true"
+                                                             class="bx-multiselect"
+                                                             @open="getBP">
+                                                    <span slot="noResult">Нет доступных БП</span>
+                                                </multiselect>
+                                            </div>
+                                            <div v-if="Array.isArray(current_button.bpChainValue_FIELDS) && current_button.bpChainValue_FIELDS.length > 0" class="bx-mt-16">
+                                                <label class="bx-label">Порядок запуска</label>
+                                                <div class="bx-bp-chain">
+                                                    <div v-for="(bp, idx) in current_button.bpChainValue_FIELDS" :key="bp.value" class="bx-bp-chain__item">
+                                                        <div class="bx-bp-chain__row">
+                                                            <span class="bx-bp-chain__idx">{{ idx + 1 }}</span>
+                                                            <span class="bx-bp-chain__name">{{ bp.name }}</span>
+                                                            <span class="bx-bp-chain__ctrls">
+                                                                <button type="button" class="bx-bp-chain__btn" :disabled="idx === 0" @click="moveBpUp(idx)" title="Вверх">↑</button>
+                                                                <button type="button" class="bx-bp-chain__btn" :disabled="idx === current_button.bpChainValue_FIELDS.length - 1" @click="moveBpDown(idx)" title="Вниз">↓</button>
+                                                                <button type="button" class="bx-bp-chain__btn" @click="toggleBpExpand(bp)" :title="expandedBpInChain[bp.value] ? 'Свернуть параметры' : 'Параметры'">
+                                                                    <i class="fa-solid fa-sliders"></i> {{ expandedBpInChain[bp.value] ? 'Скрыть' : 'Параметры' }}
+                                                                </button>
+                                                                <button type="button" class="bx-bp-chain__btn bx-bp-chain__btn--danger" @click="removeBpFromChain(idx)" title="Удалить из цепочки">✕</button>
+                                                            </span>
+                                                        </div>
+                                                        <div v-if="expandedBpInChain[bp.value]" class="bx-bp-chain__body">
+                                                            <div v-if="chainBpDefsLoading[bp.value]" class="bx-info-text">Загрузка параметров...</div>
+                                                            <div v-else-if="!chainBpDefs[bp.value] || chainBpDefs[bp.value].length === 0" class="bx-info-text">У этого БП нет параметров.</div>
+                                                            <div v-else>
+                                                                <div v-for="param in chainBpDefs[bp.value]" :key="param.paramKey" class="bx-form-row bx-bp-chain__param">
+                                                                    <label class="bx-label">
+                                                                        {{ param.Name }}
+                                                                        <span class="bx-required" v-if="param.Required">*</span>
+                                                                    </label>
+                                                                    <template v-if="canPresetParam(param)">
+                                                                        <label class="bx-checkbox">
+                                                                            <input type="checkbox" :checked="hasPreset(bp, param.paramKey)" @change="togglePreset(bp, param)" class="bx-checkbox__input">
+                                                                            <span class="bx-checkbox__label">Задать значение в настройках (иначе спросим у пользователя)</span>
+                                                                        </label>
+                                                                        <div v-if="hasPreset(bp, param.paramKey)" class="bx-mt-12">
+                                                                            <input v-if="param.Type === 'txt'" type="text" class="ui-input" v-model="bp.presets[param.paramKey].value">
+                                                                            <input v-else-if="param.Type === 'number'" type="number" class="ui-input" v-model="bp.presets[param.paramKey].value">
+                                                                            <input v-else-if="param.Type === 'datetime'" type="datetime-local" class="ui-input" v-model="bp.presets[param.paramKey].value">
+                                                                            <multiselect v-else-if="param.Type === 'bool'" v-model="bp.presets[param.paramKey].value" :options="boolOptions" label="name" track-by="value" placeholder="Выберите значение" class="bx-multiselect">
+                                                                                <span slot="noResult">Нет</span>
+                                                                            </multiselect>
+                                                                            <multiselect v-else-if="param.Type === 'select'" v-model="bp.presets[param.paramKey].value" :options="getSelectOptionsForParam(param)" label="name" track-by="value" placeholder="Выберите значение" class="bx-multiselect">
+                                                                                <span slot="noResult">Нет</span>
+                                                                            </multiselect>
+                                                                        </div>
+                                                                    </template>
+                                                                    <div v-else class="bx-info-text">
+                                                                        <span v-if="Number(param.Multiple) === 1">Множественные параметры пока не поддерживают пресеты — спросим у пользователя при запуске.</span>
+                                                                        <span v-else>Параметры этого типа пока не поддерживают пресеты — спросим у пользователя при запуске.</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(4)">
-                                        <span class="bx-accordion__icon">🔗</span>
-                                        <span>Перейти по ссылке из поля CRM</span>
+                                        <i class="bx-accordion__icon fa-solid fa-up-right-from-square"></i>
+                                        <span>Переход по ссылке с параметрами</span>
+                                        <span class="bx-pro-badge">Только в PRO</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_4 }">▼</span>
                                     </button>
                                     <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_4 }">
                                         <div class="bx-accordion__content">
                                             <div class="bx-info-text bx-mb-12">
-                                                ⚠️ Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
                                             </div>
                                             <label class="bx-checkbox">
                                                 <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="4" class="bx-checkbox__input">
                                                 <span class="bx-checkbox__label">Активировать свойство</span>
                                             </label>
                                             <div class="bx-mt-12">
-                                                <multiselect v-model="current_button.crmLinkFields_FIELDS" 
-                                                             :options="allCrmFieldsLink" 
-                                                             label="name" 
+                                                <label class="bx-label">Шаблон ссылки</label>
+                                                <input v-model="current_button.linkWithParams_FIELDS" type="text" class="ui-input" placeholder="https://example.com?id={ID}&amp;name={TITLE}" ref="linkParamsInput">
+                                                <div class="bx-hint">В ссылку можно вставлять значения полей карточки CRM в виде <code>{FIELD_CODE}</code>. Используйте селектор ниже — он добавит плейсхолдер в позицию курсора.</div>
+                                            </div>
+                                            <div class="bx-mt-12" v-if="current_button.entitySelection_FIELDS && current_button.entitySelection_FIELDS.value !== 'chat_bot'">
+                                                <label class="bx-label">Вставить поле CRM в ссылку</label>
+                                                <multiselect :value="null"
+                                                             :options="entFields"
+                                                             label="name"
                                                              track-by="value"
-                                                             placeholder="Выберите поле с ссылкой"
+                                                             placeholder="Выберите поле — оно будет добавлено в ссылку"
                                                              class="bx-multiselect"
-                                                             @open="getCrmLinks">
-                                                    <span slot="noResult">Нет полей с типом ссылка</span>
+                                                             @open="ensureEntFieldsLoaded"
+                                                             @select="insertLinkPlaceholder">
+                                                    <span slot="noResult">Нет полей</span>
                                                 </multiselect>
                                             </div>
                                         </div>
@@ -457,14 +562,15 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
 
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(5)">
-                                        <span class="bx-accordion__icon">💬</span>
-                                        <span>Настройки кнопки в чате</span>
+                                        <i class="bx-accordion__icon fa-solid fa-comments"></i>
+                                        <span>Кнопка в чатах</span>
+                                        <span class="bx-pro-badge">Только в PRO</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_5 }">▼</span>
                                     </button>
                                     <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_5 }">
                                         <div class="bx-accordion__content">
                                             <div class="bx-info-text bx-mb-12">
-                                                💡 Кнопка в чате отображается в общем чате "ALLChat Overplan" и доступна всем участникам чата.
+                                                <i class="fa-solid fa-lightbulb"></i> Кнопка в чате отображается в общем чате "ALLChat Overplan" и доступна всем участникам чата.
                                             </div>
                                             
                                             <div class="bx-actions bx-mt-16">
@@ -486,14 +592,15 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                 <!-- Бизнес-процесс из ленты новостей -->
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordionWorkflow">
-                                        <span class="bx-accordion__icon">🔄</span>
-                                        <span>Запустить БП из ленты новостей</span>
+                                        <i class="bx-accordion__icon fa-solid fa-arrows-rotate"></i>
+                                        <span>Запустить БП из Ленты</span>
+                                        <span class="bx-pro-badge">Только в PRO</span>
                                         <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_6 }">▼</span>
                                     </button>
                                     <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_6 }">
                                         <div class="bx-accordion__content">
                                             <div class="bx-info-text bx-mb-12">
-                                                💡 При нажатии на кнопку в чате будет запущен бизнес-процесс из ленты новостей.
+                                                <i class="fa-solid fa-lightbulb"></i> При нажатии на кнопку в чате будет запущен бизнес-процесс из ленты новостей.
                                                 Если у БП есть обязательные параметры - откроется форма, если нет - БП запустится сразу.
                                             </div>
                                             

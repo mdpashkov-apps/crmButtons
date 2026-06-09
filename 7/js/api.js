@@ -297,6 +297,24 @@ export const getBPforEntity = async (memberId, current_button) => {
     });
 };
 
+export const getChainBpDefinitions = async (memberId, entity, bpIds) => {
+    return safeRequest(async (client) => {
+        return await client.post("/button-actions/getChainBpDefinitions.php", {
+            memberId: memberId,
+            entity: entity,
+            bpIds: bpIds
+        });
+    });
+};
+
+export const getSubscriptionStatus = async (memberId) => {
+    return safeRequest(async (client) => {
+        return await client.post("/subscription/status.php", {
+            memberId: memberId
+        });
+    });
+};
+
 export const getDocumentsforEntity = async (memberId, current_button) => {
     return safeRequest(async (client) => {
         return await client.post("/button-actions/getDocumentsforEntity.php", {

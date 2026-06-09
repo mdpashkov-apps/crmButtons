@@ -73,7 +73,9 @@ if ($install_result['install'] === true) {
         'buttonActionType_FIELDS' => 'Тип действия кнопки',
         'workflowFromFeed_FIELDS' => 'БП из ленты новостей',
         'workflowTemplateId_FIELDS' => 'ID шаблона БП',
-        'workflowDocumentId_FIELDS' => 'ID документа для БП'
+        'workflowDocumentId_FIELDS' => 'ID документа для БП',
+        'bpChainValue_FIELDS' => 'Цепочка БП (PRO)',
+        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)'
     ];
 
     $existFields = [];
