@@ -9,7 +9,7 @@ define('BOT_REPORT_NAME', 'Overplan Report'); //Имя бота для расс�
 
 // === Биллинговые уведомления (приёмник api/notifications/notify.php) ===
 // ВНИМАНИЕ: впишите общий секрет из биллинга (тот же, что на стороне billing).
-define('NOTIFICATIONS_DISPATCH_SECRET', ''); // TODO: заполнить секретом из биллинга
+define('NOTIFICATIONS_DISPATCH_SECRET', '12d916a6fd9361a73c2ef647347a5e3374b1971f43362725de1ec52fdbace898'); // общий секрет с биллингом
 define('NOTIFICATIONS_CALLBACK_URL', 'https://billing.qabinet.ru/v1/notifications/callback');
 define('APP_DATABASE', [
     'host' => "localhost",
