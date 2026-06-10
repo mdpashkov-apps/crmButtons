@@ -42,6 +42,7 @@ var app = new Vue({
         3: this.action3,
         4: this.action4,
         5: this.action5,
+        6: this.action6,
       };
       
       for (const actionId of actions) {
@@ -151,6 +152,17 @@ var app = new Vue({
         template = 'https://' + template;
       }
       window.open(template, '_blank');
+    },
+
+    // Открыть ссылку из поля CRM (legacy «Перейти по ссылке из поля CRM», бесплатное действие, ID 6)
+    async action6() {
+      const response = await OpenCrmLink(window.memberId, window.crmActions, window.entityData);
+      let crmLink = response && response.result ? response.result : '';
+      if (!crmLink) return;
+      if (!/^https?:\/\//i.test(crmLink)) {
+        crmLink = 'https://' + crmLink;
+      }
+      window.open(crmLink, '_blank');
     },
 
     async resolveLinkPlaceholders(template) {

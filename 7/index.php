@@ -561,6 +561,37 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                 </div>
 
                                 <div class="bx-accordion__item">
+                                    <button class="bx-accordion__header" @click="toggleAccordion(8)">
+                                        <i class="bx-accordion__icon fa-solid fa-link"></i>
+                                        <span>Перейти по ссылке из поля CRM</span>
+                                        <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_8 }">▼</span>
+                                    </button>
+                                    <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_8 }">
+                                        <div class="bx-accordion__content">
+                                            <div class="bx-info-text bx-mb-12">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
+                                            </div>
+                                            <label class="bx-checkbox">
+                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="6" class="bx-checkbox__input">
+                                                <span class="bx-checkbox__label">Активировать свойство</span>
+                                            </label>
+                                            <div class="bx-mt-12">
+                                                <label class="bx-label">Поле CRM со ссылкой</label>
+                                                <multiselect v-model="current_button.crmLinkFields_FIELDS"
+                                                             :options="allCrmFieldsLink"
+                                                             label="name"
+                                                             track-by="value"
+                                                             placeholder="Выберите поле с ссылкой"
+                                                             class="bx-multiselect"
+                                                             @open="getCrmLinks">
+                                                    <span slot="noResult">Нет полей с типом ссылка</span>
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(5)">
                                         <i class="bx-accordion__icon fa-solid fa-comments"></i>
                                         <span>Кнопка в чатах</span>

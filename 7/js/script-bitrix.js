@@ -99,6 +99,7 @@ var app = new Vue({
             accordion_5: false,
             accordion_6: false,
             accordion_7: false,
+            accordion_8: false,
             // Флаги
             flagsButtonBizproc: false,
             flagsButtonDocument: false,
@@ -796,6 +797,7 @@ var app = new Vue({
             this.accordion_2 = false;
             this.accordion_4 = false;
             this.accordion_7 = false;
+            this.accordion_8 = false;
             this.resizeForMobile();
         }
     },
