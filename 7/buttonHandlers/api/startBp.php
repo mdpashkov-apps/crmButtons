@@ -170,7 +170,8 @@ if ($entityTypeId === '31') {
         'CCrmDocumentQuote',
         'QUOTE_' . $entityId,
     ];
-} elseif (is_numeric($entityTypeId)) {
+} elseif (is_numeric($entityTypeId) && (int)$entityTypeId > 4) {
+    // смарт-процессы имеют entityTypeId > 4 (1-4 — это базовые Лид/Сделка/Контакт/Компания)
     $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
