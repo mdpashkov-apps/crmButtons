@@ -75,7 +75,8 @@ if ($install_result['install'] === true) {
         'workflowTemplateId_FIELDS' => 'ID шаблона БП',
         'workflowDocumentId_FIELDS' => 'ID документа для БП',
         'bpChainValue_FIELDS' => 'Цепочка БП (PRO)',
-        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)'
+        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)',
+        'installedByUserId' => 'ID установившего приложение'
     ];
 
     $existFields = [];
@@ -124,11 +125,19 @@ if ($install_result['install'] === true) {
         'FILTER' => ['=PROPERTY_VALUES.isPortalSettings' => 'true']
     ]);
 
+    // Захват установившего: токен установки принадлежит установившему → user.current = он
+    $installerId = 0;
+    try {
+        $me = overCRest::call('user.current', []);
+        $installerId = (int)($me['result']['ID'] ?? 0);
+    } catch (\Throwable $e) {}
+
     $settingsData = [
         'botToken_FIELDS' => '',
         'botId_FIELDS' => '',
         'chatId_FIELDS' => $chatId,
-        'botRegistered' => '0'
+        'botRegistered' => '0',
+        'installedByUserId' => $installerId
     ];
 
     if (empty($settingsCheck['result'])) {

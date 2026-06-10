@@ -59,7 +59,8 @@ if($member_id) {
         'workflowTemplateId_FIELDS' => 'ID шаблона БП',
         'workflowDocumentId_FIELDS' => 'ID документа для БП',
         'bpChainValue_FIELDS' => 'Цепочка БП (PRO)',
-        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)'
+        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)',
+        'installedByUserId' => 'ID установившего приложение'
     ];
 
     // 3. Какие поля уже заведены

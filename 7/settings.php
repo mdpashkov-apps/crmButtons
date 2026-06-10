@@ -6,6 +6,11 @@ define('TABLE_NAME', 'crmButtons'); //Имя таблицы
 define('CHAT_REPORT', 'ALLChat Overplan'); //Имя чата для рассылки
 define('BOT_REPORT_CODE', 'OVERPLAN_REPORT_CRMBUTTONS'); //Имя бота для рассылки
 define('BOT_REPORT_NAME', 'Overplan Report'); //Имя бота для рассылки
+
+// === Биллинговые уведомления (приёмник api/notifications/notify.php) ===
+// ВНИМАНИЕ: впишите общий секрет из биллинга (тот же, что на стороне billing).
+define('NOTIFICATIONS_DISPATCH_SECRET', ''); // TODO: заполнить секретом из биллинга
+define('NOTIFICATIONS_CALLBACK_URL', 'https://billing.qabinet.ru/v1/notifications/callback');
 define('APP_DATABASE', [
     'host' => "localhost",
     'login' => 'bitrix0',
