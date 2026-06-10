@@ -137,10 +137,6 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <span class="bx-icon bx-icon--settings"></span>
                         <span class="bx-app-header__link-text">Настройка приложения</span>
                     </a>
-                    <a href="./indexReports.php?REQUEST=<?= $request_json ?>" class="bx-app-header__link">
-                        <span class="bx-icon bx-icon--notification"></span>
-                        <span class="bx-app-header__link-text">Настройка уведомлений</span>
-                    </a>
                     <a href="https://t.me/appsupportbot" target="_blank" class="bx-app-header__link">
                         <span class="bx-icon bx-icon--chat"></span>
                         <span class="bx-app-header__link-text">Обратная связь</span>
@@ -605,15 +601,38 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                             </div>
                                             
                                             <div class="bx-actions bx-mt-16">
-                                                <button v-if="current_button.buttonInChat_FIELDS" 
-                                                        class="ui-btn ui-btn-warning" 
+                                                <button v-if="current_button.buttonInChat_FIELDS"
+                                                        class="ui-btn ui-btn-warning"
                                                         @click="deleteBtnChat">
                                                     Удалить кнопку из чата
                                                 </button>
-                                                <button v-else 
-                                                        class="ui-btn ui-btn-success" 
+                                                <button v-else
+                                                        class="ui-btn ui-btn-success"
                                                         @click="createBtnChat">
                                                     Создать кнопку в чате
+                                                </button>
+                                            </div>
+
+                                            <!-- Участники чата: кнопки в чате видны только им -->
+                                            <div class="bx-mt-16">
+                                                <label class="bx-label">Добавить пользователей в чат</label>
+                                                <div class="bx-hint">Кнопки в чате видны только участникам чата «ALLChat Overplan». Добавьте сюда тех, кому они нужны.</div>
+                                                <multiselect v-model="selectedChatUsers"
+                                                             :options="allChatUsers"
+                                                             label="name"
+                                                             track-by="value"
+                                                             :multiple="true"
+                                                             :close-on-select="false"
+                                                             placeholder="Выберите пользователей"
+                                                             class="bx-multiselect bx-mt-8"
+                                                             @open="loadChatUsers">
+                                                    <span slot="noResult">Нет пользователей</span>
+                                                </multiselect>
+                                                <button class="ui-btn ui-btn-primary bx-mt-8"
+                                                        :disabled="chatUsersLoading || !selectedChatUsers.length"
+                                                        @click="addUsersToChat">
+                                                    <i class="fa-solid fa-user-plus"></i>
+                                                    {{ chatUsersLoading ? 'Добавление...' : 'Добавить в чат' }}
                                                 </button>
                                             </div>
                                         </div>

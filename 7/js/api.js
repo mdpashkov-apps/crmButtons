@@ -165,23 +165,6 @@ export const addUsersInChat = async (memberId, selectedUsers) => {
     });
 };
 
-export const deleteChatBot = async (memberId, checkOnly = false) => {
-    return safeRequest(async (client) => {
-        return await client.post("/indexReport/deleteChatBot.php", {
-            memberId: memberId,
-            checkOnly: checkOnly
-        });
-    });
-};
-
-export const addChatBot = async (memberId) => {
-    return safeRequest(async (client) => {
-        return await client.post("/indexReport/addChatBot.php", {
-            memberId: memberId,
-        });
-    });
-};
-
 // ============================================================
 // API ФУНКЦИИ ДЛЯ СТРАНИЦЫ НАСТРОЕК КНОПОК
 // ============================================================

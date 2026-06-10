@@ -5,7 +5,8 @@ const {
     getAllEntitys, getBPforEntity, getDocumentsforEntity, getAllLists,
     getListFields, getEntityFieldsForList, getCrmFieldsLink,
     createButtonInChat, deleteButtonInChat, getFeedWorkflowsList,
-    getChainBpDefinitions, getSubscriptionStatus
+    getChainBpDefinitions, getSubscriptionStatus,
+    getAllUsers, addUsersInChat
 } = await import(`../js/api.js?v=${__apiVer}`);
 
 Vue.directive('click-outside', {
@@ -74,6 +75,10 @@ var app = new Vue({
             allDocuments: [],
             allLists: [],
             allCrmFieldsLink: [],
+            // Мини-блок "добавить пользователей в чат" (для фичи "Кнопки в чате")
+            allChatUsers: [],
+            selectedChatUsers: [],
+            chatUsersLoading: false,
             entFields: [],
             // Настройки для БП из ленты
             buttonActionType: 'url',
@@ -642,6 +647,35 @@ var app = new Vue({
                 this.allCrmFieldsLink = response.result;
             } finally {
                 this.loader = false;
+            }
+        },
+
+        async loadChatUsers() {
+            if (this.allChatUsers.length > 0) return;
+            try {
+                const response = await getAllUsers(window.memberId);
+                this.allChatUsers = (response && response.result) ? response.result : [];
+            } catch (e) {
+                console.error('Не удалось загрузить пользователей:', e);
+            }
+        },
+
+        async addUsersToChat() {
+            if (!this.selectedChatUsers.length) return;
+            this.chatUsersLoading = true;
+            try {
+                const response = await addUsersInChat(window.memberId, this.selectedChatUsers);
+                if (response && (response.success || response.result)) {
+                    this.showNotification('Пользователи добавлены в чат', 'success');
+                    this.selectedChatUsers = [];
+                } else {
+                    this.showNotification((response && response.error) ? response.error : 'Не удалось добавить пользователей', 'error');
+                }
+            } catch (e) {
+                console.error('Ошибка добавления пользователей в чат:', e);
+                this.showNotification('Ошибка добавления пользователей', 'error');
+            } finally {
+                this.chatUsersLoading = false;
             }
         },
 

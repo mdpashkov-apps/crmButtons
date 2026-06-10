@@ -9,6 +9,7 @@ $path = pathinfo(__DIR__, PATHINFO_DIRNAME);
 $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
+require_once(__DIR__ . '/../chatHandlers/ensure-bot.php');
 
 $selectedUsers = $requestData['selectedUsers'];
 
@@ -30,11 +31,17 @@ $findChat = overCRest::call("im.search.chat.list", [
 ]);
 
 if (empty($findChat['result'])) {
-    echo json_encode(['error' => 'Чат не найден'], JSON_UNESCAPED_UNICODE);
-    exit;
+    // лениво создаём бота+чат (раньше чат создавала страница "Настройка уведомлений")
+    $ensured = ensureBotAndChat($memberId);
+    $chatId = $ensured['chatId'] ?? null;
+} else {
+    $chatId = $findChat['result'][0]['id'];
 }
 
-$chatId = $findChat['result'][0]['id'];
+if (!$chatId) {
+    echo json_encode(['error' => 'Не удалось создать чат'], JSON_UNESCAPED_UNICODE);
+    exit;
+}
 
 // Добавляем пользователей в чат
 $addUsersinChat = overCRest::call("im.chat.user.add", [

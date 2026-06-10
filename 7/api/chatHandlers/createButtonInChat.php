@@ -31,6 +31,7 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 
 overCRest::setCurrentBitrix24($memberId);
+require_once(__DIR__ . '/ensure-bot.php');
 
 // Получаем данные кнопки из БД
 $getButton = overCRest::call('entity.item.get', [
@@ -77,9 +78,17 @@ if (!empty($settingsCheck['result'])) {
     $chatId = $portalSettings['chatId_FIELDS'] ?? null;
 }
 
+// Лениво создаём бота+чат, если их ещё нет (раньше это делала страница "Настройка уведомлений")
 if (!$botId) {
-    writeLog("ERROR: Bot not found in portal settings");
-    echo json_encode(['error' => 'Чат-бот не найден. Сначала добавьте бота в разделе "Настройка уведомлений"']);
+    writeLog("Бот не найден в настройках — создаём лениво через ensureBotAndChat");
+    $ensured = ensureBotAndChat($memberId);
+    $botId    = $ensured['botId'] ?? null;
+    $botToken = $ensured['botToken'] ?? null;
+    $chatId   = $ensured['chatId'] ?? null;
+}
+if (!$botId) {
+    writeLog("ERROR: Не удалось создать бота");
+    echo json_encode(['error' => 'Не удалось создать чат-бота. Повторите попытку.']);
     exit;
 }
 
