@@ -1,0 +1,2 @@
+# файловый кэш JWT/entitlements/планов (создаётся BillingClient) — не версионируем
+cache/

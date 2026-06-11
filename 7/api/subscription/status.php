@@ -9,16 +9,25 @@ include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
 require_once(__DIR__ . '/limits.php');
+require_once(__DIR__ . '/../billing/BillingClient.php');
 
+$ent    = BillingClient::getEntitlements((string)$memberId);
+$isPro  = ($ent['plan_type'] ?? 'free') !== 'free';
 $status = checkButtonLimit($memberId);
 
 echo json_encode([
-    'plan'        => isPro($memberId) ? 'pro' : 'free',
-    'valid_until' => null,
-    'limits'      => [
+    'plan'         => $isPro ? 'pro' : 'free',      // совместимость с фронтом (plan === 'pro')
+    'plan_name'    => $ent['plan'] ?? 'free',        // реальное имя тарифа из qabinet
+    'plan_type'    => $ent['plan_type'] ?? 'free',   // free | paid | trial
+    'is_pro'       => $isPro,
+    'source'       => $ent['source'] ?? 'billing',   // billing | failover
+    'features'     => $ent['features'] ?? [],
+    'valid_until'  => null,
+    'limits'       => [
         'buttons' => [
             'used'  => $status['used'],
             'limit' => $status['limit'],
         ],
     ],
+    'checkout_url' => defined('BILLING_WIDGET_URL') ? BILLING_WIDGET_URL : null,
 ], JSON_UNESCAPED_UNICODE);

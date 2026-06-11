@@ -11,23 +11,32 @@ if (!defined('FREE_BUTTON_LIMIT')) {
     define('FREE_BUTTON_LIMIT', 3);
 }
 
+require_once(__DIR__ . '/../billing/BillingClient.php');
+
 /**
- * Проверка подписки. Пока биллинг не подключён — всегда false (все на free).
- * При подключении биллинга: запрашивать billing API и кэшировать.
+ * Проверка подписки: тариф из биллинга (plan_type != free). Кэш — внутри BillingClient (5 мин).
  */
 function isPro($memberId) {
-    // TODO: подключить billing API
-    return false;
+    $e = BillingClient::getEntitlements((string)$memberId);
+    return ($e['plan_type'] ?? 'free') !== 'free';
 }
 
 /**
  * Лимит на количество кнопок. null = безлимит.
+ * Источник — биллинг (limits.buttons); при недоступности (failover) не блокируем.
  */
 function getButtonLimit($memberId) {
-    if (isPro($memberId)) {
+    $e = BillingClient::getEntitlements((string)$memberId);
+    // биллинг недоступен → не блокируем создание
+    if (($e['source'] ?? '') === 'failover') {
         return null;
     }
-    return FREE_BUTTON_LIMIT;
+    // лимит из каталога qabinet, если задан (null = безлимит)
+    if (array_key_exists('buttons', $e['limits'] ?? [])) {
+        return $e['limits']['buttons'];
+    }
+    // фолбэк: PRO — безлимит, free — дефолт приложения
+    return (($e['plan_type'] ?? 'free') !== 'free') ? null : FREE_BUTTON_LIMIT;
 }
 
 /**
