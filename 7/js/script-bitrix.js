@@ -134,6 +134,14 @@ var app = new Vue({
         isPro() {
             return this.subscription?.plan === 'pro';
         },
+        buttonUsagePercent() {
+            if (this.buttonLimit === null || this.buttonLimit <= 0) return 0;
+            return Math.min(100, Math.round(this.buttonsUsed / this.buttonLimit * 100));
+        },
+        planName() {
+            if (this.isPro) return (this.subscription && this.subscription.plan_name) ? this.subscription.plan_name.toUpperCase() : 'PRO';
+            return 'Бесплатный';
+        },
         previewButtonStyle() {
             const border = this.current_button.buttonBorder_FIELDS 
                 ? `${this.current_button.buttonBorderWidth_FIELDS || 0}px solid ${this.current_button.buttonBorderColor_FIELDS}`
