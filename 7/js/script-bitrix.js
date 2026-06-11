@@ -134,12 +134,29 @@ var app = new Vue({
         isPro() {
             return this.subscription?.plan === 'pro';
         },
+        planType() {
+            return (this.subscription && this.subscription.plan_type) ? this.subscription.plan_type : 'free';
+        },
+        isTrial() {
+            return this.planType === 'trial';
+        },
+        isPaid() {
+            return this.planType === 'paid';
+        },
+        hasFullAccess() {
+            // триал и платный дают полный доступ (лимит снят)
+            return this.planType !== 'free';
+        },
         buttonUsagePercent() {
             if (this.buttonLimit === null || this.buttonLimit <= 0) return 0;
             return Math.min(100, Math.round(this.buttonsUsed / this.buttonLimit * 100));
         },
         planName() {
-            if (this.isPro) return (this.subscription && this.subscription.plan_name) ? this.subscription.plan_name.toUpperCase() : 'PRO';
+            if (this.planType === 'trial') return 'Триал';
+            if (this.planType === 'paid') {
+                const n = this.subscription && this.subscription.plan_name;
+                return (n && n !== 'pro') ? n.toUpperCase() : 'PRO';
+            }
             return 'Бесплатный';
         },
         previewButtonStyle() {

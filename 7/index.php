@@ -164,11 +164,17 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             <div class="op-paywall">
                 <button class="op-paywall__close" @click="closePaywall" :disabled="paywallPolling">✕</button>
                 <div class="op-paywall__icon"><i class="fa-solid fa-rocket"></i></div>
-                <h2 class="op-paywall__title">Достигнут лимит бесплатного тарифа</h2>
+                <h2 class="op-paywall__title">{{ isTrial ? 'Оформите PRO' : 'Достигнут лимит бесплатного тарифа' }}</h2>
                 <p class="op-paywall__text">
-                    На бесплатном тарифе доступно <b>{{ buttonLimit }} {{ pluralizeButtons(buttonLimit) }}</b>
-                    (создано {{ buttonsUsed }}). Перейдите на PRO — неограниченное число кнопок и PRO-возможности
-                    (цепочки БП, ссылки с параметрами).
+                    <template v-if="isTrial">
+                        Сейчас активен пробный период. Оформите PRO, чтобы сохранить полный доступ
+                        (неограниченное число кнопок, цепочки БП, ссылки с параметрами) после окончания триала.
+                    </template>
+                    <template v-else>
+                        На бесплатном тарифе доступно <b>{{ buttonLimit }} {{ pluralizeButtons(buttonLimit) }}</b>
+                        (создано {{ buttonsUsed }}). Перейдите на PRO — неограниченное число кнопок и PRO-возможности
+                        (цепочки БП, ссылки с параметрами).
+                    </template>
                 </p>
                 <div v-if="paywallMessage" class="op-paywall__msg">{{ paywallMessage }}</div>
                 <div class="op-paywall__actions">
@@ -213,11 +219,15 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                 .op-plan__right { display:flex; align-items:center; gap:10px; }
                 .op-plan__active { color:#12b76a; font-size:13px; font-weight:500; }
                 .op-plan__note { color:#b54708; font-size:12px; }
+                .op-plan--trial { background:linear-gradient(90deg,#eef4ff,#f7faff); border-color:#b9d2ff; }
+                .op-plan__badge--trial { background:#3b82f6; color:#fff; }
+                .op-plan__active--trial { color:#2563eb; }
             </style>
-            <div class="op-plan" :class="{ 'op-plan--pro': isPro }">
+            <div class="op-plan" :class="{ 'op-plan--pro': isPaid, 'op-plan--trial': isTrial }">
                 <div class="op-plan__left">
-                    <span class="op-plan__badge" :class="isPro ? 'op-plan__badge--pro' : 'op-plan__badge--free'">
-                        <i :class="isPro ? 'fa-solid fa-crown' : 'fa-regular fa-circle'"></i>
+                    <span class="op-plan__badge"
+                          :class="{ 'op-plan__badge--pro': isPaid, 'op-plan__badge--trial': isTrial, 'op-plan__badge--free': !hasFullAccess }">
+                        <i :class="isPaid ? 'fa-solid fa-crown' : (isTrial ? 'fa-solid fa-hourglass-half' : 'fa-regular fa-circle')"></i>
                         {{ planName }}
                     </span>
                     <span class="op-plan__usage">
@@ -232,7 +242,11 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                     <span v-if="subscription.source === 'failover'" class="op-plan__note" title="Биллинг временно недоступен — тариф уточнится автоматически">
                         <i class="fa-solid fa-triangle-exclamation"></i> тариф временно недоступен
                     </span>
-                    <button v-if="!isPro" class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">
+                    <template v-if="isTrial">
+                        <span class="op-plan__active op-plan__active--trial"><i class="fa-solid fa-hourglass-half"></i> Пробный период</span>
+                        <button class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">Оформить PRO</button>
+                    </template>
+                    <button v-else-if="!hasFullAccess" class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">
                         <i class="fa-solid fa-crown"></i> Перейти на PRO
                     </button>
                     <span v-else class="op-plan__active"><i class="fa-solid fa-circle-check"></i> PRO активен</span>
