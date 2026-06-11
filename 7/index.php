@@ -243,13 +243,19 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         <i class="fa-solid fa-triangle-exclamation"></i> тариф временно недоступен
                     </span>
                     <template v-if="isTrial">
-                        <span class="op-plan__active op-plan__active--trial"><i class="fa-solid fa-hourglass-half"></i> Пробный период</span>
+                        <span class="op-plan__active op-plan__active--trial">
+                            <i class="fa-solid fa-hourglass-half"></i>
+                            Пробный период<template v-if="validUntilText"> до {{ validUntilText }}</template>
+                        </span>
                         <button class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">Оформить PRO</button>
                     </template>
                     <button v-else-if="!hasFullAccess" class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">
                         <i class="fa-solid fa-crown"></i> Перейти на PRO
                     </button>
-                    <span v-else class="op-plan__active"><i class="fa-solid fa-circle-check"></i> PRO активен</span>
+                    <span v-else class="op-plan__active">
+                        <i class="fa-solid fa-circle-check"></i>
+                        PRO активен<template v-if="validUntilText"> до {{ validUntilText }}</template>
+                    </span>
                 </div>
             </div>
 

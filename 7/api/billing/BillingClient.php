@@ -153,12 +153,15 @@ class BillingClient
             $limits[$k] = ($val === 'unlimited' || $val === null || $val === '') ? null : (int) $val;
         }
         return [
-            'plan'                => (string) ($e['plan'] ?? 'free'),
-            'plan_type'           => (string) ($e['plan_type'] ?? 'free'),
-            'subscription_status' => (string) ($e['subscription_status'] ?? 'none'),
-            'features'            => $features,
-            'limits'              => $limits,
-            'source'              => 'billing',
+            'plan'                 => (string) ($e['plan'] ?? 'free'),
+            'plan_type'            => (string) ($e['plan_type'] ?? 'free'),
+            'subscription_status'  => (string) ($e['subscription_status'] ?? 'none'),
+            'features'             => $features,
+            'limits'               => $limits,
+            'expires_at'           => $e['expires_at'] ?? null,       // окончание периода (платный/триал)
+            'trial_end_at'         => $e['trial_end_at'] ?? null,     // окончание триала
+            'cancel_at_period_end' => !empty($e['cancel_at_period_end']),
+            'source'               => 'billing',
         ];
     }
 
