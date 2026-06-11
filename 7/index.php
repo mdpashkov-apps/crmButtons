@@ -148,6 +148,43 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             </div>
         </div>
         
+        <!-- ===== Paywall / апсейл на PRO ===== -->
+        <style>
+            .op-paywall-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); display:flex; align-items:center; justify-content:center; z-index: 100000; padding: 16px; }
+            .op-paywall { background:#fff; border-radius:14px; max-width:440px; width:100%; padding:28px 24px; text-align:center; position:relative; box-shadow:0 10px 40px rgba(0,0,0,.25); }
+            .op-paywall__close { position:absolute; top:10px; right:14px; border:none; background:none; font-size:18px; cursor:pointer; color:#98a2b3; }
+            .op-paywall__close:disabled { opacity:.4; cursor:default; }
+            .op-paywall__icon { font-size:38px; color:#2fc6f6; margin-bottom:8px; }
+            .op-paywall__title { font-size:20px; margin:0 0 10px; color:#1a2b3c; }
+            .op-paywall__text { color:#475467; font-size:14px; line-height:1.5; margin:0 0 16px; }
+            .op-paywall__msg { background:#eef6ff; color:#1a4e8a; border-radius:8px; padding:10px 12px; font-size:13px; margin-bottom:14px; }
+            .op-paywall__actions { display:flex; flex-direction:column; gap:10px; }
+        </style>
+        <div v-if="showPaywall" class="op-paywall-overlay" @click.self="closePaywall">
+            <div class="op-paywall">
+                <button class="op-paywall__close" @click="closePaywall" :disabled="paywallPolling">✕</button>
+                <div class="op-paywall__icon"><i class="fa-solid fa-rocket"></i></div>
+                <h2 class="op-paywall__title">Достигнут лимит бесплатного тарифа</h2>
+                <p class="op-paywall__text">
+                    На бесплатном тарифе доступно <b>{{ buttonLimit }} {{ pluralizeButtons(buttonLimit) }}</b>
+                    (создано {{ buttonsUsed }}). Перейдите на PRO — неограниченное число кнопок и PRO-возможности
+                    (цепочки БП, ссылки с параметрами).
+                </p>
+                <div v-if="paywallMessage" class="op-paywall__msg">{{ paywallMessage }}</div>
+                <div class="op-paywall__actions">
+                    <button class="ui-btn ui-btn-success" @click="goToPro" :disabled="paywallPolling">
+                        <i class="fa-solid fa-crown"></i> Перейти на PRO
+                    </button>
+                    <button v-if="paywallOpenedCheckout" class="ui-btn ui-btn-primary" @click="manualRefresh" :disabled="paywallPolling">
+                        <i v-if="paywallPolling" class="fa-solid fa-spinner fa-spin"></i>
+                        <i v-else class="fa-solid fa-rotate"></i>
+                        {{ paywallPolling ? 'Проверяем оплату…' : 'Я оплатил' }}
+                    </button>
+                    <button class="ui-btn" @click="closePaywall" :disabled="paywallPolling">Позже</button>
+                </div>
+            </div>
+        </div>
+
         <div class="bx-app-content">
             <!-- Баннер -->
             <div class="bx-banner">

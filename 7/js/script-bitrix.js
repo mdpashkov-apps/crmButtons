@@ -87,6 +87,11 @@ var app = new Vue({
             selectedWorkflowDocument: '',
             // Подписка / лимиты
             subscription: { plan: 'free', valid_until: null, limits: { buttons: { used: 0, limit: null } } },
+            // Апсейл / paywall
+            showPaywall: false,
+            paywallOpenedCheckout: false,
+            paywallPolling: false,
+            paywallMessage: '',
             // Цепочка БП
             expandedBpInChain: {},
             chainBpDefs: {},
@@ -512,11 +517,7 @@ var app = new Vue({
         
         async createBtn() {
             if (this.buttonsAtLimit) {
-                const limit = this.subscription.limits.buttons.limit;
-                this.showNotification(
-                    `Достигнут лимит бесплатного тарифа: ${limit} ${this.pluralizeButtons(limit)}. Обновитесь до PRO, чтобы создавать больше.`,
-                    'error'
-                );
+                this.openPaywall();
                 return;
             }
             this.newButton = true;
@@ -555,6 +556,64 @@ var app = new Vue({
             if (n1 > 1 && n1 < 5) return 'кнопки';
             if (n1 === 1) return 'кнопка';
             return 'кнопок';
+        },
+
+        // ===== Апсейл / переход на PRO =====
+        openPaywall() {
+            this.showPaywall = true;
+            this.paywallOpenedCheckout = false;
+            this.paywallPolling = false;
+            this.paywallMessage = '';
+            this.resizeForMobile();
+        },
+        closePaywall() {
+            if (this.paywallPolling) return; // не закрываем во время проверки оплаты
+            this.showPaywall = false;
+            this.resizeForMobile();
+        },
+        goToPro() {
+            const base = (this.subscription && this.subscription.checkout_url)
+                ? this.subscription.checkout_url
+                : 'https://billing.qabinet.ru/widget/b2b-checkout';
+            const url = base
+                + (base.indexOf('?') === -1 ? '?' : '&')
+                + 'app_code=user_buttons&member_id=' + encodeURIComponent(window.memberId);
+            window.open(url, '_blank');
+            this.paywallOpenedCheckout = true;
+            this.paywallMessage = 'Оплата открыта в новой вкладке. После оплаты вернитесь сюда и нажмите «Я оплатил».';
+        },
+        async manualRefresh() {
+            await this.refreshUntilActive();
+        },
+        // После оплаты тариф активируется не мгновенно (вебхук Bitrix→биллинг).
+        // Поллим status.php (force=мимо кэша) ~45с, пока план не станет платным.
+        async refreshUntilActive(maxMs = 45000, intervalMs = 3000) {
+            if (this.paywallPolling) return;
+            this.paywallPolling = true;
+            this.paywallMessage = 'Проверяем оплату…';
+            const start = Date.now();
+            try {
+                while (Date.now() - start < maxMs) {
+                    const resp = await getSubscriptionStatus(window.memberId, true);
+                    if (resp && resp.plan) {
+                        this.subscription = resp;
+                        const paid = resp.is_pro || resp.plan === 'pro'
+                            || (resp.plan_type && resp.plan_type !== 'free');
+                        if (paid) {
+                            this.paywallPolling = false;
+                            this.paywallMessage = '';
+                            this.showPaywall = false;
+                            this.showNotification('Тариф обновлён — лимит снят!', 'success');
+                            this.resizeForMobile();
+                            return;
+                        }
+                    }
+                    await new Promise(r => setTimeout(r, intervalMs));
+                }
+            } finally {
+                this.paywallPolling = false;
+            }
+            this.paywallMessage = 'Оплата ещё не подтверждена. Если вы оплатили — подождите минуту и нажмите «Я оплатил» снова.';
         },
         
         SetStandardStyles() {
@@ -848,6 +907,15 @@ var app = new Vue({
         await this.loadSubscription();
         this.resizeForMobile();
         
+        // приём успешной оплаты из виджета чекаута qabinet (postMessage)
+        window.addEventListener('message', (e) => {
+            const d = e && e.data;
+            const msg = (typeof d === 'string') ? d : (d && (d.type || d.event));
+            if (msg === 'qabinet:checkout:success') {
+                this.refreshUntilActive();
+            }
+        });
+
         if (window.isMobile) {
             const observer = new MutationObserver(() => this.resizeForMobile());
             observer.observe(document.body, { 

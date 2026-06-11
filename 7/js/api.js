@@ -290,10 +290,11 @@ export const getChainBpDefinitions = async (memberId, entity, bpIds) => {
     });
 };
 
-export const getSubscriptionStatus = async (memberId) => {
+export const getSubscriptionStatus = async (memberId, force = false) => {
     return safeRequest(async (client) => {
         return await client.post("/subscription/status.php", {
-            memberId: memberId
+            memberId: memberId,
+            force: force
         });
     });
 };

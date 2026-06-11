@@ -11,6 +11,11 @@ overCRest::setCurrentBitrix24($memberId);
 require_once(__DIR__ . '/limits.php');
 require_once(__DIR__ . '/../billing/BillingClient.php');
 
+// форс-рефетч мимо кэша (после оплаты — instant-обновление, поллинг refreshUntilActive)
+if (!empty($requestData['force'])) {
+    BillingClient::invalidate((string)$memberId);
+}
+
 $ent    = BillingClient::getEntitlements((string)$memberId);
 $isPro  = ($ent['plan_type'] ?? 'free') !== 'free';
 $status = checkButtonLimit($memberId);
