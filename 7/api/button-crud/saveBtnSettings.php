@@ -10,6 +10,24 @@ overCRest::setCurrentBitrix24($memberId);
 // получаем массив настроек которые надо сохранить в entity для кнопки
 $btnSettings = $requestData['btnSettings'];
 
+// гейтинг PRO-действий: «Ссылка с параметрами» (4) и «Цепочка БП» (5) — только при доступной фиче.
+// Защита от обхода UI: проверяем и при создании, и при обновлении кнопки.
+require_once(__DIR__ . '/../billing/BillingClient.php');
+$__actions = $btnSettings['buttonActionsId_FIELDS'] ?? [];
+if (is_string($__actions)) { $__actions = json_decode($__actions, true) ?: []; }
+$__actions = array_map('intval', (array)$__actions);
+$__proMap = [4 => 'link_with_params', 5 => 'bp_chains'];
+foreach ($__proMap as $__aid => $__code) {
+    if (in_array($__aid, $__actions, true) && !BillingClient::canUseFeature((string)$memberId, $__code)) {
+        echo json_encode([
+            'error'   => 'feature_locked',
+            'feature' => $__code,
+            'message' => 'Это действие доступно только на тарифе PRO.',
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
+
 /*
 | С фронта fieldsTable_FIELDS приходит как массив строк таблицы,
 | где каждая строка содержит:

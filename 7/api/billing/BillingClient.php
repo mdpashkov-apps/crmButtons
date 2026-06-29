@@ -141,6 +141,23 @@ class BillingClient
         return self::freeSnapshot('failover');
     }
 
+    /**
+     * Доступна ли PRO-фича. Если qabinet явно вернул фичу в каталоге (features[code]) — берём её;
+     * иначе дефолт по тарифу (free → нельзя, trial/paid → можно). При failover не блокируем.
+     */
+    public static function canUseFeature(string $memberId, string $code): bool
+    {
+        $e = self::getEntitlements($memberId);
+        if (($e['source'] ?? '') === 'failover') {
+            return true;
+        }
+        $features = $e['features'] ?? [];
+        if (is_array($features) && array_key_exists($code, $features)) {
+            return (bool) $features[$code];
+        }
+        return ($e['plan_type'] ?? 'free') !== 'free';
+    }
+
     private static function normalize(array $e): array
     {
         $features = [];

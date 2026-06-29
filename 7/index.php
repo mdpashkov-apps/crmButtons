@@ -608,9 +608,13 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                 <i class="fa-solid fa-circle-info"></i> Цепочка запускается строго в порядке списка. Для каждого шага можно заранее задать значения параметров — тогда они не будут спрашиваться у пользователя.
                                             </div>
                                             <label class="bx-checkbox">
-                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="5" class="bx-checkbox__input">
+                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="5" class="bx-checkbox__input" :disabled="!canFeature('bp_chains')">
                                                 <span class="bx-checkbox__label">Активировать свойство</span>
                                             </label>
+                                            <div v-if="!canFeature('bp_chains')" class="bx-info-text bx-mb-12" style="margin-top:8px">
+                                                <i class="fa-solid fa-lock"></i> Доступно на тарифе PRO.
+                                                <a href="#" @click.prevent="openPaywall" style="color:#2fc6f6;font-weight:600">Перейти на PRO</a>
+                                            </div>
                                             <div class="bx-mt-12">
                                                 <multiselect v-model="current_button.bpChainValue_FIELDS"
                                                              :options="allBizProc"
@@ -692,9 +696,13 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                 <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
                                             </div>
                                             <label class="bx-checkbox">
-                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="4" class="bx-checkbox__input">
+                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="4" class="bx-checkbox__input" :disabled="!canFeature('link_with_params')">
                                                 <span class="bx-checkbox__label">Активировать свойство</span>
                                             </label>
+                                            <div v-if="!canFeature('link_with_params')" class="bx-info-text bx-mb-12" style="margin-top:8px">
+                                                <i class="fa-solid fa-lock"></i> Доступно на тарифе PRO.
+                                                <a href="#" @click.prevent="openPaywall" style="color:#2fc6f6;font-weight:600">Перейти на PRO</a>
+                                            </div>
                                             <div class="bx-mt-12">
                                                 <label class="bx-label">Шаблон ссылки</label>
                                                 <input v-model="current_button.linkWithParams_FIELDS" type="text" class="ui-input" placeholder="https://example.com?id={ID}&amp;name={TITLE}" ref="linkParamsInput">

@@ -27,6 +27,10 @@ echo json_encode([
     'is_pro'       => $isPro,
     'source'       => $ent['source'] ?? 'billing',   // billing | failover
     'features'     => $ent['features'] ?? [],
+    'can'          => [
+        'bp_chains'        => BillingClient::canUseFeature((string)$memberId, 'bp_chains'),
+        'link_with_params' => BillingClient::canUseFeature((string)$memberId, 'link_with_params'),
+    ],
     'valid_until'         => $ent['expires_at'] ?? ($ent['trial_end_at'] ?? null),
     'trial_end_at'        => $ent['trial_end_at'] ?? null,
     'subscription_status' => $ent['subscription_status'] ?? null,

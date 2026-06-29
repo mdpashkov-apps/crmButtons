@@ -414,6 +414,12 @@ var app = new Vue({
                     return;
                 }
 
+                if (response && response.error === 'feature_locked') {
+                    this.showNotification(response.message || 'Это действие доступно только в PRO.', 'error');
+                    this.openPaywall();
+                    return;
+                }
+
                 if (response.result) {
                     this.originalButtonStyles = {
                         buttonColor_FIELDS: this.current_button.buttonColor_FIELDS,
@@ -598,6 +604,12 @@ var app = new Vue({
         },
 
         // ===== Апсейл / переход на PRO =====
+        canFeature(code) {
+            // доступность PRO-фичи: карта can из status.php, иначе фолбэк по тарифу
+            const c = this.subscription && this.subscription.can;
+            if (c && Object.prototype.hasOwnProperty.call(c, code)) return !!c[code];
+            return this.hasFullAccess;
+        },
         openPaywall() {
             this.showPaywall = true;
             this.paywallOpenedCheckout = false;
