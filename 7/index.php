@@ -262,23 +262,26 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
             
             <!-- ===== Виджет статуса подписки ===== -->
             <style>
-                .op-plan { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
-                    background:#f7f9fc; border:1px solid #e4e9f0; border-radius:12px; padding:12px 16px; margin-bottom:14px; }
+                .op-plan { display:flex; align-items:center; justify-content:space-between; gap:10px 18px; flex-wrap:wrap;
+                    background:#f7f9fc; border:1px solid #e4e9f0; border-radius:12px; padding:14px 18px; margin-bottom:14px; }
                 .op-plan--pro { background:linear-gradient(90deg,#fff8e6,#fffdf6); border-color:#f0d98a; }
-                .op-plan__left { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
-                .op-plan__badge { display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:13px; padding:4px 11px; border-radius:20px; }
+                .op-plan--trial { background:linear-gradient(90deg,#eef4ff,#f7faff); border-color:#b9d2ff; }
+                .op-plan__left { display:flex; align-items:center; gap:10px 16px; flex-wrap:wrap; min-width:0; }
+                .op-plan__badge { display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:13px; line-height:1;
+                    padding:6px 12px; border-radius:20px; white-space:nowrap; }
                 .op-plan__badge--free { background:#eef1f5; color:#667085; }
                 .op-plan__badge--pro { background:#f5c518; color:#5a4500; }
-                .op-plan__usage { font-size:14px; color:#344054; }
-                .op-plan__bar { width:120px; height:6px; background:#e4e9f0; border-radius:4px; overflow:hidden; }
+                .op-plan__badge--trial { background:#3b82f6; color:#fff; }
+                .op-plan__usage { font-size:14px; color:#344054; white-space:nowrap; }
+                .op-plan__usage b { color:#1a2b3c; }
+                .op-plan__bar { width:120px; height:6px; background:#e4e9f0; border-radius:4px; overflow:hidden; flex:0 0 auto; }
                 .op-plan__bar-fill { height:100%; background:#2fc6f6; transition:width .3s; }
                 .op-plan__bar-fill--full { background:#f1361b; }
-                .op-plan__right { display:flex; align-items:center; gap:10px; }
-                .op-plan__active { color:#12b76a; font-size:13px; font-weight:500; }
-                .op-plan__note { color:#b54708; font-size:12px; }
-                .op-plan--trial { background:linear-gradient(90deg,#eef4ff,#f7faff); border-color:#b9d2ff; }
-                .op-plan__badge--trial { background:#3b82f6; color:#fff; }
+                .op-plan__right { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+                .op-plan__right .ui-btn { white-space:nowrap; }
+                .op-plan__active { display:inline-flex; align-items:center; gap:6px; color:#12b76a; font-size:13px; font-weight:500; white-space:nowrap; }
                 .op-plan__active--trial { color:#2563eb; }
+                .op-plan__note { display:inline-flex; align-items:center; gap:6px; color:#b54708; font-size:12px; }
             </style>
             <div class="op-plan" :class="{ 'op-plan--pro': isPaid, 'op-plan--trial': isTrial }">
                 <div class="op-plan__left">
