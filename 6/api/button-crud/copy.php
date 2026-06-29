@@ -386,7 +386,7 @@ if ($needLoadListName && !empty($listsRaw)) {
 
 
 
-// file_put_contents(__DIR__ . '/result91.log', var_export($button, true), FILE_APPEND);
+file_put_contents(__DIR__ . '/result91.log', var_export($button, true), FILE_APPEND);
 
 
 

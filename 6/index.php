@@ -19,7 +19,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/c9f5eeb571.js" crossorigin="anonymous"></script> -->
 </head>
 <body>
     <? $member_id = $_REQUEST['member_id']; ?>

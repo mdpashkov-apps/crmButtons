@@ -1,6 +1,19 @@
 <?php
 include_once(__DIR__ . '/overCRest.php');
 
+$search_string = $_REQUEST['DOMAIN'];
+$dir = dirname(__DIR__) . '/fieldTypeHandlers'; // путь к папке, в которой нужно искать
+$files = scandir($dir); // массив файлов в папке
+$versions = basename(__DIR__);
+foreach ($files as $file) {
+    if (strpos(basename($file), $search_string) !== false) {
+        file_put_contents(
+            $dir . '/' . basename($file),
+            '<? include("../' . $versions . '/buttonHandlers/button.php");'
+        );
+    }
+}
+
 // Устанавливаем приложение
 $install_result = overCRest::installApp();
 

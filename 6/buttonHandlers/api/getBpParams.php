@@ -7,21 +7,42 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-// полчаем список бп из настроек кнопки, берем только value и собираем в один массив
+// получаем список бп из настроек кнопки, берем только value и собираем в один массив
 $businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
 $bpIds = array_column($businessProcessesData, 'value');
 $bpIds = array_map('intval', $bpIds);
 
+// Проверяем, есть ли БП для запуска
+if (empty($bpIds)) {
+    echo json_encode([
+        'result' => [],
+        'withoutParams' => [],
+        'document' => null,
+        'allUserFio' => null,
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 // получаем id сущности и id типа сущности
 $entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
-$entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
-$entityTypeIdMap = $entityData['value'];
+$rawEntity = $requestData['crmActions']['entitySelection_FIELDS'];
+
+// пробуем декодировать
+$entityData = json_decode($rawEntity, true);
+
+// если это новый формат
+if (json_last_error() === JSON_ERROR_NONE && is_array($entityData) && isset($entityData['value'])) {
+    $entityTypeIdMap = $entityData['value'];
+} else {
+    // старый формат (строка)
+    $entityTypeIdMap = $rawEntity;
+}
 
 // в зависимости от типа сущности формируем параметр DOCUMENT_TYPE для фильтрации списка бп
 if ($entityTypeIdMap === '31') {
     $documentType = 'SMART_INVOICE';
 } elseif (is_numeric($entityTypeIdMap)) {
-    $documentType = 'DYNAMIC_' . $entity;
+    $documentType = 'DYNAMIC_' . $entityTypeIdMap;
 } else {
     // лид, сделка, контакт и т.п.
     $documentType = $entityTypeIdMap;
@@ -38,13 +59,24 @@ $getBizProc = overCRest::call(
         ],
         'filter' => [
             'MODULE_ID' => 'crm',
-            'DOCUMENT_TYPE'=> $documentType,
+            'DOCUMENT_TYPE' => $documentType,
             'ID' => $bpIds, 
         ],
     ]
 );
 
-// мапим нужные типы паарметров и используем только их в дальнейшем
+// Проверяем, есть ли результат
+if (empty($getBizProc['result'])) {
+    echo json_encode([
+        'result' => [],
+        'withoutParams' => [],
+        'document' => null,
+        'allUserFio' => null,
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
+// мапим нужные типы параметров и используем только их в дальнейшем
 $typeMap = [
     'string' => 'txt',
     'text' => 'txt',
@@ -54,7 +86,9 @@ $typeMap = [
     'phone' => 'txt',
     'web' => 'txt',
     'user' => 'user',
-    'bool' => 'bool'
+    'bool' => 'bool',
+    'datetime' => 'datetime',
+    'select' => 'select',
 ];
 
 $allBp = [];
@@ -76,6 +110,7 @@ foreach ($getBizProc['result'] as $bp) {
                 'Required' => (int)$param['Required'],
                 'Multiple' => (int)$param['Multiple'],
                 'Default'  => $param['Default'],
+                'Options'  => $param['Options'] ?? null,
             ];
         }
     }
@@ -125,17 +160,27 @@ if ($entityTypeIdMap === '31') {
     ];
 }
 
+// Проверяем, есть ли среди параметров тип "user" (и одиночный, и множественный)
+$needUsers = false;
+if (!empty($result)) {
+    foreach ($result as $bp) {
+        foreach ($bp['PARAMETERS'] as $param) {
+            if (($param['Type'] ?? null) === 'user') {
+                $needUsers = true;
+                break 2;
+            }
+        }
+    }
+}
 
-// если среди параметров есть тип привязка к юзеру, то получим юзеров
-$allUserFio = null; 
-$BoolOptions = null; 
+// Загружаем всех пользователей, если они нужны
+$allUserFio = null;
+if ($needUsers) {
+    $totalUser = overCRest::call('user.search', [
+        'filter' => ['ACTIVE' => true],
+    ])['total'];
 
-foreach ($allBp[0]['PARAMETERS'] as $param) {
-    if (($param['Type'] ?? null) === 'user') {
-        $totalUser = overCRest::call('user.search', [
-            'filter' => ['ACTIVE' => true],
-        ])['total'];
-
+    if ($totalUser > 0) {
         $cmdBatch = [];
         for ($i = 0; $i < $totalUser; $i = $i + 50) {
             $cmdBatch[] = [
@@ -151,22 +196,13 @@ foreach ($allBp[0]['PARAMETERS'] as $param) {
         $responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
         $allUserFio = [];
         foreach ($responseBatch as $response) {
-            $tmpArray = [];
             foreach ($response as $user) {
-                $tmpArray[] = [
+                $allUserFio[] = [
                     'value' => $user['ID'],
-                    'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
+                    'name' => trim($user['NAME'] . ' ' . $user['LAST_NAME']),
                 ];
             }
-            $allUserFio = array_merge($allUserFio, $tmpArray);
         }
-    }
-    if (($param['Type'] ?? null) === 'bool') {
-        $BoolOptions = [
-            ['value' => 'not',  'name' => ''],
-            ['value' => 'Y', 'name' => 'Да'],
-            ['value' => 'N', 'name' => 'Нет'],
-        ];
     }
 }
 
@@ -175,5 +211,5 @@ echo json_encode([
     'withoutParams' => $withoutParams, // БП без параметров
     'document' => $document,          // DOCUMENT_ID
     'allUserFio' => $allUserFio,
-    // 'BoolOptions' => $BoolOptions 
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+?>

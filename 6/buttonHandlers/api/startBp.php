@@ -51,6 +51,70 @@ foreach ($bpParameters as $paramKey => $paramData) {
         }
         continue;
     }
+if ($type === 'datetime' && is_string($value)) {
+    // добавляем секунды если их нет
+    if (preg_match('/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/', $value)) {
+        $value .= ':00';
+    }
+    $filteredParams[$paramKey] = $value;
+    continue;
+}
+
+// Обработка bool
+if ($type === 'bool') {
+
+    // обычно приходит как ['value' => ['value' => 'Y', 'name' => 'Да']]
+    if (is_array($value) && isset($value['value'])) {
+
+        if (is_array($value['value']) && isset($value['value']['value'])) {
+            $filteredParams[$paramKey] = $value['value']['value']; // Y / N
+        } else {
+            $filteredParams[$paramKey] = $value['value']; // на случай другой структуры
+        }
+    }
+
+    continue;
+}
+
+if ($type === 'select') {
+
+    // одиночный select
+    if (!$multiple && is_array($value)) {
+
+        // если вложенный объект
+        if (isset($value['value']) && is_array($value['value'])) {
+            $filteredParams[$paramKey] = $value['value']['value'];
+        } elseif (isset($value['value'])) {
+            $filteredParams[$paramKey] = $value['value'];
+        }
+
+        continue;
+    }
+
+    // множественный select
+    if ($multiple && is_array($value)) {
+        $values = [];
+
+        foreach ($value as $item) {
+            if (isset($item['value'])) {
+                if (is_array($item['value']) && isset($item['value']['value'])) {
+                    $values[] = $item['value']['value'];
+                } else {
+                    $values[] = $item['value'];
+                }
+            }
+        }
+
+        if (!empty($values)) {
+            $filteredParams[$paramKey] = $values;
+        }
+
+        continue;
+    }
+
+    continue;
+}
+
 
     // Обработка строковых значений (одиночные поля без множественного выбора)
     if (is_string($value)) {
@@ -93,7 +157,7 @@ $entValue = $entityMap[$entityTypeId] ?? $entityTypeId;
 $entityId = (int)$requestData['entityData']['ENTITY_DATA']['entityId'];
 
 // формируем параметр DOCUMENT_ID для запуска бп и запускаем
-if ($entValue === '31') {
+if ($entValue === 31) {
     $document = [
         'crm',
         'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
@@ -118,6 +182,7 @@ if ($entValue === '31') {
         strtoupper($entValue) . '_' . $entityId,
     ];
 }
+// file_put_contents(__DIR__.'/result91.log', var_export($filteredParams, true), FILE_APPEND);
 
 echo json_encode([
     'templateId' => (int)$bpId,

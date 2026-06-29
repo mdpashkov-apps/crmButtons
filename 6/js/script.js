@@ -274,15 +274,18 @@ var app = new Vue({
 
       // если есть сохранённые соответствия
       if (Array.isArray(this.current_button.fieldsTable_FIELDS)) {
+        // freshFields.forEach(f => {
+        //   // ищем сохранённое соответствие по коду поля
+        //   let saved = this.current_button.fieldsTable_FIELDS.find(
+        //     s => s.value === f.value
+        //   )
+        //   // если соответствие найдено — восстанавливаем CRM-поле
+        //   if (saved) {
+        //     f.entField = saved.entField
+        //   }
+        // })
         freshFields.forEach(f => {
-          // ищем сохранённое соответствие по коду поля
-          let saved = this.current_button.fieldsTable_FIELDS.find(
-            s => s.value === f.value
-          )
-          // если соответствие найдено — восстанавливаем CRM-поле
-          if (saved) {
-            f.entField = saved.entField
-          }
+          f.entField = null
         })
       }
       // сохраняем обновлённую таблицу соответствий

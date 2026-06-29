@@ -1,1 +1,21 @@
+# Генерируемые обработчики типов полей (createFildTypeCRM.php)
 /fieldTypeHandlers/
+
+# Локальные бэкапы при разработке
+*.bak
+*.bak_*
+
+# Логи CRest
+logs/
+*.log
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Опционально: локальные переопределения настроек (если вынесете секреты)
+# **/settings.local.php

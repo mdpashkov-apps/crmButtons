@@ -20,41 +20,64 @@ $entityTypeId = $entityMap[$entity] ?? $entity;
 
 // Массив всех entityTypeId, по которым будем искать шаблоны документов
 $entityTypeIds = [];
-if ($entityTypeId === 2) {
-    $categoriesResponse = overCRest::call('crm.category.list',[
-        'entityTypeId' => 2
+
+// Проверяем, является ли это смарт-процессом (числовой ID больше 4)
+$isSmartProcess = is_numeric($entityTypeId) && $entityTypeId > 4;
+
+if ($entityTypeId == 2 || $isSmartProcess) {
+    // Для сделок и смарт-процессов получаем список категорий
+    $categoriesResponse = overCRest::call('crm.category.list', [
+        'entityTypeId' => $entityTypeId
     ]);
-    $categories = $categoriesResponse['result']['categories'];
-    foreach ($categories as $category) {
-        $entityTypeIds[] = '2_category_' . $category['id'];
+    
+    $categories = $categoriesResponse['result']['categories'] ?? [];
+    
+    if (!empty($categories)) {
+        foreach ($categories as $category) {
+            if ($entityTypeId == 2) {
+                // Для сделок специальный формат
+                $entityTypeIds[] = '2_category_' . $category['id'];
+            } else {
+                // Для смарт-процессов формат: ENTITY_TYPE_ID_CATEGORY_ID
+                $entityTypeIds[] = $entityTypeId . '_' . $category['id'];
+            }
+        }
+    } else {
+        // Если нет категорий, используем просто entityTypeId
+        $entityTypeIds[] = (string)$entityTypeId;
     }
 } else {
+    // Для остальных сущностей используем просто ID
     $entityTypeIds[] = (string)$entityTypeId;
 }
+
 // Итоговый список шаблонов документов
 $documents = [];
-foreach ($entityTypeIds as $entityTypeId) {
+
+foreach ($entityTypeIds as $currentEntityTypeId) {
     // Получаем общее количество шаблонов документов
-    $total = overCRest::call('crm.documentgenerator.template.list',[
+    $response = overCRest::call('crm.documentgenerator.template.list', [
         'filter' => [
-            'entityTypeId' => $entityTypeId
+            'entityTypeId' => $currentEntityTypeId
         ],
-    ])['total'];
+    ]);
+    
+    $total = $response['total'] ?? 0;
 
     if ($total <= 0) {
         continue;
     }
 
     $pages = ceil($total / 50);
-
     $batch = [];
+
     for ($i = 0; $i < $pages; $i++) {
         $batch["list_{$i}"] = [
             'method' => 'crm.documentgenerator.template.list',
             'params' => [
                 'select' => ['id', 'name'],
                 'filter' => [
-                    'entityTypeId' => $entityTypeId
+                    'entityTypeId' => $currentEntityTypeId
                 ],
                 'start' => $i * 50,
             ],
@@ -64,25 +87,30 @@ foreach ($entityTypeIds as $entityTypeId) {
     $batchChunks = array_chunk($batch, 50, true);
     foreach ($batchChunks as $chunk) {
         sleep(2); // щадящий режим
-        $result = overCRest::callBatch($chunk, false)['result']['result'];
-        foreach ($result as $page) {
-            if (empty($page['templates'])) {
-                continue;
-            }
-            foreach ($page['templates'] as $tpl) {
-                $documents[] = [
-                    'value' => $tpl['id'],
-                    'name'  => $tpl['name'],
-                ];
+        $result = overCRest::callBatch($chunk, false);
+        
+        if (isset($result['result']['result'])) {
+            foreach ($result['result']['result'] as $page) {
+                if (empty($page['templates'])) {
+                    continue;
+                }
+                foreach ($page['templates'] as $tpl) {
+                    $documents[] = [
+                        'value' => $tpl['id'],
+                        'name'  => $tpl['name'],
+                    ];
+                }
             }
         }
     }
 }
 
-// Удаляем дубликаты и переиндексируем массив
-$documents = array_values(
-    array_unique($documents, SORT_REGULAR)
-);
+// Удаляем дубликаты по ID
+$uniqueDocuments = [];
+foreach ($documents as $doc) {
+    $uniqueDocuments[$doc['value']] = $doc;
+}
+$documents = array_values($uniqueDocuments);
 
 echo json_encode([
     'result' => $documents,

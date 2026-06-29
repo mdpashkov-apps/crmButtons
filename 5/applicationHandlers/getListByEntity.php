@@ -41,4 +41,8 @@ if ($elem['PROPERTY_VALUES']['entitySelection_FIELDS']) {
         "value" => []
     ];
 }
+
+
+file_put_contents(__DIR__.'/result91.log', var_export($response, true), FILE_APPEND);
+
 echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

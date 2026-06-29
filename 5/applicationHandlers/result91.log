@@ -1,253 +1,1389 @@
 array (
-  'id' => 315,
-  'domen' => 'b24-g6jav5.bitrix24.ru',
-  'memberId' => '25070ad6abb2c07bf91c9186591e656a',
+  'options' => 
+  array (
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 315,
-  'domen' => 'b24-g6jav5.bitrix24.ru',
-  'memberId' => '25070ad6abb2c07bf91c9186591e656a',
-)array (
-  'id' => 127,
-  'domen' => '',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 28,
-  'domen' => 'uralavtotral.bitrix24.ru',
-  'memberId' => '1196ebb94368d85ba8b70396b0ff213f',
-)array (
-  'id' => 127,
-  'domen' => '',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 129,
-  'domen' => '',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 129,
-  'domen' => '',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 129,
-  'domen' => '',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 129,
-  'domen' => 'b24-mblmjp.bitrix24.ru',
-  'memberId' => '09a12efacf504811698aa91547f3cf2b',
-)array (
-  'id' => 32,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 32,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 12,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 14,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 16,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 18,
-  'domen' => 'alliance-partners.bitrix24.ru',
-  'memberId' => '780b96f2c4629713a76b62782f725f9e',
-)array (
-  'id' => 3094,
-  'domen' => 'buisness-algotihtm.bitrix24.ru',
-  'memberId' => 'c96d58dcfcb84e9893a830aadd401e9c',
-)array (
-  'id' => 225865,
-  'domen' => 'bitrix.octobergroup.ru',
-  'memberId' => 'b2a0cadb18d352c0cab0dd26a8ff3df8',
-)array (
-  'id' => 1104,
-  'domen' => 'nikolaevabit.bitrix24.ru',
-  'memberId' => 'c6bebe937a1cd6f00a1719ccecc94b5a',
-)array (
-  'id' => 1104,
-  'domen' => 'nikolaevabit.bitrix24.ru',
-  'memberId' => 'c6bebe937a1cd6f00a1719ccecc94b5a',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '2052',
+      'name' => 'Список для 6 версии кнопок',
+    ),
+    1 => 
+    array (
+      'value' => '2048',
+      'name' => 'тестовый список для кнопок',
+    ),
+    2 => 
+    array (
+      'value' => '1912',
+      'name' => 'Логирование изменения пользовательских полей',
+    ),
+    3 => 
+    array (
+      'value' => '1836',
+      'name' => 'Заказ наряд',
+    ),
+    4 => 
+    array (
+      'value' => '1804',
+      'name' => 'Новый список тест Денис Б',
+    ),
+    5 => 
+    array (
+      'value' => '1634',
+      'name' => 'Тест привязок',
+    ),
+    6 => 
+    array (
+      'value' => '1390',
+      'name' => 'Новый список',
+    ),
+    7 => 
+    array (
+      'value' => '1318',
+      'name' => 'Продажа',
+    ),
+    8 => 
+    array (
+      'value' => '1312',
+      'name' => 'Реестр встреч (Для Алексея)',
+    ),
+    9 => 
+    array (
+      'value' => '1296',
+      'name' => 'тестовый список',
+    ),
+    10 => 
+    array (
+      'value' => '1272',
+      'name' => 'Список с тарифами',
+    ),
+    11 => 
+    array (
+      'value' => '1270',
+      'name' => 'Список с продуктами',
+    ),
+    12 => 
+    array (
+      'value' => '1268',
+      'name' => 'Очередь ответственных по лидам ',
+    ),
+    13 => 
+    array (
+      'value' => '1266',
+      'name' => 'Маркировка разбор',
+    ),
+    14 => 
+    array (
+      'value' => '1260',
+      'name' => 'Реестр входящей документации',
+    ),
+    15 => 
+    array (
+      'value' => '1256',
+      'name' => 'Участники проекта',
+    ),
+    16 => 
+    array (
+      'value' => '1254',
+      'name' => 'Ntcnjdq cgbcjr',
+    ),
+    17 => 
+    array (
+      'value' => '1240',
+      'name' => 'Отгрузки',
+    ),
+    18 => 
+    array (
+      'value' => '1238',
+      'name' => 'Отели',
+    ),
+    19 => 
+    array (
+      'value' => '1216',
+      'name' => 'Должности',
+    ),
+    20 => 
+    array (
+      'value' => '1214',
+      'name' => 'Сотрудники',
+    ),
+    21 => 
+    array (
+      'value' => '1212',
+      'name' => 'лилов',
+    ),
+    22 => 
+    array (
+      'value' => '1188',
+      'name' => 'проверка',
+    ),
+    23 => 
+    array (
+      'value' => '1070',
+      'name' => 'Реестр входящей документации',
+    ),
+    24 => 
+    array (
+      'value' => '1056',
+      'name' => 'Список для лида',
+    ),
+    25 => 
+    array (
+      'value' => '1054',
+      'name' => 'Тест для лида',
+    ),
+    26 => 
+    array (
+      'value' => '1052',
+      'name' => 'Тестовый документ для лида',
+    ),
+    27 => 
+    array (
+      'value' => '1050',
+      'name' => 'cdf',
+    ),
+    28 => 
+    array (
+      'value' => '1034',
+      'name' => 'Тест для лида',
+    ),
+    29 => 
+    array (
+      'value' => '1032',
+      'name' => 'w1',
+    ),
+    30 => 
+    array (
+      'value' => '1030',
+      'name' => 'wwwww',
+    ),
+    31 => 
+    array (
+      'value' => '1028',
+      'name' => 'er',
+    ),
+    32 => 
+    array (
+      'value' => '1026',
+      'name' => 'ewwwwwww',
+    ),
+    33 => 
+    array (
+      'value' => '1024',
+      'name' => 'ttttttttt',
+    ),
+    34 => 
+    array (
+      'value' => '758',
+      'name' => 'Новый список',
+    ),
+    35 => 
+    array (
+      'value' => '530',
+      'name' => '123 лид',
+    ),
+    36 => 
+    array (
+      'value' => '504',
+      'name' => 'Лог событий',
+    ),
+    37 => 
+    array (
+      'value' => '500',
+      'name' => 'Лог событий',
+    ),
+    38 => 
+    array (
+      'value' => '498',
+      'name' => 'Лог событий',
+    ),
+    39 => 
+    array (
+      'value' => '496',
+      'name' => 'Лог событий',
+    ),
+    40 => 
+    array (
+      'value' => '490',
+      'name' => 'Тестовый список',
+    ),
+    41 => 
+    array (
+      'value' => '334',
+      'name' => 'тестовый договор',
+    ),
+    42 => 
+    array (
+      'value' => '332',
+      'name' => 'fdgbtgbfdc vdfrr',
+    ),
+    43 => 
+    array (
+      'value' => '326',
+      'name' => 'бам',
+    ),
+    44 => 
+    array (
+      'value' => '324',
+      'name' => 'еееееееееееее',
+    ),
+    45 => 
+    array (
+      'value' => '318',
+      'name' => 'tttttttttttttt',
+    ),
+    46 => 
+    array (
+      'value' => '316',
+      'name' => 'tttttttttttttt',
+    ),
+    47 => 
+    array (
+      'value' => '314',
+      'name' => 'test',
+    ),
+    48 => 
+    array (
+      'value' => '312',
+      'name' => 'test',
+    ),
+    49 => 
+    array (
+      'value' => '310',
+      'name' => 'vfd',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
   'id' => -1,
-  'domen' => 'istoksochi.bitrix24.ru',
-  'memberId' => '5f49c73b0b903e0895648a3232c10d4f',
+  'domen' => 'support.versunihome.ru',
+  'memberId' => '4725409f4c7235736af8dd0583598c42',
 )array (
-  'id' => 120169,
-  'domen' => 'adel-hat.bitrix24.ru',
-  'memberId' => '22ba1ece6e11ed72af8fbc4bf7b5c235',
+  'id' => 29442,
+  'domen' => 'support.versunihome.ru',
+  'memberId' => '4725409f4c7235736af8dd0583598c42',
 )array (
-  'id' => 120169,
-  'domen' => 'adel-hat.bitrix24.ru',
-  'memberId' => '22ba1ece6e11ed72af8fbc4bf7b5c235',
+  'id' => 32529,
+  'domen' => 'support.versunihome.ru',
+  'memberId' => '4725409f4c7235736af8dd0583598c42',
 )array (
-  'id' => 765,
-  'domen' => 'woolex.bitrix24.ru',
-  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+  'id' => 32529,
+  'domen' => 'support.versunihome.ru',
+  'memberId' => '4725409f4c7235736af8dd0583598c42',
 )array (
-  'id' => 765,
-  'domen' => 'woolex.bitrix24.ru',
-  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '406',
+      'name' => 'Прошлые месяцы для баллов МОП',
+    ),
+    1 => 
+    array (
+      'value' => '400',
+      'name' => 'Список мониторы',
+    ),
+    2 => 
+    array (
+      'value' => '398',
+      'name' => 'Сделки без даты Приемка КС',
+    ),
+    3 => 
+    array (
+      'value' => '396',
+      'name' => 'Тест',
+    ),
+    4 => 
+    array (
+      'value' => '394',
+      'name' => 'Загасить задачу в сделке',
+    ),
+    5 => 
+    array (
+      'value' => '390',
+      'name' => 'Собеседования на сегодня, подтвержденные',
+    ),
+    6 => 
+    array (
+      'value' => '388',
+      'name' => 'Паузы оповещения по кандидатам',
+    ),
+    7 => 
+    array (
+      'value' => '358',
+      'name' => 'Кредиторы клиента БФЛ',
+    ),
+    8 => 
+    array (
+      'value' => '356',
+      'name' => 'Пауза для сделок на обзвон',
+    ),
+    9 => 
+    array (
+      'value' => '354',
+      'name' => 'Сортировка на стадии Назначить встречу',
+    ),
+    10 => 
+    array (
+      'value' => '346',
+      'name' => 'Время нахождения на стадиях',
+    ),
+    11 => 
+    array (
+      'value' => '344',
+      'name' => 'Список Компы',
+    ),
+    12 => 
+    array (
+      'value' => '342',
+      'name' => 'Открытая линия В Контакте',
+    ),
+    13 => 
+    array (
+      'value' => '338',
+      'name' => 'Логирование изменения пользовательских полей',
+    ),
+    14 => 
+    array (
+      'value' => '326',
+      'name' => 'Отчет по юристам БФЛ',
+    ),
+    15 => 
+    array (
+      'value' => '322',
+      'name' => 'Отчет по юристам ПАУ',
+    ),
+    16 => 
+    array (
+      'value' => '302',
+      'name' => 'Список отправки ДС 13.01.25',
+    ),
+    17 => 
+    array (
+      'value' => '298',
+      'name' => 'Пауза для парсера кейсбука',
+    ),
+    18 => 
+    array (
+      'value' => '296',
+      'name' => 'Список для пауз',
+    ),
+    19 => 
+    array (
+      'value' => '294',
+      'name' => 'Прокидывает Категорию в счета',
+    ),
+    20 => 
+    array (
+      'value' => '292',
+      'name' => 'Wazzup (WhatsApp) NEW',
+    ),
+    21 => 
+    array (
+      'value' => '288',
+      'name' => 'Кто оставил комментарий',
+    ),
+    22 => 
+    array (
+      'value' => '278',
+      'name' => 'Список сделок испортивших категорию',
+    ),
+    23 => 
+    array (
+      'value' => '274',
+      'name' => 'Парсер писем casebook',
+    ),
+    24 => 
+    array (
+      'value' => '270',
+      'name' => 'Список судов',
+    ),
+    25 => 
+    array (
+      'value' => '268',
+      'name' => 'История стадий БФЛ',
+    ),
+    26 => 
+    array (
+      'value' => '266',
+      'name' => 'Оплата по Юкассе',
+    ),
+    27 => 
+    array (
+      'value' => '262',
+      'name' => 'Реестр ссылок на оплату',
+    ),
+    28 => 
+    array (
+      'value' => '260',
+      'name' => 'оплата по ссылке на Альфа',
+    ),
+    29 => 
+    array (
+      'value' => '248',
+      'name' => 'Открытая линия Wazzup',
+    ),
+    30 => 
+    array (
+      'value' => '245',
+      'name' => 'Вакансии НиП',
+    ),
+    31 => 
+    array (
+      'value' => '235',
+      'name' => 'Конверсия в деталях',
+    ),
+    32 => 
+    array (
+      'value' => '233',
+      'name' => 'Открытая линия Телеграмм',
+    ),
+    33 => 
+    array (
+      'value' => '229',
+      'name' => 'Конверсия сделок в договор',
+    ),
+    34 => 
+    array (
+      'value' => '227',
+      'name' => 'Конверсия лидов во встречу',
+    ),
+    35 => 
+    array (
+      'value' => '193',
+      'name' => 'Контроль смены ответственного в делах',
+    ),
+    36 => 
+    array (
+      'value' => '191',
+      'name' => 'Отправленные буклеты',
+    ),
+    37 => 
+    array (
+      'value' => '183',
+      'name' => 'Отделы и WhatsApp',
+    ),
+    38 => 
+    array (
+      'value' => '179',
+      'name' => 'WhatsApp Клиентский сервис',
+    ),
+    39 => 
+    array (
+      'value' => '177',
+      'name' => 'Реестр доверенностей сотрудника',
+    ),
+    40 => 
+    array (
+      'value' => '175',
+      'name' => 'Оплаты по счетам',
+    ),
+    41 => 
+    array (
+      'value' => '173',
+      'name' => 'Отправленные акты БФЛ',
+    ),
+    42 => 
+    array (
+      'value' => '159',
+      'name' => 'Список рейтингов',
+    ),
+    43 => 
+    array (
+      'value' => '147',
+      'name' => 'Контроль качества',
+    ),
+    44 => 
+    array (
+      'value' => '143',
+      'name' => 'Реестр доверенностей',
+    ),
+    45 => 
+    array (
+      'value' => '139',
+      'name' => 'Профессиональные компетенции',
+    ),
+    46 => 
+    array (
+      'value' => '121',
+      'name' => 'увед о сроке оплаты ',
+    ),
+    47 => 
+    array (
+      'value' => '87',
+      'name' => 'Платежный календарь',
+    ),
+    48 => 
+    array (
+      'value' => '85',
+      'name' => 'Открытая линия WhatsApp',
+    ),
+    49 => 
+    array (
+      'value' => '51',
+      'name' => 'Открытая линия БФЛ Саратов',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 5835485,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
+  'id' => 2602,
+  'domen' => 'bitovka.bitrix24.ru',
+  'memberId' => '12ec29e49a8aeb4c5f9ecb77c460f7c1',
 )array (
-  'id' => 5835485,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
-)array (
-  'id' => 5833567,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
-)array (
-  'id' => 5833567,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
-)array (
-  'id' => 5835975,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
-)array (
-  'id' => 5835975,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
+  'id' => 2602,
+  'domen' => 'bitovka.bitrix24.ru',
+  'memberId' => '12ec29e49a8aeb4c5f9ecb77c460f7c1',
 )array (
   'id' => -1,
-  'domen' => 'testportal.keydisk.ru',
-  'memberId' => 'b1e6a2032e32e3dfc6d130e3804f155f',
-)array (
-  'id' => 1,
-  'domen' => 'b24-22vwht.bitrix24.ru',
-  'memberId' => 'abd6d2ab9e4acb4d2fd1dbb7efe63ee9',
-)array (
-  'id' => -1,
-  'domen' => '',
-  'memberId' => '63066fcd84df38f22dbecd48ee413dbd',
-)array (
-  'id' => 1,
-  'domen' => 'b24-22vwht.bitrix24.ru',
-  'memberId' => 'abd6d2ab9e4acb4d2fd1dbb7efe63ee9',
-)array (
-  'id' => 7613,
-  'domen' => 'overplan.bitrix24.ru',
-  'memberId' => 'ac242f7c6b3fcab183a648685d82c774',
+  'domen' => 'sprt.bitrix24.ru',
+  'memberId' => 'f7d54c680421d1eceea59bf188f744ce',
 )array (
   'id' => -2,
-  'domen' => '',
-  'memberId' => '39e22b67827e23d829db4777c58608d3',
+  'domen' => 'sprt.bitrix24.ru',
+  'memberId' => 'f7d54c680421d1eceea59bf188f744ce',
 )array (
-  'id' => 209,
-  'domen' => 'bx.promarsenal.ru',
-  'memberId' => '39e22b67827e23d829db4777c58608d3',
+  'id' => 23898,
+  'domen' => 'sprt.bitrix24.ru',
+  'memberId' => 'f7d54c680421d1eceea59bf188f744ce',
 )array (
-  'id' => 209,
-  'domen' => 'bx.promarsenal.ru',
-  'memberId' => '39e22b67827e23d829db4777c58608d3',
+  'id' => 23898,
+  'domen' => 'sprt.bitrix24.ru',
+  'memberId' => 'f7d54c680421d1eceea59bf188f744ce',
 )array (
-  'id' => 2281,
-  'domen' => 'electro-direct.bitrix24.ru',
-  'memberId' => 'c99149684834e7d6b4b32f11819a2dcf',
+  'id' => -4,
+  'domen' => 'sprt.bitrix24.ru',
+  'memberId' => 'f7d54c680421d1eceea59bf188f744ce',
 )array (
-  'id' => 2283,
-  'domen' => 'electro-direct.bitrix24.ru',
-  'memberId' => 'c99149684834e7d6b4b32f11819a2dcf',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '406',
+      'name' => 'Прошлые месяцы для баллов МОП',
+    ),
+    1 => 
+    array (
+      'value' => '400',
+      'name' => 'Список мониторы',
+    ),
+    2 => 
+    array (
+      'value' => '398',
+      'name' => 'Сделки без даты Приемка КС',
+    ),
+    3 => 
+    array (
+      'value' => '396',
+      'name' => 'Тест',
+    ),
+    4 => 
+    array (
+      'value' => '394',
+      'name' => 'Загасить задачу в сделке',
+    ),
+    5 => 
+    array (
+      'value' => '390',
+      'name' => 'Собеседования на сегодня, подтвержденные',
+    ),
+    6 => 
+    array (
+      'value' => '388',
+      'name' => 'Паузы оповещения по кандидатам',
+    ),
+    7 => 
+    array (
+      'value' => '358',
+      'name' => 'Кредиторы клиента БФЛ',
+    ),
+    8 => 
+    array (
+      'value' => '356',
+      'name' => 'Пауза для сделок на обзвон',
+    ),
+    9 => 
+    array (
+      'value' => '354',
+      'name' => 'Сортировка на стадии Назначить встречу',
+    ),
+    10 => 
+    array (
+      'value' => '346',
+      'name' => 'Время нахождения на стадиях',
+    ),
+    11 => 
+    array (
+      'value' => '344',
+      'name' => 'Список Компы',
+    ),
+    12 => 
+    array (
+      'value' => '342',
+      'name' => 'Открытая линия В Контакте',
+    ),
+    13 => 
+    array (
+      'value' => '338',
+      'name' => 'Логирование изменения пользовательских полей',
+    ),
+    14 => 
+    array (
+      'value' => '326',
+      'name' => 'Отчет по юристам БФЛ',
+    ),
+    15 => 
+    array (
+      'value' => '322',
+      'name' => 'Отчет по юристам ПАУ',
+    ),
+    16 => 
+    array (
+      'value' => '302',
+      'name' => 'Список отправки ДС 13.01.25',
+    ),
+    17 => 
+    array (
+      'value' => '298',
+      'name' => 'Пауза для парсера кейсбука',
+    ),
+    18 => 
+    array (
+      'value' => '296',
+      'name' => 'Список для пауз',
+    ),
+    19 => 
+    array (
+      'value' => '294',
+      'name' => 'Прокидывает Категорию в счета',
+    ),
+    20 => 
+    array (
+      'value' => '292',
+      'name' => 'Wazzup (WhatsApp) NEW',
+    ),
+    21 => 
+    array (
+      'value' => '288',
+      'name' => 'Кто оставил комментарий',
+    ),
+    22 => 
+    array (
+      'value' => '278',
+      'name' => 'Список сделок испортивших категорию',
+    ),
+    23 => 
+    array (
+      'value' => '274',
+      'name' => 'Парсер писем casebook',
+    ),
+    24 => 
+    array (
+      'value' => '270',
+      'name' => 'Список судов',
+    ),
+    25 => 
+    array (
+      'value' => '268',
+      'name' => 'История стадий БФЛ',
+    ),
+    26 => 
+    array (
+      'value' => '266',
+      'name' => 'Оплата по Юкассе',
+    ),
+    27 => 
+    array (
+      'value' => '262',
+      'name' => 'Реестр ссылок на оплату',
+    ),
+    28 => 
+    array (
+      'value' => '260',
+      'name' => 'оплата по ссылке на Альфа',
+    ),
+    29 => 
+    array (
+      'value' => '248',
+      'name' => 'Открытая линия Wazzup',
+    ),
+    30 => 
+    array (
+      'value' => '245',
+      'name' => 'Вакансии НиП',
+    ),
+    31 => 
+    array (
+      'value' => '235',
+      'name' => 'Конверсия в деталях',
+    ),
+    32 => 
+    array (
+      'value' => '233',
+      'name' => 'Открытая линия Телеграмм',
+    ),
+    33 => 
+    array (
+      'value' => '229',
+      'name' => 'Конверсия сделок в договор',
+    ),
+    34 => 
+    array (
+      'value' => '227',
+      'name' => 'Конверсия лидов во встречу',
+    ),
+    35 => 
+    array (
+      'value' => '193',
+      'name' => 'Контроль смены ответственного в делах',
+    ),
+    36 => 
+    array (
+      'value' => '191',
+      'name' => 'Отправленные буклеты',
+    ),
+    37 => 
+    array (
+      'value' => '183',
+      'name' => 'Отделы и WhatsApp',
+    ),
+    38 => 
+    array (
+      'value' => '179',
+      'name' => 'WhatsApp Клиентский сервис',
+    ),
+    39 => 
+    array (
+      'value' => '177',
+      'name' => 'Реестр доверенностей сотрудника',
+    ),
+    40 => 
+    array (
+      'value' => '175',
+      'name' => 'Оплаты по счетам',
+    ),
+    41 => 
+    array (
+      'value' => '173',
+      'name' => 'Отправленные акты БФЛ',
+    ),
+    42 => 
+    array (
+      'value' => '159',
+      'name' => 'Список рейтингов',
+    ),
+    43 => 
+    array (
+      'value' => '147',
+      'name' => 'Контроль качества',
+    ),
+    44 => 
+    array (
+      'value' => '143',
+      'name' => 'Реестр доверенностей',
+    ),
+    45 => 
+    array (
+      'value' => '139',
+      'name' => 'Профессиональные компетенции',
+    ),
+    46 => 
+    array (
+      'value' => '121',
+      'name' => 'увед о сроке оплаты ',
+    ),
+    47 => 
+    array (
+      'value' => '87',
+      'name' => 'Платежный календарь',
+    ),
+    48 => 
+    array (
+      'value' => '85',
+      'name' => 'Открытая линия WhatsApp',
+    ),
+    49 => 
+    array (
+      'value' => '51',
+      'name' => 'Открытая линия БФЛ Саратов',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 7709,
-  'domen' => 'overplan.bitrix24.ru',
-  'memberId' => 'ac242f7c6b3fcab183a648685d82c774',
+  'id' => -1,
+  'domen' => 'kmcrm.bitrix24.ru',
+  'memberId' => '8833c51fd66629c5da38e21865d56944',
 )array (
-  'id' => 7709,
-  'domen' => 'overplan.bitrix24.ru',
-  'memberId' => 'ac242f7c6b3fcab183a648685d82c774',
+  'id' => 36,
+  'domen' => 'b24-epc2ar.bitrix24.ru',
+  'memberId' => '40d7d551e8e9b70f196fcac4a4f59ab0',
 )array (
-  'id' => 183,
-  'domen' => '',
-  'memberId' => '69ff25ac9383e6954255caf27868b7e3',
+  'options' => 
+  array (
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 1436,
-  'domen' => 'inetvdom.bitrix24.ru',
-  'memberId' => 'ef06ae15adc051bab9a3b6e4b3c0fbdf',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '80',
+      'name' => 'Новый список 3',
+    ),
+    1 => 
+    array (
+      'value' => '78',
+      'name' => 'Новый список 2',
+    ),
+    2 => 
+    array (
+      'value' => '76',
+      'name' => 'Новый список 1',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 1436,
-  'domen' => 'inetvdom.bitrix24.ru',
-  'memberId' => 'ef06ae15adc051bab9a3b6e4b3c0fbdf',
+  'id' => 34,
+  'domen' => 'b24-epc2ar.bitrix24.ru',
+  'memberId' => '40d7d551e8e9b70f196fcac4a4f59ab0',
 )array (
-  'id' => 1436,
-  'domen' => 'inetvdom.bitrix24.ru',
-  'memberId' => 'ef06ae15adc051bab9a3b6e4b3c0fbdf',
+  'id' => 34,
+  'domen' => 'b24-epc2ar.bitrix24.ru',
+  'memberId' => '40d7d551e8e9b70f196fcac4a4f59ab0',
 )array (
-  'id' => 1664,
-  'domen' => 'krom-met.bitrix24.ru',
-  'memberId' => 'f921160ffb94dacf3676459d35ab3290',
+  'id' => 34,
+  'domen' => 'b24-epc2ar.bitrix24.ru',
+  'memberId' => '40d7d551e8e9b70f196fcac4a4f59ab0',
 )array (
-  'id' => 474408,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '80',
+      'name' => 'Новый список 3',
+    ),
+    1 => 
+    array (
+      'value' => '78',
+      'name' => 'Новый список 2',
+    ),
+    2 => 
+    array (
+      'value' => '76',
+      'name' => 'Новый список 1',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 471304,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '80',
+      'name' => 'Новый список 3',
+    ),
+    1 => 
+    array (
+      'value' => '78',
+      'name' => 'Новый список 2',
+    ),
+    2 => 
+    array (
+      'value' => '76',
+      'name' => 'Новый список 1',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 475546,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '80',
+      'name' => 'Новый список 3',
+    ),
+    1 => 
+    array (
+      'value' => '78',
+      'name' => 'Новый список 2',
+    ),
+    2 => 
+    array (
+      'value' => '76',
+      'name' => 'Новый список 1',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 474242,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '255',
+      'name' => 'Новый список2',
+    ),
+    1 => 
+    array (
+      'value' => '253',
+      'name' => 'Новый список',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 471666,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 2397,
+  'domen' => 'crm.vsmstone.ru',
+  'memberId' => '04cce775ca72f2159218a7e14dadaf3d',
 )array (
-  'id' => 471718,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 17096,
+  'domen' => 'klvlab.bitrix24.ru',
+  'memberId' => 'd957946ce5c04efaec57a84d3fa54036',
 )array (
-  'id' => 469888,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 17096,
+  'domen' => 'klvlab.bitrix24.ru',
+  'memberId' => 'd957946ce5c04efaec57a84d3fa54036',
 )array (
-  'id' => 471734,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => -2,
+  'domen' => 'klvlab.bitrix24.ru',
+  'memberId' => 'd957946ce5c04efaec57a84d3fa54036',
 )array (
-  'id' => 471734,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 163203,
+  'domen' => 'portal.nikoltek.ru',
+  'memberId' => 'f23f46c46454f9bc11ebcf3a3fde19ed',
 )array (
-  'id' => 469888,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '114',
+      'name' => 'Реестр изменений заказов',
+    ),
+    1 => 
+    array (
+      'value' => '112',
+      'name' => 'Объяснительные',
+    ),
+    2 => 
+    array (
+      'value' => '102',
+      'name' => 'Список помещений',
+    ),
+    3 => 
+    array (
+      'value' => '99',
+      'name' => 'Запросы информации у менеджеров',
+    ),
+    4 => 
+    array (
+      'value' => '95',
+      'name' => 'Обработка входящих писем',
+    ),
+    5 => 
+    array (
+      'value' => '92',
+      'name' => 'Причины переноса',
+    ),
+    6 => 
+    array (
+      'value' => '87',
+      'name' => 'Заметки в задачах',
+    ),
+    7 => 
+    array (
+      'value' => '81',
+      'name' => 'Саммари комментариев к задачам',
+    ),
+    8 => 
+    array (
+      'value' => '78',
+      'name' => 'Обратная связь для КБ список',
+    ),
+    9 => 
+    array (
+      'value' => '65',
+      'name' => 'Чат для новых сотрудников со специалистом по адаптации персонала',
+    ),
+    10 => 
+    array (
+      'value' => '32',
+      'name' => 'Тест',
+    ),
+    11 => 
+    array (
+      'value' => '12',
+      'name' => 'Реестр договоров',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )array (
-  'id' => 469204,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 163200,
+  'domen' => 'portal.nikoltek.ru',
+  'memberId' => 'f23f46c46454f9bc11ebcf3a3fde19ed',
 )array (
-  'id' => 471718,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 10474,
+  'domen' => 'umniydom.bitrix24.ru',
+  'memberId' => '1a35f5c77d43d0c94591bce917405c80',
 )array (
-  'id' => 471718,
-  'domen' => 'portal.ptkalyans.ru',
-  'memberId' => '5f6d5f2012017a9351678f5fa1db5bec',
+  'id' => 751,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
 )array (
-  'id' => 320727,
-  'domen' => 'sunrise-auto.bitrix24.ru',
-  'memberId' => 'ff085012a71f2ce4258cb6c8f685b687',
+  'id' => 745,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
 )array (
-  'id' => 320727,
-  'domen' => 'sunrise-auto.bitrix24.ru',
-  'memberId' => 'ff085012a71f2ce4258cb6c8f685b687',
+  'id' => 753,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
 )array (
-  'id' => 12064,
-  'domen' => 'w-s.su',
-  'memberId' => '43edd1fa4e2b24cf493b5c6829d2c6fe',
+  'id' => 755,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 763,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 765,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 767,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 769,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 771,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 773,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 775,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 777,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 779,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 781,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 783,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 785,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 787,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 789,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 791,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 793,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => -1,
+  'domen' => 'woolex.bitrix24.ru',
+  'memberId' => 'a54ddf4b2244cc7ffcbca149e43f963f',
+)array (
+  'id' => 57694,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'id' => 10648,
+  'domen' => 'umniydom.bitrix24.ru',
+  'memberId' => '1a35f5c77d43d0c94591bce917405c80',
+)array (
+  'id' => -1,
+  'domen' => 'umniydom.bitrix24.ru',
+  'memberId' => '1a35f5c77d43d0c94591bce917405c80',
+)array (
+  'id' => 57694,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'id' => 72502,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'id' => 72502,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '42',
+      'name' => 'Drom',
+    ),
+    1 => 
+    array (
+      'value' => '40',
+      'name' => 'Drom',
+    ),
+    2 => 
+    array (
+      'value' => '36',
+      'name' => 'Bitrix WhatsApp',
+    ),
+    3 => 
+    array (
+      'value' => '34',
+      'name' => 'Bitrix WhatsApp',
+    ),
+    4 => 
+    array (
+      'value' => '32',
+      'name' => 'Авито',
+    ),
+    5 => 
+    array (
+      'value' => '30',
+      'name' => 'Авито',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
+)array (
+  'id' => -1,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'id' => 74530,
+  'domen' => 'razborkieu.bitrix24.ru',
+  'memberId' => 'e37f20f85726b8b1f015df6d186fb21e',
+)array (
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '371',
+      'name' => '!!ПЕРВАЯ ЛИНИЯ',
+    ),
+    1 => 
+    array (
+      'value' => '367',
+      'name' => 'Типы ремонта',
+    ),
+    2 => 
+    array (
+      'value' => '365',
+      'name' => 'Статусы заказ-нарядов',
+    ),
+    3 => 
+    array (
+      'value' => '345',
+      'name' => 'СТАТУСЫ',
+    ),
+    4 => 
+    array (
+      'value' => '341',
+      'name' => 'КОЛОННЫ',
+    ),
+    5 => 
+    array (
+      'value' => '339',
+      'name' => 'ПОДРАЗДЕЛЕНИЯ',
+    ),
+    6 => 
+    array (
+      'value' => '239',
+      'name' => 'ПОЛЬЗОВАТЕЛИ',
+    ),
+    7 => 
+    array (
+      'value' => '237',
+      'name' => 'Тип взыскания',
+    ),
+    8 => 
+    array (
+      'value' => '223',
+      'name' => 'АВТОМОБИЛИ',
+    ),
+    9 => 
+    array (
+      'value' => '195',
+      'name' => 'Исковые заявления',
+    ),
+    10 => 
+    array (
+      'value' => '107',
+      'name' => 'Поддержка',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
+)array (
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '371',
+      'name' => '!!ПЕРВАЯ ЛИНИЯ',
+    ),
+    1 => 
+    array (
+      'value' => '367',
+      'name' => 'Типы ремонта',
+    ),
+    2 => 
+    array (
+      'value' => '365',
+      'name' => 'Статусы заказ-нарядов',
+    ),
+    3 => 
+    array (
+      'value' => '345',
+      'name' => 'СТАТУСЫ',
+    ),
+    4 => 
+    array (
+      'value' => '341',
+      'name' => 'КОЛОННЫ',
+    ),
+    5 => 
+    array (
+      'value' => '339',
+      'name' => 'ПОДРАЗДЕЛЕНИЯ',
+    ),
+    6 => 
+    array (
+      'value' => '239',
+      'name' => 'ПОЛЬЗОВАТЕЛИ',
+    ),
+    7 => 
+    array (
+      'value' => '237',
+      'name' => 'Тип взыскания',
+    ),
+    8 => 
+    array (
+      'value' => '223',
+      'name' => 'АВТОМОБИЛИ',
+    ),
+    9 => 
+    array (
+      'value' => '195',
+      'name' => 'Исковые заявления',
+    ),
+    10 => 
+    array (
+      'value' => '107',
+      'name' => 'Поддержка',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
+)array (
+  'options' => 
+  array (
+    0 => 
+    array (
+      'value' => '371',
+      'name' => '!!ПЕРВАЯ ЛИНИЯ',
+    ),
+    1 => 
+    array (
+      'value' => '367',
+      'name' => 'Типы ремонта',
+    ),
+    2 => 
+    array (
+      'value' => '365',
+      'name' => 'Статусы заказ-нарядов',
+    ),
+    3 => 
+    array (
+      'value' => '345',
+      'name' => 'СТАТУСЫ',
+    ),
+    4 => 
+    array (
+      'value' => '341',
+      'name' => 'КОЛОННЫ',
+    ),
+    5 => 
+    array (
+      'value' => '339',
+      'name' => 'ПОДРАЗДЕЛЕНИЯ',
+    ),
+    6 => 
+    array (
+      'value' => '239',
+      'name' => 'ПОЛЬЗОВАТЕЛИ',
+    ),
+    7 => 
+    array (
+      'value' => '237',
+      'name' => 'Тип взыскания',
+    ),
+    8 => 
+    array (
+      'value' => '223',
+      'name' => 'АВТОМОБИЛИ',
+    ),
+    9 => 
+    array (
+      'value' => '195',
+      'name' => 'Исковые заявления',
+    ),
+    10 => 
+    array (
+      'value' => '107',
+      'name' => 'Поддержка',
+    ),
+  ),
+  'value' => 
+  array (
+  ),
 )

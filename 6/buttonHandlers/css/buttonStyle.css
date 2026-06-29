@@ -1,9 +1,46 @@
+
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+#app {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 .btn span {
     font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands' !important;
     margin-right: 5px;
 }
 
-/* Модальное окно Начало */
+/* Кастомный скролл для выпадающих списков */
+.multiselect__content-wrapper::-webkit-scrollbar {
+    width: 6px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.multiselect__content-wrapper::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+/* Базовые стили - нет лишних отступов */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent;
+}
+
+#app {
+    display: block;
+}
+
+/* Модальное окно */
 .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -32,89 +69,103 @@
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
-.modal {
-    margin: 0 auto;
-    position: relative;
-}
-
-
-body {
-    height: auto !important;
-    overflow: visible !important;
-}
-
-#app {
-    height: auto !important;
-    overflow: visible !important;
-
-    /* ПОЛЯ ВВОДА */
-    .param-block input {
+/* ПОЛЯ ВВОДА */
+.param-block input {
     height: 42px;
     border-radius: 8px;
     border: 1px solid #d1d5db;
     padding: 0 12px;
     width: 100%;
     box-sizing: border-box;
-    }
+}
 
-    /* ОБЁРТКА ДЛЯ НЕСКОЛЬКИХ ИНПУТОВ */
-    .param-multiple-row {
+/* ОБЁРТКА ДЛЯ НЕСКОЛЬКИХ ИНПУТОВ */
+.param-multiple-row {
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 6px;
-    }
+}
 
-    .param-multiple-row input {
+.param-multiple-row input {
     flex: 1;
-    }
+}
 
-    /* КНОПКА УДАЛЕНИЯ (X) */
-    .remove-field {
+/* КНОПКА УДАЛЕНИЯ (X) */
+.remove-field {
     width: 24px;
     text-align: center;
     cursor: pointer;
     color: #ef4444;
     font-size: 18px;
     line-height: 1;
-    }
+}
 
-    /* СКРЫТЫЙ КРЕСТИК (ДЛЯ ПЕРВОГО ПОЛЯ) */
-    .remove-field--placeholder {
-    visibility: hidden; /* место остаётся, но крестик не виден */
+.remove-field--placeholder {
+    visibility: hidden;
     cursor: default;
-    }
+}
 
-    /* КНОПКА ДОБАВЛЕНИЯ */
-    .add-btn {
+/* КНОПКА ДОБАВЛЕНИЯ */
+.add-btn {
     margin-top: 6px;
     height: 36px;
     padding: 0 14px;
     border-radius: 8px;
-    background-color: #3b82f6; /* голубая */
+    background-color: #3b82f6;
     color: #fff;
     border: none;
     cursor: pointer;
-    }
+}
 
-    /* КНОПКА ЗАПУСКА БИЗНЕС-ПРОЦЕССА */
-    .run-bp-btn {
-    background-color: #22c55e; /* зелёная */
-    }
+.run-bp-btn {
+    background-color: #22c55e;
+}
 
-    /* СОСТОЯНИЕ ОТКЛЮЧЕННОЙ КНОПКИ */
-    button:disabled {
+button:disabled {
     background-color: #9ca3af !important;
     cursor: not-allowed;
     opacity: 0.7;
-    }
+}
+
+/* МУЛЬТИСЕЛЕКТ - ВЫПАДАЕТ ЗА ПРЕДЕЛЫ */
+.multiselect {
+    position: relative !important;
+}
+
+.multiselect__content-wrapper {
+    position: absolute !important;
+    z-index: 999999 !important;
+    display: block !important;
+    max-height: 200px !important;
+    width: 100% !important;
+    background: #fff !important;
+    border: 1px solid #e8e8e8 !important;
+    border-radius: 4px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    margin-top: 4px !important;
+    left: 0 !important;
+    top: 100% !important;
+}
+
+.multiselect:not(.multiselect--active) .multiselect__content-wrapper {
+    display: none !important;
+}
+
+.param-block {
+    margin-bottom: 15px;
+}
+
+.bp-block {
+    margin-bottom: 20px;
+}
+
+input[type="datetime-local"] {
+    overflow: visible !important;
 }
