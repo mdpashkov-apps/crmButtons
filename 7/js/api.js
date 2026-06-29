@@ -165,6 +165,23 @@ export const addUsersInChat = async (memberId, selectedUsers) => {
     });
 };
 
+export const deleteChatBot = async (memberId, checkOnly = false) => {
+    return safeRequest(async (client) => {
+        return await client.post("/indexReport/deleteChatBot.php", {
+            memberId: memberId,
+            checkOnly: checkOnly
+        });
+    });
+};
+
+export const addChatBot = async (memberId) => {
+    return safeRequest(async (client) => {
+        return await client.post("/indexReport/addChatBot.php", {
+            memberId: memberId,
+        });
+    });
+};
+
 // ============================================================
 // API ФУНКЦИИ ДЛЯ СТРАНИЦЫ НАСТРОЕК КНОПОК
 // ============================================================
@@ -276,34 +293,6 @@ export const getBPforEntity = async (memberId, current_button) => {
         return await client.post("/button-actions/getBPforEntity.php", {
             memberId: memberId,
             current_button: current_button
-        });
-    });
-};
-
-export const getChainBpDefinitions = async (memberId, entity, bpIds) => {
-    return safeRequest(async (client) => {
-        return await client.post("/button-actions/getChainBpDefinitions.php", {
-            memberId: memberId,
-            entity: entity,
-            bpIds: bpIds
-        });
-    });
-};
-
-export const getSubscriptionStatus = async (memberId, force = false) => {
-    return safeRequest(async (client) => {
-        return await client.post("/subscription/status.php", {
-            memberId: memberId,
-            force: force
-        });
-    });
-};
-
-export const startTrial = async (memberId, contact) => {
-    return safeRequest(async (client) => {
-        return await client.post("/billing/trial.php", {
-            memberId: memberId,
-            contact: contact
         });
     });
 };

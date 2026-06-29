@@ -32,15 +32,6 @@ include_once($path . '/overCRest.php');
 
 overCRest::setCurrentBitrix24($memberId);
 
-// гейтинг PRO: «Кнопка в чатах» доступна только при активной подписке
-require_once($path . '/api/billing/BillingClient.php');
-if (!BillingClient::canUseFeature((string)$memberId, 'chat_button')) {
-    echo json_encode(['error' => 'feature_locked', 'feature' => 'chat_button', 'message' => 'Кнопки в чате доступны только на тарифе PRO.'], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-require_once(__DIR__ . '/ensure-bot.php');
-
 // Получаем данные кнопки из БД
 $getButton = overCRest::call('entity.item.get', [
     'ENTITY' => 'customButton',
@@ -86,17 +77,9 @@ if (!empty($settingsCheck['result'])) {
     $chatId = $portalSettings['chatId_FIELDS'] ?? null;
 }
 
-// Лениво создаём бота+чат, если их ещё нет (раньше это делала страница "Настройка уведомлений")
 if (!$botId) {
-    writeLog("Бот не найден в настройках — создаём лениво через ensureBotAndChat");
-    $ensured = ensureBotAndChat($memberId);
-    $botId    = $ensured['botId'] ?? null;
-    $botToken = $ensured['botToken'] ?? null;
-    $chatId   = $ensured['chatId'] ?? null;
-}
-if (!$botId) {
-    writeLog("ERROR: Не удалось создать бота");
-    echo json_encode(['error' => 'Не удалось создать чат-бота. Повторите попытку.']);
+    writeLog("ERROR: Bot not found in portal settings");
+    echo json_encode(['error' => 'Чат-бот не найден. Сначала добавьте бота в разделе "Настройка уведомлений"']);
     exit;
 }
 
@@ -106,11 +89,6 @@ writeLog("Bot ID: {$botId}, Chat ID: {$chatId}");
 $buttonText = trim($buttonData['textOnTheButton_FIELDS'] ?? $buttonData['buttonName_FIELDS'] ?? 'Кнопка');
 $link = trim($buttonData['link_FIELDS'] ?? '');
 $buttonActionType = $buttonData['buttonActionType_FIELDS'] ?? 'url';
-// гейтинг PRO: режим «Запустить БП из ленты» доступен только при активной подписке
-if ($buttonActionType === 'workflow' && !BillingClient::canUseFeature((string)$memberId, 'bp_from_feed')) {
-    echo json_encode(['error' => 'feature_locked', 'feature' => 'bp_from_feed', 'message' => 'Запуск БП из ленты доступен только на тарифе PRO.'], JSON_UNESCAPED_UNICODE);
-    exit;
-}
 $workflowTemplateId = $buttonData['workflowTemplateId_FIELDS'] ?? null;
 $workflowDocumentId = $buttonData['workflowDocumentId_FIELDS'] ?? null;
 

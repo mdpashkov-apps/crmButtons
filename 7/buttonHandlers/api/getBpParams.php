@@ -1,212 +1,204 @@
-<?
-$entityBody = file_get_contents('php://input');
-$requestData = json_decode($entityBody, true);
-$memberId = $requestData['memberId'];
-$path = pathinfo(__DIR__, PATHINFO_DIRNAME);
-$path = pathinfo($path, PATHINFO_DIRNAME);
-include_once($path . '/overCRest.php');
-overCRest::setCurrentBitrix24($memberId);
-
-
-
-
-// полчаем список бп из настроек кнопки, берем только value и собираем в один массив
-$businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
-$bpIds = array_column($businessProcessesData, 'value');
-$bpIds = array_map('intval', $bpIds);
-
-// получаем id сущности и id типа сущности
-$entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
-// $entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
-// $entityTypeIdMap = $entityData['value'];
-$rawEntity = $requestData['crmActions']['entitySelection_FIELDS'];
-
-// пробуем декодировать
-$entityData = json_decode($rawEntity, true);
-
-// если это новый формат
-if (json_last_error() === JSON_ERROR_NONE && is_array($entityData) && isset($entityData['value'])) {
-    $entityTypeIdMap = $entityData['value'];
-} else {
-    // старый формат (строка)
-    $entityTypeIdMap = $rawEntity;
-}
-
-
-// в зависимости от типа сущности формируем параметр DOCUMENT_TYPE для фильтрации списка бп
-if ($entityTypeIdMap === '31') {
-    $documentType = 'SMART_INVOICE';
-} elseif ($entityTypeIdMap === '7') {
-    $documentType = 'Quote';
-} elseif (is_numeric($entityTypeIdMap)) {
-    $documentType = 'DYNAMIC_' . $entityTypeIdMap;
-} else {
-    // лид, сделка, контакт и т.п.
-    $documentType = $entityTypeIdMap;
-}
-
-// получаем параметры нужных бп
-$getBizProc = overCRest::call(
-    'bizproc.workflow.template.list',
-    [
-        'select' => [
-            'ID',
-            'NAME',
-            'PARAMETERS',
-        ],
-        'filter' => [
-            'MODULE_ID' => 'crm',
-            'DOCUMENT_TYPE'=> $documentType,
-            'ID' => $bpIds, 
-        ],
-    ]
-);
-
-
-
-
-
-// мапим нужные типы паарметров и используем только их в дальнейшем
-$typeMap = [
-    'string' => 'txt',
-    'text' => 'txt',
-    'int' => 'number',
-    'double' => 'number',
-    'email' => 'txt',
-    'phone' => 'txt',
-    'web' => 'txt',
-    'user' => 'user',
-    'bool' => 'bool',
-    'datetime' => 'datetime',
-    'select' => 'select',
-];
-
-$allBp = [];
-foreach ($getBizProc['result'] as $bp) {
-    $filteredParams = [];
-    if (!empty($bp['PARAMETERS'])) {
-        foreach ($bp['PARAMETERS'] as $paramKey => $param) {
-            $type = $param['Type'] ?? null;
-
-            // Проверяем, есть ли тип в маппинге
-            if (!isset($typeMap[$type])) {
-                // Пропускаем этот параметр
-                continue;
-            }
-            $filteredParams[] = [
-                'paramKey' => $paramKey,
-                'Name' => $param['Name'],
-                'Type' => $typeMap[$type],
-                'Required' => (int)$param['Required'],
-                'Multiple' => (int)$param['Multiple'],
-                'Default'  => $param['Default'],
-                'Options'  => $param['Options'] ?? null, // ✅ ДОБАВИТЬ
-            ];
-        }
-    }
-    $allBp[] = [
-        'ID' => (int)$bp['ID'],
-        'NAME' => $bp['NAME'],
-        'PARAMETERS' => $filteredParams,
-    ];
-}
-
-// полученный массив поделим, там где параметров нет и где есть
-$result = [];
-$withoutParams = [];
-foreach ($allBp as $item) {
-    if (!empty($item['PARAMETERS'])) {
-        $result[] = $item;
-    } else {
-        $withoutParams[] = $item;
-    }
-}
-
-// для массива withoutParams запустим эти бп сразу тут, в зависимости от типа сущности готовим параметр DOCUMENT_ID для запуска
-if ($entityTypeIdMap === '31') {
-    $document = [
-        'crm',
-        'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
-        'SMART_INVOICE_' . $entityId,
-    ];
-} elseif ($entityTypeIdMap === '7') {
-    $document = [
-        'crm',
-        'CCrmDocumentQuote',
-        'QUOTE_' . $entityId,
-    ];
-} elseif (is_numeric($entityTypeIdMap)) {
-    $document = [
-        'crm',
-        'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
-        'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId,
-    ];
-} else {
-    // лид, сделка, контакт и т.п.
-    $map = [
-        'Lead'    => 'CCrmDocumentLead',
-        'Deal'    => 'CCrmDocumentDeal',
-        'Contact' => 'CCrmDocumentContact',
-        'Company' => 'CCrmDocumentCompany',
-    ];
-    $document = [
-        'crm',
-        $map[$entityTypeIdMap],
-        strtoupper($entityTypeIdMap) . '_' . $entityId,
-    ];
-}
-
-
-// если среди параметров есть тип привязка к юзеру, то получим юзеров
-$allUserFio = null; 
-$BoolOptions = null; 
-
-foreach ($allBp[0]['PARAMETERS'] as $param) {
-    if (($param['Type'] ?? null) === 'user') {
-        $totalUser = overCRest::call('user.search', [
-            'filter' => ['ACTIVE' => true],
-        ])['total'];
-
-        $cmdBatch = [];
-        for ($i = 0; $i < $totalUser; $i = $i + 50) {
-            $cmdBatch[] = [
-                'method' => 'user.search',
-                'params' => [
-                    'filter' => [
-                        'ACTIVE' => true
-                    ],
-                    'start' => $i,
-                ],
-            ];
-        }
-        $responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
-        $allUserFio = [];
-        foreach ($responseBatch as $response) {
-            $tmpArray = [];
-            foreach ($response as $user) {
-                $tmpArray[] = [
-                    'value' => $user['ID'],
-                    'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
-                ];
-            }
-            $allUserFio = array_merge($allUserFio, $tmpArray);
-        }
-    }
-    if (($param['Type'] ?? null) === 'bool') {
-        $BoolOptions = [
-            ['value' => 'not',  'name' => ''],
-            ['value' => 'Y', 'name' => 'Да'],
-            ['value' => 'N', 'name' => 'Нет'],
-        ];
-    }
-}
-
-// file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
-
-echo json_encode([
-    'result' => $result,              // БП с параметрами
-    'withoutParams' => $withoutParams, // БП без параметров
-    'document' => $document,          // DOCUMENT_ID
-    'allUserFio' => $allUserFio,
-    // 'BoolOptions' => $BoolOptions 
+<?
+$entityBody = file_get_contents('php://input');
+$requestData = json_decode($entityBody, true);
+$memberId = $requestData['memberId'];
+$path = pathinfo(__DIR__, PATHINFO_DIRNAME);
+$path = pathinfo($path, PATHINFO_DIRNAME);
+include_once($path . '/overCRest.php');
+overCRest::setCurrentBitrix24($memberId);
+
+
+
+
+// полчаем список бп из настроек кнопки, берем только value и собираем в один массив
+$businessProcessesData = json_decode($requestData['crmActions']['businessProcessesValue_FIELDS'], true);
+$bpIds = array_column($businessProcessesData, 'value');
+$bpIds = array_map('intval', $bpIds);
+
+// получаем id сущности и id типа сущности
+$entityId = $requestData['entityData']['ENTITY_DATA']['entityId'];
+// $entityData = json_decode($requestData['crmActions']['entitySelection_FIELDS'], true);
+// $entityTypeIdMap = $entityData['value'];
+$rawEntity = $requestData['crmActions']['entitySelection_FIELDS'];
+
+// пробуем декодировать
+$entityData = json_decode($rawEntity, true);
+
+// если это новый формат
+if (json_last_error() === JSON_ERROR_NONE && is_array($entityData) && isset($entityData['value'])) {
+    $entityTypeIdMap = $entityData['value'];
+} else {
+    // старый формат (строка)
+    $entityTypeIdMap = $rawEntity;
+}
+
+
+// в зависимости от типа сущности формируем параметр DOCUMENT_TYPE для фильтрации списка бп
+if ($entityTypeIdMap === '31') {
+    $documentType = 'SMART_INVOICE';
+} elseif (is_numeric($entityTypeIdMap)) {
+    $documentType = 'DYNAMIC_' . $entityTypeIdMap;
+} else {
+    // лид, сделка, контакт и т.п.
+    $documentType = $entityTypeIdMap;
+}
+
+// получаем параметры нужных бп
+$getBizProc = overCRest::call(
+    'bizproc.workflow.template.list',
+    [
+        'select' => [
+            'ID',
+            'NAME',
+            'PARAMETERS',
+        ],
+        'filter' => [
+            'MODULE_ID' => 'crm',
+            'DOCUMENT_TYPE'=> $documentType,
+            'ID' => $bpIds, 
+        ],
+    ]
+);
+
+
+
+
+
+// мапим нужные типы паарметров и используем только их в дальнейшем
+$typeMap = [
+    'string' => 'txt',
+    'text' => 'txt',
+    'int' => 'number',
+    'double' => 'number',
+    'email' => 'txt',
+    'phone' => 'txt',
+    'web' => 'txt',
+    'user' => 'user',
+    'bool' => 'bool',
+    'datetime' => 'datetime',
+    'select' => 'select',
+];
+
+$allBp = [];
+foreach ($getBizProc['result'] as $bp) {
+    $filteredParams = [];
+    if (!empty($bp['PARAMETERS'])) {
+        foreach ($bp['PARAMETERS'] as $paramKey => $param) {
+            $type = $param['Type'] ?? null;
+
+            // Проверяем, есть ли тип в маппинге
+            if (!isset($typeMap[$type])) {
+                // Пропускаем этот параметр
+                continue;
+            }
+            $filteredParams[] = [
+                'paramKey' => $paramKey,
+                'Name' => $param['Name'],
+                'Type' => $typeMap[$type],
+                'Required' => (int)$param['Required'],
+                'Multiple' => (int)$param['Multiple'],
+                'Default'  => $param['Default'],
+                'Options'  => $param['Options'] ?? null, // ✅ ДОБАВИТЬ
+            ];
+        }
+    }
+    $allBp[] = [
+        'ID' => (int)$bp['ID'],
+        'NAME' => $bp['NAME'],
+        'PARAMETERS' => $filteredParams,
+    ];
+}
+
+// полученный массив поделим, там где параметров нет и где есть
+$result = [];
+$withoutParams = [];
+foreach ($allBp as $item) {
+    if (!empty($item['PARAMETERS'])) {
+        $result[] = $item;
+    } else {
+        $withoutParams[] = $item;
+    }
+}
+
+// для массива withoutParams запустим эти бп сразу тут, в зависимости от типа сущности готовим параметр DOCUMENT_ID для запуска
+if ($entityTypeIdMap === '31') {
+    $document = [
+        'crm',
+        'Bitrix\\Crm\\Integration\\BizProc\\Document\\SmartInvoice',
+        'SMART_INVOICE_' . $entityId,
+    ];
+} elseif (is_numeric($entityTypeIdMap)) {
+    $document = [
+        'crm',
+        'Bitrix\\Crm\\Integration\\BizProc\\Document\\Dynamic',
+        'DYNAMIC_' . $entityTypeIdMap . '_' . $entityId,
+    ];
+} else {
+    // лид, сделка, контакт и т.п.
+    $map = [
+        'Lead' => 'CCrmDocumentLead',
+        'Deal' => 'CCrmDocumentDeal',
+        'Contact' => 'CCrmDocumentContact',
+        'Company' => 'CCrmDocumentCompany',
+    ];
+    $document = [
+        'crm',
+        $map[$entityTypeIdMap],
+        strtoupper($entityTypeIdMap) . '_' . $entityId,
+    ];
+}
+
+
+// если среди параметров есть тип привязка к юзеру, то получим юзеров
+$allUserFio = null; 
+$BoolOptions = null; 
+
+foreach ($allBp[0]['PARAMETERS'] as $param) {
+    if (($param['Type'] ?? null) === 'user') {
+        $totalUser = overCRest::call('user.search', [
+            'filter' => ['ACTIVE' => true],
+        ])['total'];
+
+        $cmdBatch = [];
+        for ($i = 0; $i < $totalUser; $i = $i + 50) {
+            $cmdBatch[] = [
+                'method' => 'user.search',
+                'params' => [
+                    'filter' => [
+                        'ACTIVE' => true
+                    ],
+                    'start' => $i,
+                ],
+            ];
+        }
+        $responseBatch = overCRest::callBatch($cmdBatch)['result']['result'];
+        $allUserFio = [];
+        foreach ($responseBatch as $response) {
+            $tmpArray = [];
+            foreach ($response as $user) {
+                $tmpArray[] = [
+                    'value' => $user['ID'],
+                    'name' => $user['NAME'] . ' ' . $user['LAST_NAME'],
+                ];
+            }
+            $allUserFio = array_merge($allUserFio, $tmpArray);
+        }
+    }
+    if (($param['Type'] ?? null) === 'bool') {
+        $BoolOptions = [
+            ['value' => 'not',  'name' => ''],
+            ['value' => 'Y', 'name' => 'Да'],
+            ['value' => 'N', 'name' => 'Нет'],
+        ];
+    }
+}
+
+// file_put_contents(__DIR__.'/result91.log', var_export($result, true), FILE_APPEND);
+
+echo json_encode([
+    'result' => $result,              // БП с параметрами
+    'withoutParams' => $withoutParams, // БП без параметров
+    'document' => $document,          // DOCUMENT_ID
+    'allUserFio' => $allUserFio,
+    // 'BoolOptions' => $BoolOptions 
 ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);

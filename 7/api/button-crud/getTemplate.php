@@ -18,9 +18,7 @@ $templateParam = [
     'buttonActionType_FIELDS' => 'url', // 'url' или 'workflow'
     'workflowFromFeed_FIELDS' => false,
     'workflowTemplateId_FIELDS' => null,
-    'workflowDocumentId_FIELDS' => null,
-    'bpChainValue_FIELDS' => [],
-    'linkWithParams_FIELDS' => ''
+    'workflowDocumentId_FIELDS' => null
 ];
 
 echo json_encode([

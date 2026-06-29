@@ -11,15 +11,6 @@ export const getBpParams = async (memberId,crmActions,entityData) => {
   return response.data;
 };
 
-export const getBpChainParams = async (memberId, crmActions, entityData) => {
-  const response = await buttonApi.post("/getBpChainParams.php", {
-    memberId: memberId,
-    crmActions: crmActions,
-    entityData: entityData
-  });
-  return response.data;
-};
-
 export const startBp = async (memberId,bpParam, entityData) => {
   const response = await buttonApi.post("/startBp.php", {
     memberId: memberId,

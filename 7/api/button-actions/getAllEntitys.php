@@ -27,10 +27,6 @@ $staticEntities= [
         "name" => "Компания"
     ],
     [
-        'value' => '7',
-        'name' => 'Предложение'
-    ],
-    [
         'value' => '31',
         'name' => 'Счета'
     ],
@@ -62,14 +58,10 @@ foreach ($bacthArrSP as $key => $cmdSP_arr) {
     sleep(2); //Щадяший режим лучше ставить 2 секунды
     $batchResultSP = overCRest::callBatch($cmdSP_arr, false)['result']['result'];
     foreach ($batchResultSP as $elementSP) {
-        // Собираем типы из каждого ответа пачки напрямую в плоский массив,
-        // чтобы не перезаписывать ключ 'types' при array_merge
-        if (!empty($elementSP['types'])) {
-            $resultSP = array_merge($resultSP, $elementSP['types']);
-        }
+        $resultSP = array_merge($resultSP, $elementSP);
     }
 }
-foreach ($resultSP as $SP) {
+foreach ($resultSP['types'] as $SP) {
     array_push($smartProcesses, ["value" => $SP['entityTypeId'], "name" => $SP['title']]);
 }
 $resultEntities = array_merge($staticEntities, $smartProcesses);

@@ -10,24 +10,6 @@ overCRest::setCurrentBitrix24($memberId);
 // получаем массив настроек которые надо сохранить в entity для кнопки
 $btnSettings = $requestData['btnSettings'];
 
-// гейтинг PRO-действий: «Ссылка с параметрами» (4) и «Цепочка БП» (5) — только при доступной фиче.
-// Защита от обхода UI: проверяем и при создании, и при обновлении кнопки.
-require_once(__DIR__ . '/../billing/BillingClient.php');
-$__actions = $btnSettings['buttonActionsId_FIELDS'] ?? [];
-if (is_string($__actions)) { $__actions = json_decode($__actions, true) ?: []; }
-$__actions = array_map('intval', (array)$__actions);
-$__proMap = [4 => 'link_with_params', 5 => 'bp_chains'];
-foreach ($__proMap as $__aid => $__code) {
-    if (in_array($__aid, $__actions, true) && !BillingClient::canUseFeature((string)$memberId, $__code)) {
-        echo json_encode([
-            'error'   => 'feature_locked',
-            'feature' => $__code,
-            'message' => 'Это действие доступно только на тарифе PRO.',
-        ], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-}
-
 /*
 | С фронта fieldsTable_FIELDS приходит как массив строк таблицы,
 | где каждая строка содержит:
@@ -103,19 +85,6 @@ if ($searchableButtonID) {
     ]);
 // иначе создаем новый элемент
 } else {
-    // проверка лимита кнопок (free-тариф)
-    require_once(__DIR__ . '/../subscription/limits.php');
-    $limitCheck = checkButtonLimit($memberId);
-    if ($limitCheck['exceeded']) {
-        echo json_encode([
-            'error'   => 'button_limit_reached',
-            'message' => 'Достигнут лимит бесплатного тарифа: ' . $limitCheck['limit'] . ' ' . pluralize($limitCheck['limit'], ['кнопка', 'кнопки', 'кнопок']) . '. Обновитесь до PRO, чтобы создавать больше.',
-            'limit'   => $limitCheck['limit'],
-            'used'    => $limitCheck['used'],
-        ], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
     $itemAdd = overCRest::call("entity.item.add", [
         "ENTITY" => "customButton",
         'NAME' => $btnSettings['buttonName_FIELDS'],
@@ -126,13 +95,4 @@ if ($searchableButtonID) {
     echo json_encode([
         'result' => $itemAdd['result'],
     ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-}
-
-function pluralize($n, $forms) {
-    $n = abs($n) % 100;
-    $n1 = $n % 10;
-    if ($n > 10 && $n < 20) return $forms[2];
-    if ($n1 > 1 && $n1 < 5) return $forms[1];
-    if ($n1 === 1) return $forms[0];
-    return $forms[2];
 }

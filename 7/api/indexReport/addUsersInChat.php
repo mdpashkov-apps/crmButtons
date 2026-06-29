@@ -10,16 +10,6 @@ $path = pathinfo($path, PATHINFO_DIRNAME);
 include_once($path . '/overCRest.php');
 overCRest::setCurrentBitrix24($memberId);
 
-// гейтинг PRO: чат-кнопки (и добавление участников чата) доступны только при активной подписке
-require_once($path . '/api/billing/BillingClient.php');
-if (!BillingClient::canUseFeature((string)$memberId, 'chat_button')) {
-    header('Content-Type: application/json; charset=utf-8');
-    echo json_encode(['error' => 'feature_locked', 'feature' => 'chat_button', 'message' => 'Кнопки в чате доступны только на тарифе PRO.'], JSON_UNESCAPED_UNICODE);
-    exit;
-}
-
-require_once(__DIR__ . '/../chatHandlers/ensure-bot.php');
-
 $selectedUsers = $requestData['selectedUsers'];
 
 $userIds = [];
@@ -40,17 +30,11 @@ $findChat = overCRest::call("im.search.chat.list", [
 ]);
 
 if (empty($findChat['result'])) {
-    // лениво создаём бота+чат (раньше чат создавала страница "Настройка уведомлений")
-    $ensured = ensureBotAndChat($memberId);
-    $chatId = $ensured['chatId'] ?? null;
-} else {
-    $chatId = $findChat['result'][0]['id'];
-}
-
-if (!$chatId) {
-    echo json_encode(['error' => 'Не удалось создать чат'], JSON_UNESCAPED_UNICODE);
+    echo json_encode(['error' => 'Чат не найден'], JSON_UNESCAPED_UNICODE);
     exit;
 }
+
+$chatId = $findChat['result'][0]['id'];
 
 // Добавляем пользователей в чат
 $addUsersinChat = overCRest::call("im.chat.user.add", [

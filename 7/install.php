@@ -73,10 +73,7 @@ if ($install_result['install'] === true) {
         'buttonActionType_FIELDS' => 'Тип действия кнопки',
         'workflowFromFeed_FIELDS' => 'БП из ленты новостей',
         'workflowTemplateId_FIELDS' => 'ID шаблона БП',
-        'workflowDocumentId_FIELDS' => 'ID документа для БП',
-        'bpChainValue_FIELDS' => 'Цепочка БП (PRO)',
-        'linkWithParams_FIELDS' => 'Ссылка с параметрами (PRO)',
-        'installedByUserId' => 'ID установившего приложение'
+        'workflowDocumentId_FIELDS' => 'ID документа для БП'
     ];
 
     $existFields = [];
@@ -125,19 +122,11 @@ if ($install_result['install'] === true) {
         'FILTER' => ['=PROPERTY_VALUES.isPortalSettings' => 'true']
     ]);
 
-    // Захват установившего: токен установки принадлежит установившему → user.current = он
-    $installerId = 0;
-    try {
-        $me = overCRest::call('user.current', []);
-        $installerId = (int)($me['result']['ID'] ?? 0);
-    } catch (\Throwable $e) {}
-
     $settingsData = [
         'botToken_FIELDS' => '',
         'botId_FIELDS' => '',
         'chatId_FIELDS' => $chatId,
-        'botRegistered' => '0',
-        'installedByUserId' => $installerId
+        'botRegistered' => '0'
     ];
 
     if (empty($settingsCheck['result'])) {
@@ -177,7 +166,7 @@ if ($install_result['install'] === true):
 ?>
     <p>✅ Установка успешно завершена!</p>
     <p>💬 Чат "ALLChat Overplan": <?= $chatId ? 'создан/найден (ID: ' . $chatId . ')' : 'не создан' ?></p>
-    <p>🤖 Чат-бот для кнопок в чате создаётся автоматически при создании первой кнопки в чате.</p>
+    <p>🤖 Для работы кнопок в чате необходимо добавить чат-бота в разделе "Настройка уведомлений"</p>
     <script>
         BX24.init(function () {
             BX24.installFinish();

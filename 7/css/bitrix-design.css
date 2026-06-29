@@ -349,23 +349,17 @@ body {
 
 .ui-input {
     width: 100%;
-    height: 36px;
-    padding: 0 12px;
+    padding: 9px 12px;
     border: 1px solid var(--bx-color-border);
     border-radius: var(--bx-radius-sm);
-    background: #fff;
     font-size: 14px;
-    line-height: 1.2;
-    color: var(--bx-color-dark);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    box-sizing: border-box;
-    font-family: inherit;
+    transition: all 0.2s;
 }
 
 .ui-input:focus {
     outline: none;
     border-color: var(--bx-color-primary);
-    box-shadow: 0 0 0 3px rgba(47, 198, 246, 0.18);
+    box-shadow: 0 0 0 3px rgba(47, 198, 246, 0.1);
 }
 
 .ui-input--sm {
@@ -373,14 +367,12 @@ body {
 }
 
 .bx-color-input {
-    width: 56px;
-    height: 36px;
+    width: 60px;
+    height: 40px;
     border: 1px solid var(--bx-color-border);
     border-radius: var(--bx-radius-sm);
     cursor: pointer;
-    padding: 2px;
-    background: #fff;
-    box-sizing: border-box;
+    padding: 4px;
 }
 
 .bx-range-wrap {
@@ -433,50 +425,6 @@ body {
     color: #333;
 }
 
-/* Радио */
-.bx-radio {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.bx-radio input[type="radio"] {
-    margin-right: 8px;
-    width: 16px;
-    height: 16px;
-    cursor: pointer;
-    accent-color: var(--bx-color-primary);
-}
-
-.bx-radio__label {
-    font-size: 14px;
-    color: #333;
-}
-
-.bx-ml-16 { margin-left: 16px; }
-
-/* Маленькие подписи и пометки */
-.bx-hint {
-    margin-top: 6px;
-    font-size: 12px;
-    color: var(--bx-color-gray);
-    line-height: 1.4;
-}
-
-.bx-hint code {
-    background: var(--bx-color-gray-lighter);
-    border-radius: 3px;
-    padding: 1px 4px;
-    font-size: 12px;
-    font-family: ui-monospace, Menlo, Consolas, monospace;
-    color: var(--bx-color-dark);
-}
-
-.bx-required {
-    color: var(--bx-color-danger);
-    margin-left: 2px;
-}
-
 /* Инфо текст */
 .bx-info-text {
     font-size: 12px;
@@ -525,15 +473,6 @@ body {
 
 .bx-accordion__icon {
     font-size: 18px;
-    width: 22px;
-    text-align: center;
-    color: #525c69;
-}
-
-.bx-info-text > .fa-solid,
-.bx-info-text > .fa-regular {
-    margin-right: 4px;
-    color: #525c69;
 }
 
 .bx-accordion__arrow {
@@ -607,27 +546,22 @@ body {
 }
 
 .ui-btn {
-    min-height: 36px;
-    padding: 0 16px;
+    padding: 9px 18px;
     border: none;
     border-radius: var(--bx-radius-sm);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: background 0.15s, box-shadow 0.15s, transform 0.15s;
+    transition: all 0.2s;
     font-family: inherit;
-    line-height: 1.2;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
     gap: 6px;
-    box-sizing: border-box;
 }
 
 .ui-btn-sm {
-    min-height: 28px;
-    padding: 0 12px;
-    font-size: 13px;
+    padding: 6px 12px;
+    font-size: 12px;
 }
 
 .ui-btn-primary {
@@ -725,58 +659,27 @@ body {
    МУЛЬТИСЕЛЕКТ
    ========================================================= */
 .bx-multiselect .multiselect {
-    min-height: 36px;
-    font-size: 14px;
+    min-height: 40px;
 }
 
 .bx-multiselect .multiselect__tags {
-    min-height: 36px;
-    padding: 4px 40px 4px 8px;
-    border: 1px solid var(--bx-color-border);
     border-radius: var(--bx-radius-sm);
-    background: #fff;
-    box-sizing: border-box;
-    font-size: 14px;
+    border-color: var(--bx-color-border);
+    min-height: 40px;
+    padding: 6px 40px 0 8px;
 }
 
 .bx-multiselect .multiselect__tags:hover {
     border-color: var(--bx-color-primary);
 }
 
-.bx-multiselect .multiselect__single,
-.bx-multiselect .multiselect__placeholder {
-    padding: 0;
-    margin: 0;
-    font-size: 14px;
-    line-height: 26px;
-    color: var(--bx-color-dark);
-}
-
-.bx-multiselect .multiselect__placeholder {
-    color: #8c97a3;
-}
-
 .bx-multiselect .multiselect__input {
     font-size: 14px;
-    line-height: 26px;
-    padding: 0;
-    margin: 0;
-    min-height: 26px;
-    background: transparent;
-}
-
-.bx-multiselect .multiselect__select {
-    height: 34px;
-    width: 36px;
-    padding: 0;
 }
 
 .bx-multiselect .multiselect__option {
-    padding: 8px 12px;
-    font-size: 14px;
-    min-height: 36px;
-    display: flex;
-    align-items: center;
+    padding: 10px 12px;
+    font-size: 13px;
 }
 
 .bx-multiselect .multiselect__option--highlight {
@@ -785,20 +688,12 @@ body {
 
 .bx-multiselect .multiselect__tag {
     background: var(--bx-color-primary);
-    border-radius: 12px;
-    padding: 3px 22px 3px 10px;
-    font-size: 13px;
-    line-height: 18px;
-    margin: 2px 4px 2px 0;
-}
-
-.bx-multiselect--sm .multiselect,
-.bx-multiselect--sm .multiselect__tags {
-    min-height: 32px;
+    border-radius: 16px;
 }
 
 .bx-multiselect--sm .multiselect__tags {
-    padding: 2px 30px 2px 8px;
+    min-height: 34px;
+    padding: 3px 30px 0 6px;
 }
 
 /* =========================================================
@@ -1181,6 +1076,7 @@ body {
 .ui-input,
 .bx-multiselect .multiselect__tags {
     border-color: var(--b24-border-strong);
+    background: #fff;
 }
 
 .ui-input:focus,
@@ -1245,11 +1141,13 @@ body {
 }
 
 .ui-btn {
+    border-radius: 8px;
     font-weight: 600;
+    min-height: 36px;
 }
 
 .ui-btn:disabled {
-    opacity: 0.55;
+    opacity: 0.65;
     cursor: not-allowed;
     transform: none !important;
     box-shadow: none !important;
@@ -1271,156 +1169,4 @@ body {
 .user-tag {
     border-color: var(--b24-border-strong);
     background: #ffffff;
-}
-/* =========================================================
-   BP CHAIN EDITOR
-   ========================================================= */
-.bx-bp-chain {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 4px;
-}
-.bx-bp-chain__item {
-    border: 1px solid var(--b24-border, #e3e7eb);
-    border-radius: 6px;
-    background: #ffffff;
-    overflow: hidden;
-}
-.bx-bp-chain__row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 10px;
-    flex-wrap: wrap;
-}
-.bx-bp-chain__idx {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 22px;
-    height: 22px;
-    padding: 0 6px;
-    border-radius: 11px;
-    background: #f0f3f6;
-    color: #525c69;
-    font-weight: 600;
-    font-size: 12px;
-}
-.bx-bp-chain__name {
-    flex: 1 1 200px;
-    font-weight: 500;
-    word-break: break-word;
-}
-.bx-bp-chain__ctrls {
-    display: inline-flex;
-    gap: 6px;
-    flex-wrap: wrap;
-}
-.bx-bp-chain__btn {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    min-height: 28px;
-    padding: 0 10px;
-    border: 1px solid var(--b24-border-strong, #cfd8e3);
-    background: #ffffff;
-    color: #525c69;
-    border-radius: var(--bx-radius-sm);
-    font-size: 13px;
-    line-height: 1;
-    font-family: inherit;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-}
-.bx-bp-chain__btn:hover:not(:disabled) {
-    background: #f0f3f6;
-}
-.bx-bp-chain__btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-}
-.bx-bp-chain__btn--danger {
-    color: #f1361b;
-}
-.bx-bp-chain__btn--danger:hover:not(:disabled) {
-    background: #fff1ee;
-    border-color: #f1361b;
-}
-.bx-bp-chain__body {
-    padding: 10px 12px 14px;
-    border-top: 1px dashed var(--b24-border, #e3e7eb);
-    background: #fafbfc;
-}
-.bx-bp-chain__param {
-    margin-bottom: 12px;
-}
-.bx-bp-chain__param:last-child {
-    margin-bottom: 0;
-}
-
-/* =========================================================
-   PRO BADGE
-   ========================================================= */
-.bx-pro-badge {
-    display: inline-flex;
-    align-items: center;
-    height: 20px;
-    padding: 0 8px;
-    margin-left: 10px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #ffb547 0%, #ff8a3d 100%);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    box-shadow: 0 1px 2px rgba(255, 138, 61, 0.35);
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.bx-pro-badge--inline {
-    height: 18px;
-    font-size: 10px;
-    padding: 0 6px;
-}
-
-/* =========================================================
-   СЧЁТЧИК КНОПОК / ЛИМИТ
-   ========================================================= */
-.bx-buttons-counter {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 0 12px;
-    height: 32px;
-    margin-left: auto;
-    border-radius: 16px;
-    background: #f0f3f6;
-    color: #525c69;
-    font-size: 13px;
-    font-weight: 500;
-    white-space: nowrap;
-    flex-shrink: 0;
-}
-
-.bx-buttons-counter--limit {
-    background: #fff1ee;
-    color: #b9321f;
-}
-
-.bx-buttons-counter__hint {
-    font-size: 12px;
-    opacity: 0.75;
-}
-
-.bx-tabs__add--disabled,
-.bx-tabs__add:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.bx-tabs__add:disabled:hover {
-    background: inherit !important;
 }

@@ -21,11 +21,8 @@ $entityTypeId = $entityMap[$entity] ?? $entity;
 // Массив всех entityTypeId, по которым будем искать шаблоны документов
 $entityTypeIds = [];
 
-// Проверяем, является ли это смарт-процессом (числовой ID больше 4).
-// Предложение (7) и Счёт (31) — числовые, но НЕ смарт-процессы с воронками.
-$nonSmartNumericIds = ['7', '31'];
-$isSmartProcess = is_numeric($entityTypeId) && $entityTypeId > 4
-    && !in_array((string)$entityTypeId, $nonSmartNumericIds, true);
+// Проверяем, является ли это смарт-процессом (числовой ID больше 4)
+$isSmartProcess = is_numeric($entityTypeId) && $entityTypeId > 4;
 
 if ($entityTypeId == 2 || $isSmartProcess) {
     // Для сделок и смарт-процессов получаем список категорий

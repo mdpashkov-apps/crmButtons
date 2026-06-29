@@ -14,24 +14,14 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
     <!-- Bitrix24 JS API -->
     <script src="//api.bitrix24.com/api/v1/"></script>
     
-    <!-- Font Awesome 6 Free - локально (без внешнего CDN) -->
-    <link rel="stylesheet" href="../7/libs/fontawesome/css/all.min.css">
+    <!-- Font Awesome 6 - локально -->
+    <link rel="stylesheet" href="../7/libs/all.min.css">
     
-    <!-- Vue и зависимости - локально (с авто-ретраем при сбое загрузки) -->
-    <script>
-        // Один повтор загрузки скрипта при сетевом сбое (напр. ERR_CONNECTION_RESET под нагрузкой).
-        function retryScript(el) {
-            if (el.getAttribute('data-retried')) return;
-            el.setAttribute('data-retried', '1');
-            var s = document.createElement('script');
-            s.src = el.src + (el.src.indexOf('?') > -1 ? '&' : '?') + 'r=' + Date.now();
-            document.head.appendChild(s);
-        }
-    </script>
-    <script src="../7/libs/vue.min.js" onerror="retryScript(this)"></script>
+    <!-- Vue и зависимости - локально -->
+    <script src="../7/libs/vue.min.js"></script>
     <link rel="stylesheet" href="../7/libs/vue-multiselect.min.css">
-    <script src="../7/libs/vue-multiselect.min.js" onerror="retryScript(this)"></script>
-    <script src="../7/libs/axios.min.js" onerror="retryScript(this)"></script>
+    <script src="../7/libs/vue-multiselect.min.js"></script>
+    <script src="../7/libs/axios.min.js"></script>
     
     <!-- Основные стили -->
     <link rel="stylesheet" href="../7/buttonHandlers/css/buttonStyle.css?v=<?= time() ?>">
@@ -75,8 +65,6 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
         'fieldsTable_FIELDS' => $result_entity['fieldsTable_FIELDS'],
         'link_FIELDS' => $result_entity['link_FIELDS'],
         'crmLinkFields_FIELDS' => $result_entity['crmLinkFields_FIELDS'],
-        'bpChainValue_FIELDS' => $result_entity['bpChainValue_FIELDS'] ?? '',
-        'linkWithParams_FIELDS' => $result_entity['linkWithParams_FIELDS'] ?? '',
     ];
     
     $entityTypeIdOpened = json_decode($_REQUEST['PLACEMENT_OPTIONS'], true)['ENTITY_DATA']['entityTypeId'];
@@ -115,7 +103,6 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
 <body>
 
 <script>
-window.__apiVersion = '<?= @filemtime(__DIR__ . '/js/api.js') ?: time() ?>';
 window.memberId = '<?echo $member_id?>';
 window.crmActions = <? echo json_encode($crmActions, JSON_UNESCAPED_UNICODE); ?>;
 window.entityData = <?= json_encode(json_decode($_REQUEST['PLACEMENT_OPTIONS'], true), JSON_UNESCAPED_UNICODE) ?>;
@@ -202,83 +189,7 @@ window.showIcon = <? echo $showIcon ? 'true' : 'false'; ?>;
             </button>
         </div>
     </div>
-
-    <!-- Панель цепочки БП (PRO) -->
-    <div v-else-if="chain && currentAsks.length" class="bx-crm-button-container">
-        <div class="bx-bp-panel">
-            <div class="bx-bp-progress" v-if="chainTotal > 1">
-                Шаг {{ currentStepIndex + 1 }} из {{ chainTotal }} — {{ currentStep.NAME }}
-            </div>
-
-            <div v-for="param in currentAsks" :key="param.Name" class="bx-param-group">
-                <label class="bx-param-label">
-                    {{ param.Name }}
-                    <span class="bx-required" v-if="param.Required">*</span>
-                </label>
-
-                <div v-if="param.Multiple == 0">
-                    <input v-if="param.Type === 'number'" type="number" class="ui-input" v-model="formValues[currentStep.ID][param.Name][0]" @change="resizeBx"/>
-                    <input v-else-if="param.Type === 'datetime'" type="datetime-local" class="ui-input" v-model="formValues[currentStep.ID][param.Name][0]" @change="resizeBx"/>
-                    <input v-else-if="param.Type === 'txt'" type="text" class="ui-input" v-model="formValues[currentStep.ID][param.Name][0]" @input="resizeBx"/>
-                    <multiselect v-else-if="param.Type === 'user'" v-model="formValues[currentStep.ID][param.Name]" placeholder="Выберите пользователя" label="name" track-by="value" :options="allUsers" :multiple="false" :close-on-select="true" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                        <span slot="noResult">Такого варианта нет</span>
-                    </multiselect>
-                    <multiselect v-else-if="param.Type === 'bool'" v-model="formValues[currentStep.ID][param.Name]" placeholder="Выберите значение" label="name" track-by="value" :options="boolOptions" :multiple="false" :close-on-select="true" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                        <span slot="noResult">Такого варианта нет</span>
-                    </multiselect>
-                    <multiselect v-else-if="param.Type === 'select'" v-model="formValues[currentStep.ID][param.Name]" :options="getSelectOptions(param)" label="name" track-by="value" :multiple="false" :close-on-select="true" placeholder="Выберите значение" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                        <span slot="noResult">Такого варианта нет</span>
-                    </multiselect>
-                </div>
-
-                <div v-else>
-                    <div v-if="param.Type === 'bool'">
-                        <div v-for="(val, idx) in formValues[currentStep.ID][param.Name]" :key="idx" class="bx-multiple-row">
-                            <multiselect v-model="formValues[currentStep.ID][param.Name][idx]" :options="boolOptions" label="name" track-by="value" :multiple="false" :close-on-select="true" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                                <span slot="noResult">Такого варианта нет</span>
-                            </multiselect>
-                            <span :class="['bx-remove-field', { 'bx-remove-field--placeholder': idx === 0 }]" @click="idx > 0 && removeField(currentStep.ID, param.Name, idx)">✕</span>
-                        </div>
-                        <button type="button" class="bx-add-btn" @click="addField(currentStep.ID, param.Name)">+ Добавить ещё</button>
-                    </div>
-
-                    <div v-else-if="param.Type === 'select'">
-                        <div v-for="(val, idx) in formValues[currentStep.ID][param.Name]" :key="idx" class="bx-multiple-row">
-                            <multiselect v-model="formValues[currentStep.ID][param.Name][idx]" :options="getSelectOptions(param)" label="name" track-by="value" :multiple="false" :close-on-select="true" placeholder="Выберите значение" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                                <span slot="noResult">Такого варианта нет</span>
-                            </multiselect>
-                            <span :class="['bx-remove-field', { 'bx-remove-field--placeholder': idx === 0 }]" @click="idx > 0 && removeField(currentStep.ID, param.Name, idx)">✕</span>
-                        </div>
-                        <button type="button" class="bx-add-btn" @click="addField(currentStep.ID, param.Name)">+ Добавить ещё</button>
-                    </div>
-
-                    <div v-else-if="param.Type === 'user'">
-                        <div v-for="(val, idx) in formValues[currentStep.ID][param.Name]" :key="idx" class="bx-multiple-row">
-                            <multiselect v-model="formValues[currentStep.ID][param.Name][idx]" :options="allUsers" label="name" track-by="value" :multiple="false" :close-on-select="true" placeholder="Выберите пользователя" @open="resizeBx" @close="resizeBx" @input="resizeBx">
-                                <span slot="noResult">Такого варианта нет</span>
-                            </multiselect>
-                            <span :class="['bx-remove-field', { 'bx-remove-field--placeholder': idx === 0 }]" @click="idx > 0 && removeField(currentStep.ID, param.Name, idx)">✕</span>
-                        </div>
-                        <button type="button" class="bx-add-btn" @click="addField(currentStep.ID, param.Name)">+ Добавить ещё</button>
-                    </div>
-
-                    <div v-else>
-                        <div v-for="(val, idx) in formValues[currentStep.ID][param.Name]" :key="idx" class="bx-multiple-row">
-                            <input :type="param.Type === 'number' ? 'number' : (param.Type === 'datetime' ? 'datetime-local' : 'text')" class="ui-input" v-model="formValues[currentStep.ID][param.Name][idx]" @input="resizeBx"/>
-                            <span :class="['bx-remove-field', { 'bx-remove-field--placeholder': idx === 0 }]" @click="idx > 0 && removeField(currentStep.ID, param.Name, idx)">✕</span>
-                        </div>
-                        <button type="button" class="bx-add-btn" @click="addField(currentStep.ID, param.Name)">+ Добавить ещё</button>
-                    </div>
-                </div>
-            </div>
-
-            <button class="ui-btn ui-btn-success bx-run-bp-btn" :disabled="!isChainStepValid" @click="runChainStep">
-                <i class="fas fa-play"></i>
-                Запустить БП
-            </button>
-        </div>
-    </div>
-
+    
     <!-- Основная кнопка -->
     <div v-else class="bx-crm-button-container">
         <button data-id="<? echo $buttonId;?>" class="ui-btn bx-crm-main-btn" @click="runActions">
@@ -300,41 +211,6 @@ window.showIcon = <? echo $showIcon ? 'true' : 'false'; ?>;
         });
     });
 </script>
-<script>
-    // Грузим основной скрипт кнопки только когда зависимости (Vue/VueMultiselect/axios) реально доступны.
-    // Защита от "Vue is not defined" при сбое загрузки библиотек (иначе — вечный спиннер).
-    (function () {
-        var SRC = '../7/buttonHandlers/js/script.js?v=<?= time() ?>';
-        var start = Date.now();
-        function depsReady() {
-            return typeof Vue !== 'undefined' && window.VueMultiselect && typeof axios !== 'undefined';
-        }
-        function inject() {
-            var s = document.createElement('script');
-            s.type = 'module';
-            s.src = SRC;
-            document.body.appendChild(s);
-        }
-        function fallback() {
-            var app = document.getElementById('app');
-            if (app) {
-                app.innerHTML = '<div style="padding:14px;text-align:center;font-size:13px;color:#555;line-height:1.5">'
-                    + 'Не удалось загрузить кнопку.<br>'
-                    + '<a href="#" onclick="location.reload();return false;" style="color:#2fc6f6;font-weight:600">Обновить</a></div>';
-            }
-            try {
-                if (window.BX24 && BX24.resizeWindow) {
-                    var sz = BX24.getScrollSize ? BX24.getScrollSize() : { scrollWidth: 320 };
-                    BX24.resizeWindow(sz.scrollWidth, 70);
-                }
-            } catch (e) {}
-        }
-        (function poll() {
-            if (depsReady()) { inject(); return; }
-            if (Date.now() - start > 9000) { fallback(); return; }
-            setTimeout(poll, 150);
-        })();
-    })();
-</script>
+<script type="module" src="../7/buttonHandlers/js/script.js?v=<?= time() ?>"></script>
 </body>
 </html>
