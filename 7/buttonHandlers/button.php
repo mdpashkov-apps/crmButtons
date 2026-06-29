@@ -17,11 +17,21 @@ $buttonId = explode('|', $_SERVER['SCRIPT_NAME'])[1];
     <!-- Font Awesome 6 Free - локально (без внешнего CDN) -->
     <link rel="stylesheet" href="../7/libs/fontawesome/css/all.min.css">
     
-    <!-- Vue и зависимости - локально -->
-    <script src="../7/libs/vue.min.js"></script>
+    <!-- Vue и зависимости - локально (с авто-ретраем при сбое загрузки) -->
+    <script>
+        // Один повтор загрузки скрипта при сетевом сбое (напр. ERR_CONNECTION_RESET под нагрузкой).
+        function retryScript(el) {
+            if (el.getAttribute('data-retried')) return;
+            el.setAttribute('data-retried', '1');
+            var s = document.createElement('script');
+            s.src = el.src + (el.src.indexOf('?') > -1 ? '&' : '?') + 'r=' + Date.now();
+            document.head.appendChild(s);
+        }
+    </script>
+    <script src="../7/libs/vue.min.js" onerror="retryScript(this)"></script>
     <link rel="stylesheet" href="../7/libs/vue-multiselect.min.css">
-    <script src="../7/libs/vue-multiselect.min.js"></script>
-    <script src="../7/libs/axios.min.js"></script>
+    <script src="../7/libs/vue-multiselect.min.js" onerror="retryScript(this)"></script>
+    <script src="../7/libs/axios.min.js" onerror="retryScript(this)"></script>
     
     <!-- Основные стили -->
     <link rel="stylesheet" href="../7/buttonHandlers/css/buttonStyle.css?v=<?= time() ?>">
@@ -290,6 +300,41 @@ window.showIcon = <? echo $showIcon ? 'true' : 'false'; ?>;
         });
     });
 </script>
-<script type="module" src="../7/buttonHandlers/js/script.js?v=<?= time() ?>"></script>
+<script>
+    // Грузим основной скрипт кнопки только когда зависимости (Vue/VueMultiselect/axios) реально доступны.
+    // Защита от "Vue is not defined" при сбое загрузки библиотек (иначе — вечный спиннер).
+    (function () {
+        var SRC = '../7/buttonHandlers/js/script.js?v=<?= time() ?>';
+        var start = Date.now();
+        function depsReady() {
+            return typeof Vue !== 'undefined' && window.VueMultiselect && typeof axios !== 'undefined';
+        }
+        function inject() {
+            var s = document.createElement('script');
+            s.type = 'module';
+            s.src = SRC;
+            document.body.appendChild(s);
+        }
+        function fallback() {
+            var app = document.getElementById('app');
+            if (app) {
+                app.innerHTML = '<div style="padding:14px;text-align:center;font-size:13px;color:#555;line-height:1.5">'
+                    + 'Не удалось загрузить кнопку.<br>'
+                    + '<a href="#" onclick="location.reload();return false;" style="color:#2fc6f6;font-weight:600">Обновить</a></div>';
+            }
+            try {
+                if (window.BX24 && BX24.resizeWindow) {
+                    var sz = BX24.getScrollSize ? BX24.getScrollSize() : { scrollWidth: 320 };
+                    BX24.resizeWindow(sz.scrollWidth, 70);
+                }
+            } catch (e) {}
+        }
+        (function poll() {
+            if (depsReady()) { inject(); return; }
+            if (Date.now() - start > 9000) { fallback(); return; }
+            setTimeout(poll, 150);
+        })();
+    })();
+</script>
 </body>
 </html>
