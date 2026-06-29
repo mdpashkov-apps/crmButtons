@@ -525,7 +525,12 @@ var app = new Vue({
             this.loader = true;
             
             try {
-                await createButtonInChat(window.memberId, this.activeButtonId, this.current_button);
+                const chatRes = await createButtonInChat(window.memberId, this.activeButtonId, this.current_button);
+                if (chatRes && chatRes.error === 'feature_locked') {
+                    this.showNotification(chatRes.message || 'Кнопки в чате доступны только на тарифе PRO.', 'error');
+                    this.openPaywall();
+                    return;
+                }
                 const response = await getButtonData(window.memberId, { ID: this.activeButtonId });
                 this.current_button = JSON.parse(JSON.stringify(response.result));
                 this.normalizeBooleans();
@@ -837,8 +842,11 @@ var app = new Vue({
                 if (response && (response.success || response.result)) {
                     this.showNotification('Пользователи добавлены в чат', 'success');
                     this.selectedChatUsers = [];
+                } else if (response && response.error === 'feature_locked') {
+                    this.showNotification(response.message || 'Кнопки в чате доступны только на тарифе PRO.', 'error');
+                    this.openPaywall();
                 } else {
-                    this.showNotification((response && response.error) ? response.error : 'Не удалось добавить пользователей', 'error');
+                    this.showNotification((response && response.message) ? response.message : 'Не удалось добавить пользователей', 'error');
                 }
             } catch (e) {
                 console.error('Ошибка добавления пользователей в чат:', e);

@@ -30,6 +30,8 @@ echo json_encode([
     'can'          => [
         'bp_chains'        => BillingClient::canUseFeature((string)$memberId, 'bp_chains'),
         'link_with_params' => BillingClient::canUseFeature((string)$memberId, 'link_with_params'),
+        'chat_button'      => BillingClient::canUseFeature((string)$memberId, 'chat_button'),
+        'bp_from_feed'     => BillingClient::canUseFeature((string)$memberId, 'bp_from_feed'),
     ],
     'valid_until'         => $ent['expires_at'] ?? ($ent['trial_end_at'] ?? null),
     'trial_end_at'        => $ent['trial_end_at'] ?? null,

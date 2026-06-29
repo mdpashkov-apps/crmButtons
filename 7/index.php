@@ -596,6 +596,37 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                 </div>
 
                                 <div class="bx-accordion__item">
+                                    <button class="bx-accordion__header" @click="toggleAccordion(8)">
+                                        <i class="bx-accordion__icon fa-solid fa-link"></i>
+                                        <span>Перейти по ссылке из поля CRM</span>
+                                        <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_8 }">▼</span>
+                                    </button>
+                                    <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_8 }">
+                                        <div class="bx-accordion__content">
+                                            <div class="bx-info-text bx-mb-12">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
+                                            </div>
+                                            <label class="bx-checkbox">
+                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="6" class="bx-checkbox__input">
+                                                <span class="bx-checkbox__label">Активировать свойство</span>
+                                            </label>
+                                            <div class="bx-mt-12">
+                                                <label class="bx-label">Поле CRM со ссылкой</label>
+                                                <multiselect v-model="current_button.crmLinkFields_FIELDS"
+                                                             :options="allCrmFieldsLink"
+                                                             label="name"
+                                                             track-by="value"
+                                                             placeholder="Выберите поле с ссылкой"
+                                                             class="bx-multiselect"
+                                                             @open="getCrmLinks">
+                                                    <span slot="noResult">Нет полей с типом ссылка</span>
+                                                </multiselect>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(7)">
                                         <i class="bx-accordion__icon fa-solid fa-diagram-project"></i>
                                         <span>Запустить цепочку бизнес-процессов</span>
@@ -725,36 +756,6 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                     </div>
                                 </div>
 
-                                <div class="bx-accordion__item">
-                                    <button class="bx-accordion__header" @click="toggleAccordion(8)">
-                                        <i class="bx-accordion__icon fa-solid fa-link"></i>
-                                        <span>Перейти по ссылке из поля CRM</span>
-                                        <span class="bx-accordion__arrow" :class="{ 'bx-accordion__arrow--open': accordion_8 }">▼</span>
-                                    </button>
-                                    <div class="bx-accordion__body" :class="{ 'bx-accordion__body--open': accordion_8 }">
-                                        <div class="bx-accordion__content">
-                                            <div class="bx-info-text bx-mb-12">
-                                                <i class="fa-solid fa-triangle-exclamation"></i> Данное действие не работает совместно с действием "Перейти по произвольной ссылке"
-                                            </div>
-                                            <label class="bx-checkbox">
-                                                <input v-model="current_button.buttonActionsId_FIELDS" type="checkbox" :value="6" class="bx-checkbox__input">
-                                                <span class="bx-checkbox__label">Активировать свойство</span>
-                                            </label>
-                                            <div class="bx-mt-12">
-                                                <label class="bx-label">Поле CRM со ссылкой</label>
-                                                <multiselect v-model="current_button.crmLinkFields_FIELDS"
-                                                             :options="allCrmFieldsLink"
-                                                             label="name"
-                                                             track-by="value"
-                                                             placeholder="Выберите поле с ссылкой"
-                                                             class="bx-multiselect"
-                                                             @open="getCrmLinks">
-                                                    <span slot="noResult">Нет полей с типом ссылка</span>
-                                                </multiselect>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="bx-accordion__item">
                                     <button class="bx-accordion__header" @click="toggleAccordion(5)">
@@ -769,6 +770,10 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                 <i class="fa-solid fa-lightbulb"></i> Кнопка в чате отображается в общем чате "ALLChat Overplan" и доступна всем участникам чата.
                                             </div>
                                             
+                                            <div v-if="!canFeature('chat_button')" class="bx-info-text bx-mb-12">
+                                                <i class="fa-solid fa-lock"></i> Доступно на тарифе PRO.
+                                                <a href="#" @click.prevent="openPaywall" style="color:#2fc6f6;font-weight:600">Перейти на PRO</a>
+                                            </div>
                                             <div class="bx-actions bx-mt-16">
                                                 <button v-if="current_button.buttonInChat_FIELDS"
                                                         class="ui-btn ui-btn-warning"
@@ -777,7 +782,8 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                 </button>
                                                 <button v-else
                                                         class="ui-btn ui-btn-success"
-                                                        @click="createBtnChat">
+                                                        @click="createBtnChat"
+                                                        :disabled="!canFeature('chat_button')">
                                                     Создать кнопку в чате
                                                 </button>
                                             </div>
@@ -798,7 +804,7 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                     <span slot="noResult">Нет пользователей</span>
                                                 </multiselect>
                                                 <button class="ui-btn ui-btn-primary bx-mt-8"
-                                                        :disabled="chatUsersLoading || !selectedChatUsers.length"
+                                                        :disabled="chatUsersLoading || !selectedChatUsers.length || !canFeature('chat_button')"
                                                         @click="addUsersToChat">
                                                     <i class="fa-solid fa-user-plus"></i>
                                                     {{ chatUsersLoading ? 'Добавление...' : 'Добавить в чат' }}
@@ -831,9 +837,13 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                                                         <span class="bx-radio__label">Открыть ссылку</span>
                                                     </label>
                                                     <label class="bx-radio bx-ml-16">
-                                                        <input type="radio" value="workflow" v-model="buttonActionType" @change="onActionTypeChange">
+                                                        <input type="radio" value="workflow" v-model="buttonActionType" @change="onActionTypeChange" :disabled="!canFeature('bp_from_feed')">
                                                         <span class="bx-radio__label">Запустить БП из ленты</span>
                                                     </label>
+                                                </div>
+                                                <div v-if="!canFeature('bp_from_feed')" class="bx-info-text" style="margin-top:8px">
+                                                    <i class="fa-solid fa-lock"></i> «Запустить БП из ленты» доступно на тарифе PRO.
+                                                    <a href="#" @click.prevent="openPaywall" style="color:#2fc6f6;font-weight:600">Перейти на PRO</a>
                                                 </div>
                                             </div>
                                             
