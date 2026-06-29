@@ -299,6 +299,15 @@ export const getSubscriptionStatus = async (memberId, force = false) => {
     });
 };
 
+export const startTrial = async (memberId, contact) => {
+    return safeRequest(async (client) => {
+        return await client.post("/billing/trial.php", {
+            memberId: memberId,
+            contact: contact
+        });
+    });
+};
+
 export const getDocumentsforEntity = async (memberId, current_button) => {
     return safeRequest(async (client) => {
         return await client.post("/button-actions/getDocumentsforEntity.php", {

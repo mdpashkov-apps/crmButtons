@@ -5,7 +5,7 @@ const {
     getAllEntitys, getBPforEntity, getDocumentsforEntity, getAllLists,
     getListFields, getEntityFieldsForList, getCrmFieldsLink,
     createButtonInChat, deleteButtonInChat, getFeedWorkflowsList,
-    getChainBpDefinitions, getSubscriptionStatus,
+    getChainBpDefinitions, getSubscriptionStatus, startTrial,
     getAllUsers, addUsersInChat
 } = await import(`../js/api.js?v=${__apiVer}`);
 
@@ -92,6 +92,11 @@ var app = new Vue({
             paywallOpenedCheckout: false,
             paywallPolling: false,
             paywallMessage: '',
+            // Активация триала («Попробовать бесплатно»)
+            showTrialForm: false,
+            trialSubmitting: false,
+            trialError: '',
+            trialContact: { fio: '', email: '', phone: '', note: '' },
             // Цепочка БП
             expandedBpInChain: {},
             chainBpDefs: {},
@@ -649,7 +654,66 @@ var app = new Vue({
             }
             this.paywallMessage = 'Оплата ещё не подтверждена. Если вы оплатили — подождите минуту и нажмите «Я оплатил» снова.';
         },
-        
+
+        // ===== Активация триала («Попробовать бесплатно») =====
+        openTrialForm() {
+            this.showPaywall = false;
+            this.trialError = '';
+            this.trialSubmitting = false;
+            this.showTrialForm = true;
+            this.resizeForMobile();
+        },
+        closeTrialForm() {
+            if (this.trialSubmitting) return; // не закрываем во время отправки
+            this.showTrialForm = false;
+            this.resizeForMobile();
+        },
+        async submitTrial() {
+            if (this.trialSubmitting) return;
+            const c = this.trialContact;
+            const fio = (c.fio || '').trim();
+            const email = (c.email || '').trim();
+            const phone = (c.phone || '').trim();
+            if (!fio || !email || !phone) {
+                this.trialError = 'Заполните ФИО, email и телефон.';
+                return;
+            }
+            if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+                this.trialError = 'Проверьте корректность email.';
+                return;
+            }
+            this.trialError = '';
+            this.trialSubmitting = true;
+            try {
+                const res = await startTrial(window.memberId, {
+                    fio: fio,
+                    email: email,
+                    phone: phone,
+                    note: (c.note || '').trim()
+                });
+                const code = res && res.code;
+                if (code === 200 || code === 201) {
+                    this.showTrialForm = false;
+                    this.showNotification('Пробный период активирован!', 'success');
+                    // тариф у qabinet активируется не мгновенно — поллим status.php
+                    await this.refreshUntilActive();
+                    return;
+                }
+                if (code === 409) {
+                    this.trialError = 'Для этого портала пробный период уже активирован или был использован ранее.';
+                } else if (res && res.error === 'no_jwt') {
+                    this.trialError = 'Не удалось связаться с биллингом. Попробуйте позже.';
+                } else {
+                    this.trialError = 'Не удалось активировать пробный период. Попробуйте позже.';
+                }
+            } catch (e) {
+                console.error('Ошибка активации триала:', e);
+                this.trialError = 'Произошла ошибка. Попробуйте позже.';
+            } finally {
+                this.trialSubmitting = false;
+            }
+        },
+
         SetStandardStyles() {
             this.current_button.textColor_FIELDS = "#ffffff";
             this.current_button.buttonColor_FIELDS = "#2fc6f6";

@@ -178,6 +178,9 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                 </p>
                 <div v-if="paywallMessage" class="op-paywall__msg">{{ paywallMessage }}</div>
                 <div class="op-paywall__actions">
+                    <button v-if="!isTrial" class="ui-btn ui-btn-primary" @click="openTrialForm" :disabled="paywallPolling">
+                        <i class="fa-solid fa-gift"></i> Попробовать бесплатно
+                    </button>
                     <button class="ui-btn ui-btn-success" @click="goToPro" :disabled="paywallPolling">
                         <i class="fa-solid fa-crown"></i> Перейти на PRO
                     </button>
@@ -187,6 +190,60 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         {{ paywallPolling ? 'Проверяем оплату…' : 'Я оплатил' }}
                     </button>
                     <button class="ui-btn" @click="closePaywall" :disabled="paywallPolling">Позже</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Форма активации триала («Попробовать бесплатно») ===== -->
+        <style>
+            .op-trial__field { text-align:left; margin-bottom:12px; }
+            .op-trial__label { display:block; font-size:13px; color:#344054; margin-bottom:5px; }
+            .op-trial__label b { color:#f1361b; font-weight:600; }
+            .op-trial__input { width:100%; box-sizing:border-box; border:1px solid #d0d5dd; border-radius:8px;
+                padding:9px 11px; font-size:14px; color:#1a2b3c; outline:none; transition:border-color .15s; }
+            .op-trial__input:focus { border-color:#2fc6f6; }
+            .op-trial__input--area { resize:vertical; min-height:54px; }
+            .op-trial__error { background:#fef3f2; color:#b42318; border-radius:8px; padding:9px 12px; font-size:13px;
+                margin-bottom:12px; text-align:left; }
+            .op-trial__hint { color:#667085; font-size:12px; line-height:1.45; margin:0 0 16px; }
+        </style>
+        <div v-if="showTrialForm" class="op-paywall-overlay" @click.self="closeTrialForm">
+            <div class="op-paywall">
+                <button class="op-paywall__close" @click="closeTrialForm" :disabled="trialSubmitting">✕</button>
+                <div class="op-paywall__icon"><i class="fa-solid fa-gift"></i></div>
+                <h2 class="op-paywall__title">Пробный период PRO</h2>
+                <p class="op-trial__hint">
+                    Оставьте контакты, чтобы активировать бесплатный пробный период с полным доступом
+                    (неограниченное число кнопок и PRO-возможности).
+                </p>
+                <div v-if="trialError" class="op-trial__error">{{ trialError }}</div>
+                <div class="op-trial__field">
+                    <label class="op-trial__label">ФИО <b>*</b></label>
+                    <input v-model="trialContact.fio" type="text" class="op-trial__input"
+                           placeholder="Иван Иванов" :disabled="trialSubmitting">
+                </div>
+                <div class="op-trial__field">
+                    <label class="op-trial__label">Email <b>*</b></label>
+                    <input v-model="trialContact.email" type="email" class="op-trial__input"
+                           placeholder="you@company.ru" :disabled="trialSubmitting">
+                </div>
+                <div class="op-trial__field">
+                    <label class="op-trial__label">Телефон <b>*</b></label>
+                    <input v-model="trialContact.phone" type="tel" class="op-trial__input"
+                           placeholder="+7 999 123-45-67" :disabled="trialSubmitting">
+                </div>
+                <div class="op-trial__field">
+                    <label class="op-trial__label">Комментарий</label>
+                    <textarea v-model="trialContact.note" class="op-trial__input op-trial__input--area"
+                              placeholder="Необязательно" :disabled="trialSubmitting"></textarea>
+                </div>
+                <div class="op-paywall__actions">
+                    <button class="ui-btn ui-btn-success" @click="submitTrial" :disabled="trialSubmitting">
+                        <i v-if="trialSubmitting" class="fa-solid fa-spinner fa-spin"></i>
+                        <i v-else class="fa-solid fa-gift"></i>
+                        {{ trialSubmitting ? 'Активируем…' : 'Активировать пробный период' }}
+                    </button>
+                    <button class="ui-btn" @click="closeTrialForm" :disabled="trialSubmitting">Отмена</button>
                 </div>
             </div>
         </div>
@@ -249,9 +306,14 @@ overCRest::setCurrentBitrix24($_REQUEST['member_id']);
                         </span>
                         <button class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">Оформить PRO</button>
                     </template>
-                    <button v-else-if="!hasFullAccess" class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">
-                        <i class="fa-solid fa-crown"></i> Перейти на PRO
-                    </button>
+                    <template v-else-if="!hasFullAccess">
+                        <button class="ui-btn ui-btn-sm ui-btn-primary" @click="openTrialForm">
+                            <i class="fa-solid fa-gift"></i> Попробовать бесплатно
+                        </button>
+                        <button class="ui-btn ui-btn-sm ui-btn-success" @click="openPaywall">
+                            <i class="fa-solid fa-crown"></i> Перейти на PRO
+                        </button>
+                    </template>
                     <span v-else class="op-plan__active">
                         <i class="fa-solid fa-circle-check"></i>
                         PRO активен<template v-if="validUntilText"> до {{ validUntilText }}</template>
